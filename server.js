@@ -5,6 +5,7 @@ const { buildSchema } = require('graphql');
 const { STOPS, STOP_TIMES, TRIPS } = require('./data');
 const { Stop, StopTime, Trip, Route } = require('./types/package');
 
+
 var schema = buildSchema(`
     type Trip {
         id: String
@@ -25,6 +26,7 @@ var schema = buildSchema(`
         number: Int!
         name: String!
         trips: [String!]!
+        getTrips: [Trip]!
     }
 
     type Stop {
@@ -35,11 +37,13 @@ var schema = buildSchema(`
         lon: Float!
         routes: [Route]!
         getRoute(route_id: String!): Route!
+        getNextStopTime(route_id: String!): StopTime!
     }
   
     type Query {
         getStop(stop_id: String!): Stop!
         getStops(stop_ids: [String!]!): [Stop]!
+        getStopTime(stop_id: String, trip_id: String): StopTime
     }
 `);
 
@@ -47,15 +51,24 @@ var schema = buildSchema(`
 var root = {
 
     getStop: ({ stop_id }) => {
-        return STOPS[stop_id];
+        var { id, code, name, lat, lon, routes } = STOPS[stop_id];
+        return new Stop(id, code, name, lat, lon, routes);
     },
 
     getStops: ({ stop_ids }) => {
         var stops = [];
         for (var stop_id of stop_ids) {
-            stops.push(STOPS[stop_id]);
+            var { id, code, name, lat, lon, routes } = STOPS[stop_id];
+            stops.push(new Stop(id, code, name, lat, lon, routes));
         }
         return stops;
+    },
+
+    getStopTime: ({ stop_id, trip_id }) => {
+        //console.log(STOP_TIMES);
+        var stop_time = STOP_TIMES[`${trip_id}-${stop_id}`];
+        var { id, trip_id, stop_id, time } = stop_time;
+        return new StopTime(id, trip_id, stop_id, time);
     }
 };
 
