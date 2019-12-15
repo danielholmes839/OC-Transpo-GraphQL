@@ -28,6 +28,10 @@ class Stop {
             }
         }
     }
+
+    getNextTrip() {
+        return;
+    }
 };
 
 module.exports = {
