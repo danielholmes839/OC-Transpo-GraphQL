@@ -32,7 +32,7 @@ def process_trips():
 
 
 def process_stop_times():
-    trip_ids = trips.index
+    trip_ids = stop_times.index
     trip_stop_ids = stop_times['stop_id']
     trip_arrival_times = stop_times['arrival_time']
 
@@ -87,16 +87,15 @@ def process_stops():
         process_stop(stop)
 
 
-"""
+
 process_stop_times()
 with open(f'STOP_TIMES.json', 'w') as fp:
     json.dump(STOP_TIMES, fp)
-  """
+
+"""
 process_stops()
 with open('STOPS.json', 'w') as fp:
     json.dump(STOPS, fp)
-
-"""
 
 process_trips()
 with open(f'TRIPS.json', 'w') as fp:
