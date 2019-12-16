@@ -2,7 +2,7 @@ const { Route } = require('./route');
 
 class Stop {
     /* Access with stop_code */
-    constructor(id, code, name, lat, lon, routes) {
+    constructor({ id, code, name, lat, lon, routes }) {
         this.id = id
         this.code = code;
         this.name = name;
@@ -15,8 +15,7 @@ class Stop {
         /* Create this.routes */
         this.routes = [];
         for (var ID of Object.keys(routes)) {
-            var { id, number, name, trips } = routes[ID];
-            this.routes.push(new Route(id, this.id, number, name, trips));
+            this.routes.push(new Route(routes[ID], this.id));
         }
     }
 

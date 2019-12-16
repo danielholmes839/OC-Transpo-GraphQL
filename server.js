@@ -52,24 +52,19 @@ var schema = buildSchema(`
 var root = {
 
     getStop: ({ stop_id }) => {
-        var { id, code, name, lat, lon, routes } = STOPS[stop_id];
-        return new Stop(id, code, name, lat, lon, routes);
+        return new Stop(STOPS[stop_id]);
     },
 
     getStops: ({ stop_ids }) => {
         var stops = [];
         for (var stop_id of stop_ids) {
-            var { id, code, name, lat, lon, routes } = STOPS[stop_id];
-            stops.push(new Stop(id, code, name, lat, lon, routes));
+            stops.push(STOPS[stop_id]);
         }
         return stops;
     },
 
     getStopTime: ({ stop_id, trip_id }) => {
-        //console.log(STOP_TIMES);
-        var stop_time = STOP_TIMES[`${trip_id}-${stop_id}`];
-        var { id, trip_id, stop_id, time } = stop_time;
-        return new StopTime(id, trip_id, stop_id, time);
+        return new StopTime(STOP_TIMES[`${trip_id}-${stop_id}`]);
     }
 };
 
