@@ -1,4 +1,4 @@
-var { Route } = require('./route');
+const { Route } = require('./route');
 
 class Stop {
     /* Access with stop_code */
@@ -16,7 +16,7 @@ class Stop {
         this.routes = [];
         for (var ID of Object.keys(routes)) {
             var { id, number, name, trips } = routes[ID];
-            this.routes.push(new Route(id, number, name, trips));
+            this.routes.push(new Route(id, this.id, number, name, trips));
         }
     }
 

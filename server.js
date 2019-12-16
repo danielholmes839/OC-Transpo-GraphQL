@@ -27,6 +27,7 @@ var schema = buildSchema(`
         name: String!
         trips: [String!]!
         getTrips: [Trip]!
+        getStopTimes: [StopTime]!
     }
 
     type Stop {
