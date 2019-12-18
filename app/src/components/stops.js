@@ -10,6 +10,7 @@ const query = gql`
       getRoutes {
         number
         name
+        type
         getNextStopTime {
           time
         }

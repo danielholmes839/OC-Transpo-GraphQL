@@ -4,7 +4,6 @@ const { ROUTES } = require('../data');
 class Stop {
     /* Access with stop_code */
     constructor({ id, code, name, lat, lon, routes }) {
-        console.log(id);
         this.id = id
         this.code = code;
         this.name = name;

@@ -25,11 +25,13 @@ function binarySearchStopTimes(stop_times, time) {
 
 class Route {
     /* Stored within array Stop.routes */
-    constructor({ id, number, name, trips }, stop_id) {
+    constructor({ id, number, name, type, type_number, trips }, stop_id) {
         this.id = id;
         this.stop_id = stop_id;
         this.number = number;
         this.name = this.getName(stop_id, trips);
+        this.type = type;
+        this.type_number = type_number;
         this.trips = trips;
     }
 
