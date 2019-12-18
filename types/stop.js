@@ -1,35 +1,25 @@
 const { Route } = require('./route');
+const { ROUTES } = require('../data');
 
 class Stop {
     /* Access with stop_code */
     constructor({ id, code, name, lat, lon, routes }) {
+        console.log(id);
         this.id = id
         this.code = code;
         this.name = name;
         this.lat = lat;
         this.lon = lon;
-        this.construct_routes(routes);
+        this.routes = routes
     };
 
-    construct_routes(routes) {
+    getRoutes() {
         /* Create this.routes */
-        this.routes = [];
-        for (var ID of Object.keys(routes)) {
-            this.routes.push(new Route(routes[ID], this.id));
-        }
-    }
-
-    getRoute({ route_id }) {
-        /* Get route using it's number */
+        var routes = [];
         for (var route of this.routes) {
-            if (route.id == route_id) {
-                return route;
-            }
+            routes.push(new Route(ROUTES[route], this.id));
         }
-    }
-
-    getNextTrip() {
-        return;
+        return routes;
     }
 };
 

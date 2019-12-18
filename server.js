@@ -1,11 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const graphqlHTTP = require('express-graphql');
 const { buildSchema } = require('graphql');
 
 const { STOPS, STOP_TIMES, TRIPS } = require('./data');
 const { Stop, StopTime, Trip, Route } = require('./types/package');
 
-
+/* GraphQL Schema */
 var schema = buildSchema(`
     type Trip {
         id: String
@@ -25,8 +26,11 @@ var schema = buildSchema(`
         id: String!
         number: Int!
         name: String!
+        type: String
+        type_number: Int
         trips: [String!]!
         getTrips: [Trip]!
+        getNextStopTime: StopTime!
         getStopTimes: [StopTime]!
     }
 
@@ -36,41 +40,38 @@ var schema = buildSchema(`
         name: String!
         lat: Float!
         lon: Float!
-        routes: [Route]!
+        routes: [String]!
         getRoute(route_id: String!): Route!
+        getRoutes: [Route]
         getNextStopTime(route_id: String!): StopTime!
     }
   
     type Query {
         getStop(stop_id: String!): Stop!
         getStops(stop_ids: [String!]!): [Stop]!
-        getStopTime(stop_id: String, trip_id: String): StopTime
     }
 `);
 
-// The root provides a resolver function for each API endpoint
 var root = {
-
+    // Resolvers 
     getStop: ({ stop_id }) => {
+        // Get Stop by ID
         return new Stop(STOPS[stop_id]);
     },
 
     getStops: ({ stop_ids }) => {
+        // Get Stops by IDs
         var stops = [];
         for (var stop_id of stop_ids) {
-            stops.push(STOPS[stop_id]);
-        }
+            stops.push(new Stop(STOPS[stop_id]));
+        };
         return stops;
-    },
-
-    getStopTime: ({ stop_id, trip_id }) => {
-        return new StopTime(STOP_TIMES[`${trip_id}-${stop_id}`]);
     }
 };
 
 var app = express();
 
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', cors(), graphqlHTTP({
     schema: schema,
     rootValue: root,
     graphiql: true,
@@ -78,4 +79,3 @@ app.use('/graphql', graphqlHTTP({
 
 app.listen(3000);
 console.log('Beep Boop Listening on: http://localhost:3000/graphql');
-
