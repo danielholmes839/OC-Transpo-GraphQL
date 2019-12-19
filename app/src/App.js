@@ -3,7 +3,6 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import Stops from './components/stops';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/text.css';
 
 const client = new ApolloClient({
   'uri': 'http://localhost:3000/graphql'
