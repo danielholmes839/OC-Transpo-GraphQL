@@ -34,6 +34,7 @@ def process_routes(path):
             'id': route,
             'number': routes.at[route, 'route_short_name'],
             'colour': routes.at[route, 'route_color'],
+            'text_colour': routes.at[route, 'route_text_color'],
             'type': route_types[routes.at[route, 'route_type']],
             'type_number': int(routes.at[route, 'route_type']),
             'trips': []
@@ -41,6 +42,9 @@ def process_routes(path):
 
         if type(ROUTES[route]['colour']) != str:
             ROUTES[route]['colour'] = 'FF0000'
+
+        if type(ROUTES[route]['text_colour']) != str:
+            ROUTES[route]['text_colour'] = 'FFFFFF'
 
     for trip_id in stop_times.index:
         route = stop_times.at[trip_id, 'route_id']

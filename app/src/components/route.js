@@ -6,9 +6,10 @@ class Route extends Component {
             
             <div className="col-lg-3 col-md-4 col-sm-6">
                 <h6> 
-                    <span className="badge text-white mr-2 text-outline" style={{backgroundColor: '#'+this.props.data.colour}}>
-                        {this.props.data.number}
-                    </span>
+                    <span className="badge mr-2" style={{
+                        backgroundColor: '#'+this.props.data.colour,
+                        color: '#'+this.props.data.text_colour
+                    }}>{this.props.data.number}</span>
                     {this.props.data.name} - {this.props.data.type} 
                 </h6>
                 
