@@ -20,7 +20,7 @@ def process_stop_times(path):
         STOP_TIMES[f'{trip_id}-{stop_id}'] = {
             'trip_id': trip_id,
             'stop_id': stop_id,
-            'time': time
+            'time': time[:-3]
         }
 
     with open(f'{path}.json', 'w') as fp:
