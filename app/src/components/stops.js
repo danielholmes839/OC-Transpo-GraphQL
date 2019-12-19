@@ -12,6 +12,7 @@ const query = gql`
         name
         type
         colour
+        text_colour
         getNextStopTime {
           time
         }
