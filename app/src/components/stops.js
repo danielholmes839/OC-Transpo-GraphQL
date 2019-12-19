@@ -5,12 +5,13 @@ import Stop from './stop';
 
 const query = gql`
   {
-    getStops(stop_ids: ["AF990", "AK145", "CD999", "AF950"]) {
+    getStops(stop_ids: ["EB920", "AF950", "AF990", "CD999"]) {
       name
       getRoutes {
         number
         name
         type
+        colour
         getNextStopTime {
           time
         }
