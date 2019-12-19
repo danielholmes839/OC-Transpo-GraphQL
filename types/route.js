@@ -25,13 +25,14 @@ function binarySearchStopTimes(stop_times, time) {
 
 class Route {
     /* Stored within array Stop.routes */
-    constructor({ id, number, name, type, type_number, trips }, stop_id) {
+    constructor({ id, number, name, type, type_number, colour, trips }, stop_id) {
         this.id = id;
         this.stop_id = stop_id;
         this.number = number;
         this.name = this.getName(stop_id, trips);
         this.type = type;
         this.type_number = type_number;
+        this.colour = colour;
         this.trips = trips;
     }
 
@@ -60,7 +61,7 @@ class Route {
 
     getNextStopTime() {
         var stop_times = this.getStopTimes(); 
-        var time = new Date().toTimeString().substring(0, 8);
+        var time = new Date().toTimeString().substring(0, 5);
         for (var stop_time of stop_times) {
             if (time < stop_time.time) {
                 return stop_time;
