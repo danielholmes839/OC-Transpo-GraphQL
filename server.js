@@ -29,6 +29,7 @@ var schema = buildSchema(`
         type: String!
         type_number: Int!
         colour: String!
+        text_colour: String!
         trips: [String!]!
         getTrips: [Trip]!
         getNextStopTime: StopTime!
