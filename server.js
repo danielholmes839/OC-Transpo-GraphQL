@@ -9,25 +9,26 @@ const { Stop, StopTime, Trip, Route } = require('./types/package');
 /* GraphQL Schema */
 var schema = buildSchema(`
     type Trip {
-        id: String
-        route_id: String
-        service_id: String
-        trip_headsign: String
+        id: String!
+        route_id: String!
+        service_id: String!
+        trip_headsign: String!
     }
 
     type StopTime {
-        id: String
-        trip_id: String
-        stop_id: String
-        time: String
+        id: String!
+        trip_id: String!
+        stop_id: String!
+        time: String!
     }
 
     type Route {
         id: String!
         number: Int!
         name: String!
-        type: String
-        type_number: Int
+        type: String!
+        type_number: Int!
+        colour: String!
         trips: [String!]!
         getTrips: [Trip]!
         getNextStopTime: StopTime!
@@ -42,7 +43,7 @@ var schema = buildSchema(`
         lon: Float!
         routes: [String]!
         getRoute(route_id: String!): Route!
-        getRoutes: [Route]
+        getRoutes: [Route]!
         getNextStopTime(route_id: String!): StopTime!
     }
   
