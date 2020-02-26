@@ -59,7 +59,7 @@ var schema = buildSchema(`
     }
 
     type Route {
-        _id: ID!
+        _id: ID
         name: String!
         routeType: Int!
         colour: String!
