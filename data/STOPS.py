@@ -5,38 +5,36 @@ stops = pd.read_csv('stops.txt', index_col='stop_id')
 stop_times = pd.read_csv('stop_times.txt', index_col='trip_id')
 trips = pd.read_csv('trips.txt', index_col='trip_id')
 
-STOPS = {}
+STOPS = {'data': []}
 
 
 def process_stop(stop_id):
     """ Add a stop """
-    code = str(stops.at[stop_id, 'stop_code']).strip('.0')
+    code = str(stops.at[stop_id, 'stop_code'])[:4]
     name = stops.at[stop_id, 'stop_name']
     lat = stops.at[stop_id, 'stop_lat']
     lon = stops.at[stop_id, 'stop_lon']
 
-    STOPS[stop_id] = {
-        'id': stop_id,
+    trip_ids = stop_times[stop_times['stop_id'] == stop_id].index
+    routes = [trips.at[trip, 'route_id'] for trip in trip_ids]
+    routes = list(set(routes))
+
+    stop = {
+        '_id': stop_id,
         'code': code,
         'name': name,
         'lat': lat,
         'lon': lon,
-        'routes': set()
+        'routes': routes
     }
 
-    stop_trips = stop_times[stop_times['stop_id'] == stop_id].sort_values(by=['arrival_time'])
-
-    for trip_id in stop_trips.index:
-        route_id = trips.at[trip_id, 'route_id']
-
-        if route_id not in STOPS[stop_id]['routes']:
-            STOPS[stop_id]['routes'].add(route_id)
-
-    STOPS[stop_id]['routes'] = list(STOPS[stop_id]['routes'])
+    STOPS['data'].append(stop)
 
 
 def process_stops(path):
+    print(stops.shape[0])
     for i, stop in enumerate(stops.index):
+        print(i)
         process_stop(stop)
 
     with open(f'{path}.json', 'w') as fp:

@@ -2,53 +2,48 @@ import json
 import pandas as pd
 import numpy as np
 
-routes = pd.read_csv('routes.txt', index_col='route_id')
-stop_times = pd.read_csv('stop_times.txt', index_col='trip_id')
-trips = pd.read_csv('trips.txt', index_col='trip_id')
+routes_df = pd.read_csv('routes.txt', index_col='route_id')
+trips_df = pd.read_csv('trips.txt', index_col='trip_id')
+stop_times_df = pd.read_csv('stop_times.txt')
 
-stop_times = stop_times[stop_times['stop_sequence'] == 1]
-stop_times = stop_times.sort_values(by=['arrival_time'])
-trip_ids = list(set(stop_times.index))
+ROUTES = {'data': []}
 
-# GTFS ROUTE TYPES
-route_types = {
-    0: 'Light Rail',
-    1: 'Subway',
-    2: 'Rail',
-    3: 'Bus',
-    4: 'Ferry',
-    5: 'Cable Car',
-    6: 'Gondola',
-    7: 'Funicular'
-}
-ROUTES = {}
+route_stops = {}
+route_trips = {}
+
+for route in routes_df.index:
+    route_stops[route] = set()
+    route_trips[route] = set()
+
+for i in stop_times_df.index:
+    print(i)
+    trip = stop_times_df.at[i, 'trip_id']
+    stop = stop_times_df.at[i, 'stop_id']
+    route = trips_df.at[trip, 'route_id']
+
+    route_stops[route].add(stop)
+    route_trips[route].add(trip)
 
 
 def process_routes(path):
-    for trip_id in trip_ids:
-        route_id = trips.at[trip_id, 'route_id']
-        stop_times.at[trip_id, 'route_id'] = route_id
+    for route in routes_df.index:
+        colour = routes_df.at[route, 'route_color']
+        if type(colour) != str:
+            colour = 'FF0000'
 
-    for route in routes.index:
-        ROUTES[route] = {
-            'id': route,
-            'number': routes.at[route, 'route_short_name'],
-            'colour': routes.at[route, 'route_color'],
-            'text_colour': routes.at[route, 'route_text_color'],
-            'type': route_types[routes.at[route, 'route_type']],
-            'type_number': int(routes.at[route, 'route_type']),
-            'trips': []
-        }
+        text_colour = routes_df.at[route, 'route_text_color']
+        if type(text_colour) != str:
+            text_colour = 'FFFFFF'
 
-        if type(ROUTES[route]['colour']) != str:
-            ROUTES[route]['colour'] = 'FF0000'
-
-        if type(ROUTES[route]['text_colour']) != str:
-            ROUTES[route]['text_colour'] = 'FFFFFF'
-
-    for trip_id in stop_times.index:
-        route = stop_times.at[trip_id, 'route_id']
-        ROUTES[route]['trips'].append(trip_id)
+        ROUTES['data'].append({
+            '_id': route,
+            'name': routes_df.at[route, 'route_short_name'],
+            'routeType': int(routes_df.at[route, 'route_type']),
+            'colour': colour,
+            'textColour': text_colour,
+            'trips': list(route_trips[route]),
+            'stops': list(route_stops[route])
+        })
 
     with open(f'{path}.json', 'w') as fp:
         json.dump(ROUTES, fp)

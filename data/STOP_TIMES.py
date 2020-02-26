@@ -6,22 +6,44 @@
 import json
 import pandas as pd
 
-stop_times = pd.read_csv('stop_times.txt', index_col='trip_id')
-STOP_TIMES = {}
+stop_times_df = pd.read_csv('stop_times.txt', index_col='trip_id')
+trips_df = pd.read_csv('trips.txt', index_col='trip_id')
+STOP_TIMES = {'data': []}
 
 
 def process_stop_times(path):
     """ process stop times """
-    trip_ids = stop_times.index
-    trip_stop_ids = stop_times['stop_id']
-    trip_arrival_times = stop_times['arrival_time']
 
-    for trip_id, stop_id, time in zip(trip_ids, trip_stop_ids, trip_arrival_times):
-        STOP_TIMES[f'{trip_id}-{stop_id}'] = {
-            'trip_id': trip_id,
-            'stop_id': stop_id,
-            'time': time[:-3]
-        }
+    stops = list(stop_times_df['stop_id'])
+    trips = list(stop_times_df.index)
+    times = list(stop_times_df['arrival_time'])
+    sequences = list(stop_times_df['stop_sequence'])
+    _ids = list(stop_times_df.index + stop_times_df['stop_id'])
+
+    added = set()
+
+    for stop, trip, _id, sequence, time, i in zip(stops, trips, _ids, sequences, times, range(len(stops))):
+        if _id in added:
+            print({
+                '_id': _id,
+                'time': time,
+                'sequence': sequence,
+                'trip': trip,
+                'stop': stop,
+                'route': trips_df.at[trip, 'route_id']
+            })
+            continue
+        added.add(_id)
+
+        STOP_TIMES['data'].append({
+            '_id': _id,
+            'time': time,
+            'sequence': sequence,
+            'trip': trip,
+            'stop': stop,
+            'route': trips_df.at[trip, 'route_id']
+        })
+    print(len(_ids), len(set(_ids)), len(STOP_TIMES['data']))
 
     with open(f'{path}.json', 'w') as fp:
         json.dump(STOP_TIMES, fp)
