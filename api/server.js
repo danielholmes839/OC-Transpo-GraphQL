@@ -1,29 +1,34 @@
-const express = require('express');
-const cors = require('cors');
-const graphqlHTTP = require('express-graphql');
-//const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 
-const graphQLSchema = require('./graphql/schema/index');
-const graphQLResolvers = require('./graphql/resolvers/index');
+const mongoose = require('mongoose');
+const { ApolloServer } = require('apollo-server-express');
+
+
+// Schema and Resolvers
+const schema = require('./graphql/schema/index');
+const resolvers = require('./graphql/resolvers/index');
+
+// Middleware
+const connect = require('connect');
+const query = require('qs-middleware');
 const authMiddleware = require('./middleware/auth');
 
-const app = express();
+// Make the Server
+const path = '/graphql';
+const app = connect();
+const server = new ApolloServer({ typeDefs: schema, resolvers: resolvers });
 
-app.use(authMiddleware);
-app.use('/graphql', cors(), graphqlHTTP({
-    schema: graphQLSchema,
-    rootValue: graphQLResolvers,
-    graphiql: true,
-}));
+// Connecting
+app.use(query());
+server.applyMiddleware({ app, path });
 
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-u99zs.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`).
-    then(() => {
-        app.listen(3000);
-        console.log('Beep Boop Listening on: http://localhost:3000/graphql');
-    }).
-    catch(err => {
-        console.log(err);
+
+const start = async () => {
+    const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-5ui2q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
+    await mongoose.connect(uri, { useNewUrlParser: true });
+    app.listen({ port: 4000 }, () => {
+        console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
     });
+};
 
+start();
 
