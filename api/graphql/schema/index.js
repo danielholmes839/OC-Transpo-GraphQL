@@ -1,6 +1,6 @@
 const { buildSchema } = require('graphql');
 
-var schema = buildSchema(`
+var schema = `
     input UserInput {
         email: String!
         password: String!
@@ -101,13 +101,13 @@ var schema = buildSchema(`
     }
 
     type Query {
-        getStops: [Stop!]!
-        getUsers: [User!]!
-        getRoutes: [Route!]!
-        getTrips: [Trip!]!
-        getTrip(_id: String): Trip!
-        getRoute(_id: String): Route!
-        getStop(_id: String): Route!
+        getStops: [Stop]!
+        getUsers: [User]!
+        getRoutes: [Route]!
+        getTrips: [Trip]!
+        getTrip(_id: String): Trip
+        getRoute(_id: String): Route
+        getStop(_id: String): Stop
         login(email: String!, password: String!): AuthData!
     }
 
@@ -116,6 +116,6 @@ var schema = buildSchema(`
         createStop(stopInput: StopInput): Stop
         createUser(userInput: UserInput): User
     }
-`);
+`;
 
 module.exports = schema;
