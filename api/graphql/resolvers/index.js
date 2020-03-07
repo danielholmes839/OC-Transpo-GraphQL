@@ -1,13 +1,21 @@
-const userResolvers = require('./user');
-const stopResolvers = require('./stop');
+const queryResolvers = require('./query');
 const routeResolvers = require('./route');
+const stopResolvers = require('./stop');
 const tripResolvers = require('./trip');
+const stopTimeResolvers = require('./stopTime');
+const favouriteStopResolvers = require('./favouriteStop');
 
-const rootResolvers = {
-    ...userResolvers,
-    ...stopResolvers,
-    ...routeResolvers,
-    ...tripResolvers
+console.log(favouriteStopResolvers);
+
+const resolvers = {
+    Query: queryResolvers.Query,
+    Route: routeResolvers.Route,
+    Stop: stopResolvers.Stop,
+    Trip: tripResolvers.Trip,
+    StopTime: stopTimeResolvers.StopTime,
+    FavouriteStop: favouriteStopResolvers.FavouriteStop
 }
 
-module.exports = rootResolvers;
+console.log(resolvers);
+
+module.exports = resolvers;

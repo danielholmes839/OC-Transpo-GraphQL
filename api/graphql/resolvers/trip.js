@@ -1,21 +1,11 @@
-const Trip = require('../../models/trip');
-const { transformTrip } = require('./merge');
+const { populateRoute, populateService, populateStopTimes } = require('./populate');
 
-var tripResolvers = {
-    getTrips: async () => {
-        let trips = await Trip.find();
-        trips = trips.map(trip => {
-            return transformTrip(trip);
-        });
-        return trips;
-    },
-
-    getTrip: async ({ _id }) => {
-        let trip = await Trip.findById(_id);
-        let transformed = await transformTrip(trip);
-        console.log(transformed);
-        return transformed;
+const resolvers = {
+    Trip: {
+        route: populateRoute,
+        service: populateService,
+        stopTimes: populateStopTimes
     }
-};
+}
 
-module.exports = tripResolvers;
+module.exports = resolvers;

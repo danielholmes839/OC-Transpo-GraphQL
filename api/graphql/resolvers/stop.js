@@ -1,20 +1,10 @@
-const Stop = require('../../models/stop');
-const { transformStop } = require('./merge');
+const { populateRoutes, populateStopRoutes } = require('./populate');
 
-var stopResolvers = {
-    getStops: async () => {
-        let stops = await Stop.find();
-        stops = stops.map(stop => {
-            return transformStop(stop);
-        });
-        return stops;
-    },
-
-    createStop: async (args) => {
-        const stop = new Stop({ ...args.stopInput });
-        await stop.save();
-        return transformStop(stop);
+const resolvers = {
+    Stop: {
+        routes: populateRoutes,
+        stopRoutes: populateStopRoutes
     }
-};
+}
 
-module.exports = stopResolvers;
+module.exports = resolvers;
