@@ -13,5 +13,7 @@ module.exports = {
     Trip: Trip,
     Route: Route,
     Service: Service,
-    StopTime: StopTime
+    StopTime: StopTime,
+    StopRoute: StopRoute,
+    FavouriteStop, FavouriteStop
 }
