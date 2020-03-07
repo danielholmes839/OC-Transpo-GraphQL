@@ -10,8 +10,10 @@
   "author": "Daniel Holmes",
   "license": "ISC",
   "dependencies": {
+    "apollo-server-express": "^2.11.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "connect": "^3.7.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
@@ -19,7 +21,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose-autopopulate": "^0.12.0",
     "node-datetime": "^2.1.2",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "qs-middleware": "^1.0.3"
   },
   "repository": {
     "type": "git",
