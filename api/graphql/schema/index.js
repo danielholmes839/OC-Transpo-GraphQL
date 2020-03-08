@@ -1,11 +1,4 @@
-const { buildSchema } = require('graphql');
-
-var schema = `
-    input UserInput {
-        email: String!
-        password: String!
-    }
-
+const schema = `
     type User {
         _id: ID!
         email: String!
@@ -14,23 +7,21 @@ var schema = `
     }
 
     type AuthData {
-        userId: ID!
+        user: User!
         token: String!
         expiration: Int!
+    }
+
+    input FavouriteStopInput {
+        user: String!
+        stop: String!
+        stopRoutes: [String!]!
     }
 
     type FavouriteStop {
         user: User!
         stop: Stop!
         stopRoutes: [StopRoute!]! # Routes user cares about
-    }
-
-    input StopInput {
-        _id: String!
-        code: String!
-        name: String!
-        lat: Float!
-        lon: Float!
     }
 
     type Stop {
@@ -50,16 +41,8 @@ var schema = `
         stopTimes: [StopTime!]!
     }
 
-    input RouteInput {
-        _id: ID!
-        name: String!
-        routType: Int!
-        colour: String!
-        textColour: String!
-    }
-
     type Route {
-        _id: ID
+        _id: ID!
         name: String!
         routeType: Int!
         colour: String!
@@ -101,20 +84,16 @@ var schema = `
     }
 
     type Query {
-        getStops: [Stop]!
-        getUsers: [User]!
-        getRoutes: [Route]!
-        getTrips: [Trip]!
-        getTrip(_id: String): Trip
-        getRoute(_id: String): Route
-        getStop(_id: String): Stop
+        getUser: User
+        getTrip(trip: String!): Trip!
+        getRoute(route: String!): Route!
+        getStop(stop: String!): Stop!
         login(email: String!, password: String!): AuthData!
     }
 
     type Mutation {
-        addFavouriteStop(stopId: String): Stop
-        createStop(stopInput: StopInput): Stop
-        createUser(userInput: UserInput): User
+        createUser(email: String!, password: String!): User
+        addFavouriteStop(favouriteStop: FavouriteStopInput): FavouriteStop
     }
 `;
 
