@@ -1,5 +1,4 @@
-const { Route, Stop, Trip, StopTime, Service, FavouriteStop, StopRoute } = require('../../models/index');
-
+const { Route, Stop, Trip, StopTime, Service, FavouriteStop, StopRoute, User } = require('../../models/index');
 
 const populateMany = async (ids, Table) => {
     return await Table.find({ _id: { $in: ids } });
@@ -66,7 +65,6 @@ const populateMethods = {
         return await populateOne(user, User);
     },
 };
-
 
 module.exports = {
     populateOne: populateOne,
