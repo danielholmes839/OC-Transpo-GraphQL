@@ -18,7 +18,7 @@ def process_stop_times(path):
     trips = list(stop_times_df.index)
     times = list(stop_times_df['arrival_time'])
     sequences = list(stop_times_df['stop_sequence'])
-    _ids = list(stop_times_df.index + stop_times_df['stop_id'])
+    _ids = list(stop_times_df.index + stop_times_df['stop_id']) # trip_id + stop_id
 
     added = set()
 

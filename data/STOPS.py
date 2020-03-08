@@ -25,7 +25,8 @@ def process_stop(stop_id):
         'name': name,
         'lat': lat,
         'lon': lon,
-        'routes': routes
+        'routes': routes,
+        'stopRoutes': [stop_id + route_id for route_id in routes]
     }
 
     STOPS['data'].append(stop)
