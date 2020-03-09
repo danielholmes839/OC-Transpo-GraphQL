@@ -4,7 +4,7 @@ GraphQL API for GTFS (General Transit Feed Specification) data created using Apo
 
 ## Schema
 
-![Full Schema](./api/graphql/schema/index.js)
+![Full Schema](../api/graphql/schema/index.js)
 
 ![schema diagram](api/graphql/schema/diagram.png)
 
