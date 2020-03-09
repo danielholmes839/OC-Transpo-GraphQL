@@ -16,19 +16,19 @@ Getting stop data
 
 Creating a user:
 
-![create user](./examples/create_user.png)
+![create user](./examples/create_user.PNG)
 
 Logging in:
 
-![logging in](./examples/login.png)
+![logging in](./examples/login.PNG)
 
 Add a favourite stop:
 
-![add favourite stop](./examples/add_favourite_stop.png)
+![add favourite stop](./examples/add_favourite_stop.PNG)
 
 Get favoutire stops:
 
-![get favourite stops](./examples/favourite_stops.png)
+![get favourite stops](./examples/favourite_stops.PNG)
 
 ## Prototype
 
