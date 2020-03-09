@@ -13,7 +13,7 @@ const userSchema = new Schema({
     favouriteStops: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'StopRoute'
+            ref: 'FavouriteStop'
         }
     ]
 });

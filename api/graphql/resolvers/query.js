@@ -8,17 +8,15 @@ const { populateRoute, populateStop, populateUser } = require('./populate');
 const resolvers = {
     Query: {
         getRoute: async (root, args, context) => {
-
             return populateRoute(args);
         },
 
         getStop: async (root, args, context) => {
-            console.log(args);
             return populateStop(args);
         },
 
         getUser: async (root, args, context) => {
-            return populateUser(context)
+            return populateUser(context);
         },
 
         login: async (root, { email, password }, context) => {

@@ -13,12 +13,12 @@ const schema = `
     }
 
     input FavouriteStopInput {
-        user: String!
         stop: String!
         stopRoutes: [String!]!
     }
 
     type FavouriteStop {
+        _id: String!
         user: User!
         stop: Stop!
         stopRoutes: [StopRoute!]! # Routes user cares about

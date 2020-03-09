@@ -3,11 +3,6 @@ const Schema = mongoose.Schema;
 
 
 const favouriteStopSchema = new Schema({
-    _id: {
-        type: String,
-        required: true
-    },
-
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'

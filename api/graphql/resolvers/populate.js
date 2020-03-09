@@ -17,43 +17,43 @@ const populateMethods = {
         return await populateMany(routes, Route);
     },
 
-    populateStop: async ({ stop }, parent, context) => {
+    populateStop: async ({ stop }, args, context) => {
         return await populateOne(stop, Stop);
     },
 
-    populateStops: async ({ stops }, parent, context) => {
+    populateStops: async ({ stops }, args, context) => {
         return await populateMany(stops, Stop);
     },
 
-    populateTrip: async ({ trip }, parent, context) => {
+    populateTrip: async ({ trip }, args, context) => {
         return await populateOne(trip, Trip);
     },
 
-    populateTrips: async ({ trips }, parent, context) => {
+    populateTrips: async ({ trips }, args, context) => {
         return await populateMany(trips, Trip);
     },
 
-    populateStopTime: async ({ stopTime }, parent, context) => {
+    populateStopTime: async ({ stopTime }, args, context) => {
         return await populateOne(stopTime, StopTime);
     },
 
-    populateStopTimes: async ({ stopTimes }, parent, context) => {
+    populateStopTimes: async ({ stopTimes }, args, context) => {
         return await populateMany(stopTimes, StopTime);
     },
 
-    populateStopRoute: async ({ stopRoute }, parent, context) => {
+    populateStopRoute: async ({ stopRoute }, args, context) => {
         return await populateOne(stopRoute, StopRoute);
     },
 
-    populateStopRoutes: async ({ stopRoutes }, parent, context) => {
+    populateStopRoutes: async ({ stopRoutes }, args, context) => {
         return await populateMany(stopRoutes, StopRoute);
     },
 
-    populateFavouriteStop: async ({ favouriteStop }, parent, context) => {
+    populateFavouriteStop: async ({ favouriteStop }, args, context) => {
         return await populateOne(favouriteStop, FavouriteStop);
     },
 
-    populateFavouriteStops: async ({ favouriteStops }, parent, context) => {
+    populateFavouriteStops: async ({ favouriteStops }, args, context) => {
         return await populateMany(favouriteStops, FavouriteStop);
     },
 
@@ -62,7 +62,9 @@ const populateMethods = {
     },
 
     populateUser: async ({ user }, parent, context) => {
-        return await populateOne(user, User);
+        let result = await populateOne(user, User);
+        result.password = null;
+        return result;
     },
 };
 
