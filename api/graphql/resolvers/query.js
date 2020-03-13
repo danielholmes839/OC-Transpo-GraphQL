@@ -16,7 +16,11 @@ const resolvers = {
         },
 
         getUser: async (root, args, context) => {
-            return populateUser(context);
+            if (!context.authenticated) {
+                throw new Error('Unauthorized Request');
+            }
+            const user = await populateUser(context);
+            return user;
         },
 
         login: async (root, { email, password }, context) => {
@@ -29,15 +33,8 @@ const resolvers = {
             if (!isEqual) { throw new Error('Incorrect password'); }
 
             // Create the token
-            const token = jwt.sign(
-                {
-                    user: user._id,
-                    email: user.email
-                },
-                process.env.SECRET_KEY,
-                {
-                    expiresIn: '1h'
-                }
+            const token = jwt.sign({ user: user._id, email: user.email }, process.env.SECRET_KEY,
+                { expiresIn: '1h' }
             );
 
             return {

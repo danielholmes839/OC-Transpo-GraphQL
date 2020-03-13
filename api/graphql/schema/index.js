@@ -85,10 +85,10 @@ const schema = `
 
     type Query {
         getUser: User
-        getTrip(trip: String!): Trip!
-        getRoute(route: String!): Route!
-        getStop(stop: String!): Stop!
-        login(email: String!, password: String!): AuthData!
+        getTrip(trip: String!): Trip
+        getRoute(route: String!): Route
+        getStop(stop: String!): Stop
+        login(email: String!, password: String!): AuthData
     }
 
     type Mutation {

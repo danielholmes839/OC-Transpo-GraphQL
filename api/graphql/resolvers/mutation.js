@@ -26,13 +26,14 @@ const resolvers = {
             let user = await User.findOne({ _id: context.user });       // Check that the user exists 
             if (!user) { throw new Error('User does not exist'); }      // CHECKING THIS WILL PROBABLY CHANGE
 
+            favouriteStop.user = context.user;
             const favouriteStopDocument = new FavouriteStop(favouriteStop);
             await favouriteStopDocument.save();
 
             user.favouriteStops.push(favouriteStopDocument._id);
             await user.save();
 
-            favouriteStop.user = context.user;
+
             return favouriteStop;
         }
     }

@@ -62,9 +62,9 @@ const populateMethods = {
     },
 
     populateUser: async ({ user }, parent, context) => {
-        let result = await populateOne(user, User);
-        result.password = null;
-        return result;
+        let userDoc = await populateOne(user, User);
+        userDoc.password = null;
+        return userDoc;
     },
 };
 
