@@ -51,7 +51,7 @@ query {
             "name": "10"
           }
         },
-        ...
+        // ...
         {
           "_id": "AF940199-313",
           "route": {
@@ -65,7 +65,43 @@ query {
 }
 ```
 
-### User Login
+### Creating a New User
+
+#### Mutation
+
+```gql
+mutation {
+  createUser(email: "test@test.com", password: "test") {
+    email
+  }
+}
+```
+
+```json
+
+{ // First mutation
+  "data": {
+    "createUser": {
+      "email": "test@test.com"
+    }
+  }
+}
+
+{ // Second mutation - fails emails must be unique
+  "errors": [
+    {
+      "message": "Email in use",
+      // ... More Graphql Details
+    }
+  ],
+  "data": {
+    "createUser": null
+  }
+}
+
+```
+
+### Logging In
 
 Logs in a user and returns a JSON Web Token that can be used
 to access the user's favourite stops later.
