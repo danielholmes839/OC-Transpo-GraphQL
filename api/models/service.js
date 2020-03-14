@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const date = require('./date');
+
 const Schema = mongoose.Schema;
 
 
@@ -8,20 +10,13 @@ const serviceSchema = new Schema({
         required: true
     },
 
-    startDate: {
-        type: String,
-        required: true
-    },
+    start: date,
+    end: date,
 
-    endDate: {
-        type: String,
-        required: true
-    },
-
-    trips: [
+    exceptions: [
         {
             type: String,
-            ref: 'Trip'
+            ref: 'ServiceException'
         }
     ],
 
@@ -58,8 +53,7 @@ const serviceSchema = new Schema({
     sunday: {
         type: Boolean,
         required: true
-    },
-
+    }
 });
 
 module.exports = mongoose.model('Service', serviceSchema);
