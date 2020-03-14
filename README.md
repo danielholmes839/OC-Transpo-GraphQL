@@ -65,9 +65,48 @@ query {
 }
 ```
 
+### User Login
 
+Logs in a user and returns a JSON Web Token that can be used
+to access the user's favourite stops later.
 
+#### Query
 
+```gql
+
+query {
+  login(email: "test@test.com", password: "test") {
+    token
+    expiration
+    user {
+      _id
+      email
+      password
+    }
+  }
+}
+
+```
+
+#### Result
+
+```json
+
+{
+  "data": {
+    "login": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWU2YzM3MGJkZjMxM2IzNjNjNTJlYjcxIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNTg0MTUyNTEwLCJleHAiOjE1ODQxNTYxMTB9.ZTewAKAKcobjXcnIPh7i2lFnUBF03b6Nps5nozxKzas",
+      "expiration": 1,
+      "user": {
+        "_id": "5e6c370bdf313b363c52eb71",
+        "email": "test@test.com",
+        "password": null
+      }
+    }
+  }
+}
+
+```
 
 ## Prototype
 
