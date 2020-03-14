@@ -18,7 +18,7 @@ const resolvers = {
         searchStops: async (root, { name, limit }, context) => {
             return await Stop.find(
                 { $text: { $search: name } },
-                { score: { $meta: "textScore" } } //.limit(limit)
+                { score: { $meta: "textScore" } }
             ).sort({ "score": { "$meta": "textScore" } }).limit(limit);
         },
 
