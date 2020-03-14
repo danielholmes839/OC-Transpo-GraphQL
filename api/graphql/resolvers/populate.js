@@ -1,11 +1,11 @@
-const { Route, Stop, Trip, StopTime, Service, FavouriteStop, StopRoute, User } = require('../../models/index');
-
-const populateMany = async (ids, Table) => {
-    return await Table.find({ _id: { $in: ids } });
-};
+const { Route, Stop, Trip, StopTime, Service, ServiceException, FavouriteStop, StopRoute, User } = require('../../models/index');
 
 const populateOne = async (id, Table) => {
     return await Table.findById(id);
+};
+
+const populateMany = async (ids, Table) => {
+    return await Table.find({ _id: { $in: ids } });
 };
 
 const populateMethods = {
@@ -57,8 +57,12 @@ const populateMethods = {
         return await populateMany(favouriteStops, FavouriteStop);
     },
 
-    populateService: async ({ service }, parent, context) => {
+    populateService: async ({ service }, args, context) => {
         return await populateOne(service, Service);
+    },
+
+    populateServiceExceptions: async ({ exceptions }, args, context) => {
+        return await populateMany(exceptions, ServiceException);
     },
 
     populateUser: async ({ user }, parent, context) => {

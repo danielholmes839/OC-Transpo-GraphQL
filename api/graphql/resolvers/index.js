@@ -8,6 +8,7 @@ const stopTimeResolvers = require('./stopTime');
 const stopRouteResolvers = require('./stopRoute');
 const favouriteStopResolvers = require('./favouriteStop');
 const userResolvers = require('./user');
+const serviceResolvers = require('./service');
 
 const resolvers = {
     Query: queryResolvers.Query,
@@ -18,7 +19,8 @@ const resolvers = {
     StopTime: stopTimeResolvers.StopTime,
     StopRoute: stopRouteResolvers.StopRoute,
     FavouriteStop: favouriteStopResolvers.FavouriteStop,
-    User: userResolvers.User
+    User: userResolvers.User,
+    Service: serviceResolvers.Service
 }
 
 console.log(resolvers);
