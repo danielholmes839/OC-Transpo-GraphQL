@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const { Trip, Stop, Route, StopTime, StopRoute } = require('../models/index');
-const { routes, trips, stopTimes, stops, stopRoutes } = require('./files');
+const { Trip, Stop, Route, StopTime, StopRoute, Service, ServiceException } = require('../models/index');
+const { routes, trips, stopTimes, stops, stopRoutes, service, serviceExceptions } = require('./files');
 
 mongoose.connection.on('connected', function () {
     console.log('Successfully Connected');
@@ -20,8 +20,12 @@ async function insertManyByChunk(data, chunk, Table) {
 }
 
 async function process() {
-
-    await mongoose.connect(uri);
+    try {
+        await mongoose.connect(uri);
+    } catch {
+        console.log('Could not connect to MONGODB');
+    }
+    
 
     await Trip.insertMany(trips.data);
     console.log('Uploaded Trips');
@@ -35,8 +39,15 @@ async function process() {
     await Stop.insertMany(stops.data);
     console.log('Uploaded Stops');
 
+    await Service.insertMany(service.data);
+    console.log('Uploaded Service');
+
+    await ServiceException.insertMany(serviceExceptions.data);
+    console.log('Uploaded Service Exceptions');
+
     await insertManyByChunk(stopRoutes.data, 3000, StopRoute);
     console.log('Uploaded Stop Routes');
+
 
     console.log('Uploaded All Data');
 
