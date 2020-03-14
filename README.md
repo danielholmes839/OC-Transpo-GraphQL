@@ -6,7 +6,7 @@ Eventually I will be building an entire web application around this API.
 
 ## Schema
 
-The full schema can be found [here](../api/graphql/schema/index.js). The graph below shows the relationship between types:
+The full schema can be found [here](./api/graphql/schema/index.js). The graph below shows the relationship between types:
 
 ![schema diagram](api/graphql/schema/diagram.png)
 
@@ -287,6 +287,57 @@ query {
   }
 }
 
+```
+
+### Search Stops
+
+#### Query
+
+```gql
+query {
+  searchStops(name: "Pleasant Arch", limit: 2) {
+    name
+    _id
+    stopRoutes {
+      route {
+        name
+      }
+    }
+  }
+}
+```
+
+#### Result
+
+``` json
+{
+  "data": {
+    "searchStops": [
+      {
+        "name": "PLEASANT PARK / ARCH",
+        "_id": "AK145",
+        "stopRoutes": [
+          {
+            "route": {
+              "name": "49"
+            }
+          }
+        ]
+      },
+      {
+        "name": "PLEASANT PARK / ARCH",
+        "_id": "AK151",
+        "stopRoutes": [
+          {
+            "route": {
+              "name": "49"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
 ```
 
 ## Prototype

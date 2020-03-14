@@ -36,9 +36,12 @@ const schema = `
 
     type StopRoute {
         _id: ID!
+        routeNumber: String!
+        headsign: String! 
         stop: Stop!
         route: Route!
         stopTimes: [StopTime!]!
+        nextStopTime: StopTime!
     }
 
     type Route {
@@ -102,6 +105,7 @@ const schema = `
         getTrip(trip: String!): Trip
         getRoute(route: String!): Route
         getStop(stop: String!): Stop
+        searchStops(name: String!, limit: Int!): [Stop!]!
         login(email: String!, password: String!): AuthData
     }
 

@@ -44,4 +44,17 @@ const stopSchema = new Schema({
 
 });
 
+stopSchema.index(
+    { 
+        'name': 'text' 
+    },
+    {
+        'weights': {
+            'name': 1
+        }
+    }
+
+    
+);
+
 module.exports = mongoose.model('Stop', stopSchema);

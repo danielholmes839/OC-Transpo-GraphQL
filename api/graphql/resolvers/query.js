@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { User } = require('../../models/index');
+const { User, Stop } = require('../../models/index');
 const { populateRoute, populateStop, populateUser } = require('./populate');
 
 
@@ -13,6 +13,13 @@ const resolvers = {
 
         getStop: async (root, args, context) => {
             return populateStop(args);
+        },
+
+        searchStops: async (root, { name, limit }, context) => {
+            return await Stop.find(
+                { $text: { $search: name } },
+                { score: { $meta: "textScore" } } //.limit(limit)
+            ).sort({ "score": { "$meta": "textScore" } }).limit(limit);
         },
 
         getUser: async (root, args, context) => {
