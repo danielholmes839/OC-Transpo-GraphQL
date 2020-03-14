@@ -51,7 +51,6 @@ query {
             "name": "10"
           }
         },
-        // ...
         {
           "_id": "AF940199-313",
           "route": {
@@ -77,28 +76,31 @@ mutation {
 }
 ```
 
-```json
+#### First
 
-{ // First mutation
+```json
+{
   "data": {
     "createUser": {
       "email": "test@test.com"
     }
   }
 }
+```
 
-{ // Second mutation - fails emails must be unique
+#### Second
+
+```json
+{
   "errors": [
     {
       "message": "Email in use",
-      // ... More Graphql Details
     }
   ],
   "data": {
     "createUser": null
   }
 }
-
 ```
 
 ### Logging In
