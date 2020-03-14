@@ -8,7 +8,7 @@ const routeSchema = new Schema({
         required: true
     },
 
-    name: {
+    number: {
         type: String,
         required: true
     },

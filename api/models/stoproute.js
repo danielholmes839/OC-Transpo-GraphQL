@@ -8,6 +8,16 @@ const stopRouteSchema = new Schema({
         required: true
     },
 
+    number: {
+        type: String,
+        required: true
+    },
+
+    headsign: {
+        type: String,
+        required: true
+    },
+
     route: {
         type: String,
         ref: 'Route'

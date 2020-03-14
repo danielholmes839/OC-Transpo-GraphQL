@@ -36,8 +36,8 @@ const schema = `
 
     type StopRoute {
         _id: ID!
-        routeNumber: String!
-        headsign: String! 
+        headsign: String!           # route headsign
+        number: String!             # route number
         stop: Stop!
         route: Route!
         stopTimes: [StopTime!]!
