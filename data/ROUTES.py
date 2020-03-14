@@ -37,7 +37,7 @@ def process_routes(path):
 
         ROUTES['data'].append({
             '_id': route,
-            'name': routes_df.at[route, 'route_short_name'],
+            'number': routes_df.at[route, 'route_short_name'],
             'routeType': int(routes_df.at[route, 'route_type']),
             'colour': colour,
             'textColour': text_colour,

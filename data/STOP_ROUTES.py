@@ -2,6 +2,8 @@ import json
 import pandas as pd
 
 stop_times_df = pd.read_csv('stop_times.txt')
+routes_df = pd.read_csv('routes.txt', index_col='route_id')
+
 stop_times_df.sort_values(by=['arrival_time'], inplace=True)
 print(stop_times_df['arrival_time'])
 
@@ -15,15 +17,19 @@ data = dict()
 
 for i, stop in enumerate(stops):
     print(i, stop)
-    trip_ids = stop_times_df[stop_times_df['stop_id'] == stop]['trip_id']
+    trip_ids = list(stop_times_df[stop_times_df['stop_id'] == stop]['trip_id'])
     routes = [trips_df.at[trip, 'route_id'] for trip in trip_ids]
     routes = set(routes)
+    print(trip_ids[0])
+    headsign = trips_df.at[trip_ids[0], 'trip_headsign']
 
     data[stop] = dict()
 
     for route in routes:
         data[stop][route] = {
             '_id': stop+route,
+            'number': routes_df.at[route, 'route_short_name'],
+            'headsign': headsign,
             'stop': stop,
             'route': route,
             'stopTimes': []
