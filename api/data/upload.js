@@ -26,7 +26,6 @@ async function process() {
         console.log('Could not connect to MONGODB');
     }
 
-    /*
     await Trip.insertMany(trips.data);
     console.log('Uploaded Trips');
 
@@ -48,18 +47,7 @@ async function process() {
     await insertManyByChunk(stopRoutes.data, 3000, StopRoute);
     console.log('Uploaded Stop Routes');
 
-
     console.log('Uploaded All Data');
-    */
-
-    await Stop.insertMany(stops.data);
-    console.log('Uploaded Stops');
-
-    await Route.insertMany(routes.data);
-    console.log('Uploaded Routes');
-
-    await insertManyByChunk(stopRoutes.data, 3000, StopRoute);
-    console.log('Uploaded Stop Routes');
 
     await mongoose.disconnect();
 }
