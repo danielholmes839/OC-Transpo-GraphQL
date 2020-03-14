@@ -10,7 +10,7 @@ The full schema can be found [here](../api/graphql/schema/index.js). The graph b
 
 ![schema diagram](api/graphql/schema/diagram.png)
 
-## Example Queries
+## Examples
 
 ### Getting stop data
 
