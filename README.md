@@ -10,25 +10,64 @@ The full schema can be found [here](../api/graphql/schema/index.js). The graph b
 
 ## Example Queries
 
-Getting stop data
+### Getting stop data
 
-![get stop](./examples/get_stop.PNG)
+#### Query
 
-Creating a user:
+```gql
 
-![create user](./examples/create_user.PNG)
+query {
+  getStop(stop: "AF940"){
+    _id
+    name
+    lon
+    lat
+    stopRoutes {
+      _id
+      route {
+        _id
+        name
+      }
+    }
+  }
 
-Logging in:
+```
 
-![logging in](./examples/login.PNG)
+#### Result
 
-Add a favourite stop:
+```json
+{
+  "data": {
+    "getStop": {
+      "_id": "AF940",
+      "name": "HURDMAN D",
+      "lon": -75.666889,
+      "lat": 45.412082,
+      "stopRoutes": [
+        {
+          "_id": "AF94010-313",
+          "route": {
+            "_id": "10-313",
+            "name": "10"
+          }
+        },
+        ...
+        {
+          "_id": "AF940199-313",
+          "route": {
+            "_id": "199-313",
+            "name": "199"
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
-![add favourite stop](./examples/add_favourite_stop.PNG)
 
-Get favourite stops:
 
-![get favourite stops](./examples/favourite_stops.PNG)
+
 
 ## Prototype
 
