@@ -1,6 +1,8 @@
 # GraphQL API for GTFS data
 
-GraphQL API for GTFS (General Transit Feed Specification) data created using Apollo-Express-Server.
+This repo is a GraphQL API for GTFS (General Transit Feed Specification) data. I'm currently not attempting to support every GTFS dataset only
+the OC Transpo (Ottawa, Canada's transit system) dataset. It was created using apollo-express-server and MongoDB.
+Eventually I will be building an entire web application around this API.
 
 ## Schema
 
@@ -90,6 +92,8 @@ mutation {
 
 #### Second
 
+Users cannot have the same email:
+
 ```json
 {
   "errors": [
@@ -148,7 +152,9 @@ query {
 
 ### Adding Favourite Stops to User
 
-#### Mutation 
+#### Mutation
+
+This mutation must be sent using the user's json web token
 
 ```gql
 mutation {
@@ -203,6 +209,8 @@ mutation {
 ### Getting a User
 
 #### Query
+
+This query must be sent using the user's json web token
 
 ```gql
 query {
