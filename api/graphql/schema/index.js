@@ -18,10 +18,10 @@ const schema = `
     }
 
     type FavouriteStop {
-        _id: String!
+        _id: ID!
         user: User!
         stop: Stop!
-        stopRoutes: [StopRoute!]! # Routes user cares about
+        stopRoutes: [StopRoute!]!
     }
 
     type Stop {
@@ -69,10 +69,20 @@ const schema = `
         route: Route!
     }
 
+    type Date {
+        year: Int!
+        month: Int!
+        day: Int!
+        yyyymmdd: String!                   # Maybe temporary
+        format(format: String!): String!
+    }
+
     type Service {
         _id: ID!
-        startDate: String!
-        endDate: String!
+        start: Date!
+        end: Date!                         
+        exceptions: [ServiceException!]!
+
         monday: Boolean!
         tuesday: Boolean!
         wednesday: Boolean!
@@ -80,7 +90,11 @@ const schema = `
         friday: Boolean!
         saturday: Boolean!
         sunday: Boolean!
-        trips: [Trip!]!
+    }
+
+    type ServiceException {
+        date: Date!
+        removed: Boolean!                   # True if service was removed False if service was added
     }
 
     type Query {
