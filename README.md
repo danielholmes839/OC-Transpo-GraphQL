@@ -146,6 +146,141 @@ query {
 
 ```
 
+### Adding Favourite Stops to User
+
+#### Mutation 
+
+```gql
+mutation {
+  addFavouriteStop(favouriteStop: {
+    stop: "AF940",
+    stopRoutes: ["AF94049-313", "AF940199-313"]
+  }) {
+    user {
+      email
+    }
+    stop {
+      name
+    }
+    stopRoutes {
+      route {
+        name
+      }
+    }
+  }
+}
+```
+
+#### Result
+
+```json
+{
+  "data": {
+    "addFavouriteStop": {
+      "user": {
+        "email": "test@test.com"
+      },
+      "stop": {
+        "name": "HURDMAN D"
+      },
+      "stopRoutes": [
+        {
+          "route": {
+            "name": "199"
+          }
+        },
+        {
+          "route": {
+            "name": "49"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+### Getting a User
+
+#### Query
+
+```gql
+query {
+  getUser {
+    email
+    favouriteStops {
+      _id
+      stop {
+        name
+      }
+      stopRoutes {
+        _id
+        route {
+          name
+        }
+        stopTimes {
+          time
+          trip {
+            service {
+              saturday
+              sunday
+              monday
+              exceptions {
+                date {
+                  yyyymmdd
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### Result
+
+```json
+{
+  "data": {
+    "getUser": {
+      "email": "test@test.com",
+      "favouriteStops": [
+        {
+          "_id": "5e6c3751df313b363c52eb72",
+          "stop": {
+            "name": "HURDMAN D"
+          },
+          "stopRoutes": [
+            {
+              "_id": "AF940199-313",
+              "route": {
+                "name": "199"
+              },
+              "stopTimes": [
+                {
+                  "time": "06:15:00",
+                  "trip": {
+                    "service": {
+                      "saturday": false,
+                      "sunday": false,
+                      "monday": true,
+                      "exceptions": []
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+
+```
+
 ## Prototype
 
 Example of a UI where all data can be obtained from one GraphQL query:
