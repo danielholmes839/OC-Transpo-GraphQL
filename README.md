@@ -4,7 +4,7 @@ GraphQL API for GTFS (General Transit Feed Specification) data created using Apo
 
 ## Schema
 
-The [Schema](../api/graphql/schema/index.js)
+The full schema can be found [here](../api/graphql/schema/index.js). The graph below shows the relationship between types:
 
 ![schema diagram](api/graphql/schema/diagram.png)
 
@@ -26,7 +26,7 @@ Add a favourite stop:
 
 ![add favourite stop](./examples/add_favourite_stop.PNG)
 
-Get favoutire stops:
+Get favourite stops:
 
 ![get favourite stops](./examples/favourite_stops.PNG)
 
