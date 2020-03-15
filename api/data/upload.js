@@ -20,6 +20,8 @@ async function insertManyByChunk(data, chunk, Table) {
 }
 
 async function process() {
+    const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-5ui2q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
+
     try {
         await mongoose.connect(uri);
     } catch {
@@ -43,7 +45,7 @@ async function process() {
 
     await ServiceException.insertMany(serviceExceptions.data);
     console.log('Uploaded Service Exceptions');
-
+    
     await insertManyByChunk(stopRoutes.data, 3000, StopRoute);
     console.log('Uploaded Stop Routes');
 

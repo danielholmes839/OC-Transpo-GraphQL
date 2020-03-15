@@ -20,8 +20,6 @@ for i, stop in enumerate(stops):
     trip_ids = list(stop_times_df[stop_times_df['stop_id'] == stop]['trip_id'])
     routes = [trips_df.at[trip, 'route_id'] for trip in trip_ids]
     routes = set(routes)
-    print(trip_ids[0])
-    headsign = trips_df.at[trip_ids[0], 'trip_headsign']
 
     data[stop] = dict()
 
@@ -29,13 +27,20 @@ for i, stop in enumerate(stops):
         data[stop][route] = {
             '_id': stop+route,
             'number': routes_df.at[route, 'route_short_name'],
-            'headsign': headsign,
+            'headsign': '',
             'stop': stop,
             'route': route,
             'stopTimes': []
         }
 
 print(data)
+
+headsigns = dict()
+for trip_id in trips_df.index:
+    route_id = trips_df.at[trip_id, 'route_id']
+    headsign = trips_df.at[trip_id, 'trip_headsign']
+    headsigns[trip_id+route_id] = headsign
+
 
 for i in stop_times_df.index:
     print(i, stop_times_df.at[i, 'arrival_time'])
@@ -45,6 +50,7 @@ for i in stop_times_df.index:
 
     _id = trip + stop
     data[stop][route]['stopTimes'].append(_id)
+    data[stop][route]['headsign'] = headsigns[trip+route]
 
 
 stop_routes = {
