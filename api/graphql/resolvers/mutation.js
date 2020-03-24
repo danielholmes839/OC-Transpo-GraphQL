@@ -1,12 +1,13 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const { User, FavouriteStop, Stop } = require('../../models/index');
+const { populateMany } = require('./helpers');
+const { User, FavouriteStop, Stop, StopRoute } = require('../../models/index');
 
 const resolvers = {
     Mutation: {
-        createUser: async (root, { email, password }, context) => {
-            var user = await User.findOne({ email: email })
-            if (user) { throw new Error("Email in use"); }
+        userCreate: async (root, { email, password }, context) => {
+            let user = await User.findOne({ email: email })
+            if (user) { throw new Error("This Email is taken"); }
 
             user = new User({
                 email: email,
@@ -18,13 +19,30 @@ const resolvers = {
             return user
         },
 
-        addFavouriteStop: async (root, { favouriteStop }, context) => {
+        favouriteStopAdd: async (root, { favouriteStop }, context) => {
 
             let stop = await Stop.findOne({ _id: favouriteStop.stop }); // Check that the stop exists
             if (!stop) { throw new Error('Stop does not exist'); }
+            const stopRoutes = new Set(stop.stopRoutes);
+
+            for (let stopRoute of favouriteStop.stopRoutes) {
+                if (!stopRoutes.has(stopRoute)) {
+                    throw new Error(`StopRoute id:${stopRoute} does not exist for Stop id:${favouriteStop.stop}`)
+                }
+            }
 
             let user = await User.findOne({ _id: context.user });       // Check that the user exists 
             if (!user) { throw new Error('User does not exist'); }      // CHECKING THIS WILL PROBABLY CHANGE
+            const favouriteStops = await populateMany(user.favouriteStops, FavouriteStop);
+
+            const stops = new Set();
+            favouriteStops.map(favouriteStop => {
+                stops.add(favouriteStop.stop);
+            });
+
+            if (stops.has(favouriteStop.stop)) {
+                throw new Error(`User already favourites stop id:${favouriteStop.stop}`);
+            }
 
             favouriteStop.user = context.user;
             const favouriteStopDocument = new FavouriteStop(favouriteStop);
@@ -32,7 +50,6 @@ const resolvers = {
 
             user.favouriteStops.push(favouriteStopDocument._id);
             await user.save();
-
 
             return favouriteStop;
         }

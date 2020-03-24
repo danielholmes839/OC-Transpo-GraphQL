@@ -1,8 +1,12 @@
-const { populateFavouriteStops } = require('./populate')
+const { FavouriteStop } = require('../../models/index');
+const { populateMany, docId } = require('./helpers');
 
 var userResolvers = {
     User: {
-        favouriteStops: populateFavouriteStops,
+        id: docId,
+        favouriteStops: async ({ favouriteStops }, args, context) => {
+            return await populateMany(favouriteStops, FavouriteStop);
+        }
     }
 };
 

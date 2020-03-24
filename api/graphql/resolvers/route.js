@@ -1,9 +1,15 @@
-const { populateStops, populateTrips } = require('./populate');
+const { Trip, Stop } = require('../../models/index');
+const { populateMany, docId } = require('./helpers');
 
 const resolvers = {
     Route: {
-        stops: populateStops,
-        trips: populateTrips
+        id: docId,
+        stops: async ({ stops }, args, context) => {
+            return await populateMany(stops, Stop);
+        },
+        trips: async ({ trips }, args, context) => {
+            return await populateMany(trips, Trip);
+        },
     }
 }
 

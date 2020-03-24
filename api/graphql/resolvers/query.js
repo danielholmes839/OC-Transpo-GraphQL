@@ -1,36 +1,36 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { User, Stop } = require('../../models/index');
-const { populateRoute, populateStop, populateUser } = require('./populate');
+const { User, Stop, Route } = require('../../models/index');
+const { populateOne, populateUser } = require('./helpers');
 
 
 const resolvers = {
     Query: {
-        getRoute: async (root, args, context) => {
-            return populateRoute(args);
+        routeGet: async (root, { route }, context) => {
+            return populateOne(route, Route);
         },
 
-        getStop: async (root, args, context) => {
-            return populateStop(args);
+        stopGet: async (root, { stop }, context) => {
+            return populateOne(stop, Stop);
         },
 
-        searchStops: async (root, { name, limit }, context) => {
+        stopSearch: async (root, { name, limit }, context) => {
             return await Stop.find(
                 { $text: { $search: name } },
                 { score: { $meta: "textScore" } }
             ).sort({ "score": { "$meta": "textScore" } }).limit(limit);
         },
 
-        getUser: async (root, args, context) => {
-            if (!context.authenticated) {
-                throw new Error('Unauthorized Request');
+        userGet: async (parent, args, { user, authenticated }) => {
+            if (!authenticated) {
+                throw new Error('Unauthenticated Request');
             }
-            const user = await populateUser(context);
-            return user;
+            return await populateUser(user);
+
         },
 
-        login: async (root, { email, password }, context) => {
+        userLogin: async (root, { email, password }, context) => {
             // Get user
             const user = await User.findOne({ email: email });
             if (!user) { throw new Error('User does not exist'); }
@@ -45,7 +45,9 @@ const resolvers = {
             );
 
             return {
-                user: populateUser({ user }),
+                user: async () => {
+                    return await populateUser(user._id)
+                },
                 token: token,
                 expiration: 1
             };
