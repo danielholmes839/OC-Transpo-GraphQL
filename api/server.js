@@ -1,37 +1,23 @@
 const mongoose = require('mongoose');
-const connect = require('connect');
-const query = require('qs-middleware');
+const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-
 
 // Schema and Resolvers
 const schema = require('./graphql/schema/index');
 const resolvers = require('./graphql/resolvers/index');
 
 // Middleware
-const authMiddleware = require('./middleware/auth');
+const userMiddleware = require('./middleware/auth');
 
 // Make the Server
-const path = '/graphql';
-const app = connect();
+const app = express();
 const server = new ApolloServer({
     typeDefs: schema,
     resolvers: resolvers,
-    context: authMiddleware
-});
-
-// Connecting
-app.use(query());
-server.applyMiddleware({ app, path });
+    context: userMiddleware
+}).applyMiddleware({ app });
 
 
-const start = async () => {
-    const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-5ui2q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
-    await mongoose.connect(uri, { useNewUrlParser: true });
-    app.listen({ port: 4000 }, () => {
-        console.log(`🚀 Server ready at http://localhost:4000${path}`);
-    });
-};
-
-start();
-
+const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-5ui2q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
+app.listen({ port: 4000 }, () => { console.log(`Server ready at http://localhost:4000/graphql`); });

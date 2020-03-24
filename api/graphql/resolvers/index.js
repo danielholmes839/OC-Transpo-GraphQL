@@ -25,6 +25,4 @@ const resolvers = {
     Node: nodeResolvers.Node
 }
 
-console.log(resolvers);
-
 module.exports = resolvers;

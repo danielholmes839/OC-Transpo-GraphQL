@@ -18,5 +18,4 @@ module.exports = {
     StopTime: StopTime,
     StopRoute: StopRoute,
     FavouriteStop, FavouriteStop,
-
 }
