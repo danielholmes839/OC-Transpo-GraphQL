@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const connect = require('connect');
+const query = require('qs-middleware');
 const { ApolloServer } = require('apollo-server-express');
 
 
@@ -7,14 +9,16 @@ const schema = require('./graphql/schema/index');
 const resolvers = require('./graphql/resolvers/index');
 
 // Middleware
-const connect = require('connect');
-const query = require('qs-middleware');
 const authMiddleware = require('./middleware/auth');
 
 // Make the Server
 const path = '/graphql';
 const app = connect();
-const server = new ApolloServer({ typeDefs: schema, resolvers: resolvers, context: authMiddleware });
+const server = new ApolloServer({
+    typeDefs: schema,
+    resolvers: resolvers,
+    context: authMiddleware
+});
 
 // Connecting
 app.use(query());
