@@ -1,5 +1,5 @@
 const { Trip, Stop } = require('../../models/index');
-const { populateMany, docId } = require('./helpers');
+const { populateMany, docId } = require('./loaders');
 
 const resolvers = {
     Route: {

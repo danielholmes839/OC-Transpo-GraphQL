@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const { populateMany, stopLoader, userLoader } = require('./helpers');
+const { populateMany, stopLoader, userLoader } = require('./loaders');
 const { User, FavouriteStop, Stop, StopRoute } = require('../../models/index');
 
 const resolvers = {

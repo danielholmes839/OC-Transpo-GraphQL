@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const { User, Stop, Route } = require('../../models/index');
-const { routeLoader, stopLoader, userLoader } = require('./helpers');
+const { routeLoader, stopLoader, userLoader } = require('./loaders');
 
 
 const resolvers = {

@@ -1,5 +1,5 @@
 const { StopTime } = require('../../models/index');
-const { populateMany, docId, routeLoader, serviceLoader } = require('./helpers');
+const { populateMany, docId, routeLoader, serviceLoader } = require('./loaders');
 
 const resolvers = {
     Trip: {

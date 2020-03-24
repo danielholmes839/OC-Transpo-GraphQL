@@ -1,5 +1,5 @@
 const { StopTime } = require('../../models/index');
-const { populateMany, docId, stopLoader, routeLoader, stopTimeLoader } = require('./helpers');
+const { populateMany, docId, stopLoader, routeLoader, stopTimeLoader } = require('./loaders');
 
 const resolvers = {
     StopRoute: {

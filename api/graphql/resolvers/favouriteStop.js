@@ -1,5 +1,5 @@
 const { StopRoute} = require('../../models/index');
-const { populateMany, docId, userLoader, stopLoader } = require('./helpers');
+const { populateMany, docId, userLoader, stopLoader } = require('./loaders');
 
 const resolvers = {
     FavouriteStop: {

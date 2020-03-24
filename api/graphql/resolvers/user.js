@@ -1,5 +1,5 @@
 const { FavouriteStop } = require('../../models/index');
-const { populateMany, docId } = require('./helpers');
+const { populateMany, docId } = require('./loaders');
 
 var userResolvers = {
     User: {
