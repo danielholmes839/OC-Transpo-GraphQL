@@ -1,31 +1,46 @@
 const schema = `
-    type User {
-        _id: ID!
+    interface Node {
+        id: ID!
+    }
+
+    type Date {
+        year: Int!
+        month: Int!
+        day: Int!
+    }
+
+    type Time {
+        hour: Int!
+        minute: Int!
+    }
+
+    type User implements Node {
+        id: ID!
         email: String!
         password: String
         favouriteStops: [FavouriteStop!]!
     }
 
-    type AuthData {
+    type LoginData {
         user: User!
         token: String!
         expiration: Int!
     }
 
-    input FavouriteStopInput {
-        stop: String!
-        stopRoutes: [String!]!
-    }
-
-    type FavouriteStop {
-        _id: ID!
+    type FavouriteStop implements Node {
+        id: ID!
         user: User!
         stop: Stop!
         stopRoutes: [StopRoute!]!
     }
+    
+    input FavouriteStopInput {
+        stop: ID!
+        stopRoutes: [ID!]!
+    }
 
-    type Stop {
-        _id: ID!
+    type Stop implements Node {
+        id: ID!
         name: String!
         code: String!
         lat: Float!
@@ -34,8 +49,8 @@ const schema = `
         stopRoutes: [StopRoute!]!
     }
 
-    type StopRoute {
-        _id: ID!
+    type StopRoute implements Node {
+        id: ID!
         headsign: String!           # route headsign
         number: String!             # route number
         stop: Stop!
@@ -44,9 +59,9 @@ const schema = `
         nextStopTime: StopTime!
     }
 
-    type Route {
-        _id: ID!
-        name: String!
+    type Route implements Node {
+        id: ID!
+        number: String!
         routeType: Int!
         colour: String!
         textColour: String!
@@ -54,8 +69,8 @@ const schema = `
         stops: [Stop!]!
     }
 
-    type Trip {
-        _id: ID!
+    type Trip implements Node {
+        id: ID!
         headsign: String!
         direction: Int!
         route: Route!
@@ -63,25 +78,17 @@ const schema = `
         stopTimes: [StopTime!]!
     }
 
-    type StopTime {
-        _id: ID!
-        time: String!
+    type StopTime implements Node {
+        id: ID!
         sequence: Int!
+        time: Time!
         trip: Trip!
-        stop: Stop!
+        stop: Stop!     
         route: Route!
     }
 
-    type Date {
-        year: Int!
-        month: Int!
-        day: Int!
-        yyyymmdd: String!                   # Maybe temporary
-        format(format: String!): String!
-    }
-
-    type Service {
-        _id: ID!
+    type Service implements Node {
+        id: ID!
         start: Date!
         end: Date!                         
         exceptions: [ServiceException!]!
@@ -95,23 +102,28 @@ const schema = `
         sunday: Boolean!
     }
 
-    type ServiceException {
+    type ServiceException implements Node {
+        id: ID!
         date: Date!
-        removed: Boolean!                   # True if service was removed False if service was added
+        removed: Boolean!
     }
 
     type Query {
-        getUser: User
-        getTrip(trip: String!): Trip
-        getRoute(route: String!): Route
-        getStop(stop: String!): Stop
-        searchStops(name: String!, limit: Int!): [Stop!]!
-        login(email: String!, password: String!): AuthData
+        tripGet(trip: ID!): Trip
+        routeGet(route: ID!): Route
+
+        # Stop Query
+        stopGet(stop: ID!): Stop
+        stopSearch(name: String!, limit: Int!): [Stop!]!
+        
+        # User Query
+        userGet: User
+        userLogin(email: String!, password: String!): LoginData
     }
 
     type Mutation {
-        createUser(email: String!, password: String!): User
-        addFavouriteStop(favouriteStop: FavouriteStopInput): FavouriteStop
+        userCreate(email: String!, password: String!): User
+        favouriteStopAdd(favouriteStop: FavouriteStopInput): FavouriteStop
     }
 `;
 
