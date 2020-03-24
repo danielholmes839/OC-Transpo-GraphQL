@@ -1,17 +1,16 @@
-const { Trip, Stop, Route } = require('../../models/index');
-const { populateOne, docId } = require('./helpers');
+const { docId, tripLoader, stopLoader, routeLoader } = require('./helpers');
 
 const resolvers = {
     StopTime: {
         id: docId,
         trip: async ({ trip }, args, context) => {
-            return await populateOne(trip, Trip);
+            return await tripLoader.load(trip);
         },
         stop: async ({ stop }, args, context) => {
-            return await populateOne(stop, Stop);
+            return await stopLoader.load(stop);
         },
         route: async ({ route }, args, context) => {
-            return await populateOne(route, Route);
+            return await routeLoader.load(route);
         },
     }
 }

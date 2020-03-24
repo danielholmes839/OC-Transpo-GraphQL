@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const { populateMany } = require('./helpers');
+const { populateMany, stopLoader, userLoader } = require('./helpers');
 const { User, FavouriteStop, Stop, StopRoute } = require('../../models/index');
 
 const resolvers = {
@@ -21,7 +21,7 @@ const resolvers = {
 
         favouriteStopAdd: async (root, { favouriteStop }, context) => {
 
-            let stop = await Stop.findOne({ _id: favouriteStop.stop }); // Check that the stop exists
+            let stop = await stopLoader.load(favouriteStop.stop)     // Check that the stop exists
             if (!stop) { throw new Error('Stop does not exist'); }
             const stopRoutes = new Set(stop.stopRoutes);
 
@@ -31,7 +31,7 @@ const resolvers = {
                 }
             }
 
-            let user = await User.findOne({ _id: context.user });       // Check that the user exists 
+            let user = await userLoader.load(context.user);       // Check that the user exists 
             if (!user) { throw new Error('User does not exist'); }      // CHECKING THIS WILL PROBABLY CHANGE
             const favouriteStops = await populateMany(user.favouriteStops, FavouriteStop);
 

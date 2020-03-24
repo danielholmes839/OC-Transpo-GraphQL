@@ -2,17 +2,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const { User, Stop, Route } = require('../../models/index');
-const { populateOne, populateUser } = require('./helpers');
+const { routeLoader, stopLoader, userLoader } = require('./helpers');
 
 
 const resolvers = {
     Query: {
         routeGet: async (root, { route }, context) => {
-            return populateOne(route, Route);
+            return await routeLoader.load(route);
         },
 
         stopGet: async (root, { stop }, context) => {
-            return populateOne(stop, Stop);
+            return await stopLoader.load(stop);
         },
 
         stopSearch: async (root, { name, limit }, context) => {
@@ -26,7 +26,7 @@ const resolvers = {
             if (!authenticated) {
                 throw new Error('Unauthenticated Request');
             }
-            return await populateUser(user);
+            return await userLoader.load(user);
 
         },
 
@@ -46,7 +46,7 @@ const resolvers = {
 
             return {
                 user: async () => {
-                    return await populateUser(user._id)
+                    return await userLoader.load(user._id);
                 },
                 token: token,
                 expiration: 1

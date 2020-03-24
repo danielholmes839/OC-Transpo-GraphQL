@@ -1,21 +1,68 @@
-const { User } = require('../../models/index');
-
-const populateOne = async (id, Table) => {
-    return await Table.findById(id);
-};
+const DataLoader = require('dataloader');
+const { User, FavouriteStop, Stop, Route, StopRoute, StopTime, Service, ServiceException, Trip } = require('../../models/index');
 
 const populateMany = async (ids, Table) => {
     return await Table.find({ _id: { $in: ids } });
-};
-
-const populateUser = async (id) => {
-    let user = await populateOne(id, User);
-    user.password = null;
-    return user;
 };
 
 const docId = (parent, args, context) => {
     return parent._id;
 }
 
-module.exports = { populateOne, populateMany, populateUser, docId };
+const loaders = {
+    userLoader: new DataLoader(async (ids) => {
+        /* ServiceException Batching  */
+        let users = await populateMany(ids, User);
+        users.map(user => {
+            user.password = null;
+            return user;
+        });
+        return users;
+    }),
+
+    favouriteStopLoader: new DataLoader(async (favouriteStops) => {
+        /* FavouriteStop Batching  */
+        return await populateMany(favouriteStops, FavouriteStop);
+    }),
+
+    stopLoader: new DataLoader(async (stops) => {
+        /* Stop Batching  */
+        return await populateMany(stops, Stop);
+    }),
+
+    routeLoader: new DataLoader(async (routes) => {
+        /* Route Batching  */
+        return await populateMany(routes, Route);
+    }),
+
+    stopRouteLoader: new DataLoader(async (stopRoutes) => {
+        /* StopRoute Batching  */
+        return populateMany(stopRoutes, StopRoute);
+    }),
+
+    stopTimeLoader: new DataLoader(async (stopTimes) => {
+        /* StopTime Batching  */
+        return await populateMany(stopTimes, StopTime);
+    }),
+
+    tripLoader: new DataLoader(async (trips) => {
+        /* Trip Batching  */
+        return await populateMany(trips, Trip);
+    }),
+
+    serviceLoader: new DataLoader(async (services) => {
+        /* Service Batching  */
+        return await populateMany(services, Service);
+    }),
+
+    serviceExceptionLoader: new DataLoader(async (serviceExceptions) => {
+        /* ServiceException Batching  */
+        return await populateMany(serviceExceptions, ServiceException);
+    }),
+
+
+}
+
+module.exports = {
+    populateMany, docId, ...loaders
+};
