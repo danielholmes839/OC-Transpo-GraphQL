@@ -23,6 +23,17 @@ def process_stop_times(path):
     added = set()
 
     for stop, trip, _id, sequence, time, i in zip(stops, trips, _ids, sequences, times, range(len(stops))):
+        print(i)
+        hour = int(time[:2])
+        minute = int(time[3:5])
+
+        time = {
+            'hour':  hour,
+            'minute': minute,
+            'string': time[:5],
+            'int': hour*60 + minute # for easily sorting later ordering
+        }
+
         if _id in added:
             print({
                 '_id': _id,
@@ -33,6 +44,7 @@ def process_stop_times(path):
                 'route': trips_df.at[trip, 'route_id']
             })
             continue
+
         added.add(_id)
 
         STOP_TIMES['data'].append({
