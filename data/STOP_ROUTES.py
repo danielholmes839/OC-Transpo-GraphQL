@@ -1,21 +1,89 @@
 import json
 import pandas as pd
 
+
+def time_to_int(time_string):
+    hour = int(time[:2])
+    minute = int(time[3:5])
+    return  (hour * 60) + minute
+
+
 stop_times_df = pd.read_csv('stop_times.txt')
-routes_df = pd.read_csv('routes.txt', index_col='route_id')
-
 stop_times_df.sort_values(by=['arrival_time'], inplace=True)
-print(stop_times_df['arrival_time'])
+stop_times_df.reset_index(inplace=True)
 
-stops_df = pd.read_csv('stops.txt', index_col='stop_id')
-trips_df = pd.read_csv('trips.txt', index_col='trip_id')
+routes_df = pd.read_csv('routes.txt', index_col='route_id')
+stops_df = pd.read_csv('stops.txt')
+trips_df = pd.read_csv('trips.txt')
 
-print(trips_df.head())
+# Get stop route headsigns
+headsigns = dict()
+for trip_id in trips_df.index:
+    route_id = trips_df.at[trip_id, 'route_id']
+    headsign = trips_df.at[trip_id, 'trip_headsign']
+    headsigns[trip_id] = headsign
 
-stops = list(stops_df.index)
-data = dict()
+
+# Trip to Route dictionary
+trips_dict = dict()
+for i in trips_df.index:
+    trip_id = trips_df.at[i, 'trip_id']
+    trips_dict[trip_id] = {
+        'route': trips_df.at[i, 'route_id'],
+        'headsign': trips_df.at[i, 'trip_headsign']
+    }
+
+print(trips_dict)
+
+# Stop Routes dictionary
+stop_routes = dict()
+for i in stops_df.index:
+    print(i)
+    stop = stops_df.at[i, 'stop_id']
+    stop_routes[stop] = dict()
+
+print(stop_times_df.index)
+for i in stop_times_df.index:
+    print(i)
+    stop = stop_times_df.at[i, 'stop_id']
+    trip = stop_times_df.at[i, 'trip_id']
+    route = trips_dict[trip]['route']
+
+    time = stop_times_df.at[i, 'arrival_time']
+    stop_time_id = trip + stop
+
+    if route not in stop_routes[stop]:
+        number = '5'
+
+        stop_routes[stop][route] = {
+            '_id': stop + route,
+            'route': route,
+            'stop': stop,
+            'number': number,
+            'headsign': trips_dict[trip]['headsign'],
+            'stopTimes': []
+        }
+
+    stop_routes[stop][route]['stopTimes'].append(stop_time_id)
+
+
+data = {'data': []}
+for stop in stop_routes.keys():
+    for route in stop_routes[stop].keys():
+        data['data'].append(stop_routes[stop][route])
+
+print('Saving Stop Routes')
+with open(f'STOP_ROUTES.json', 'w') as fp:
+    json.dump(data, fp)
+
+
+
+"""
 
 for i, stop in enumerate(stops):
+
+for i, stop in enumerate(stops):
+    for
     print(i, stop)
     trip_ids = list(stop_times_df[stop_times_df['stop_id'] == stop]['trip_id'])
     routes = [trips_df.at[trip, 'route_id'] for trip in trip_ids]
@@ -64,3 +132,4 @@ for stop in data.keys():
 
 with open(f'STOP_ROUTES.json', 'w') as fp:
     json.dump(stop_routes, fp)
+"""
