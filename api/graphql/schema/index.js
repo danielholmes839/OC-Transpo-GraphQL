@@ -12,6 +12,8 @@ const schema = `
     type Time {
         hour: Int!
         minute: Int!
+        string: String!
+        int: Int!
     }
 
     type User implements Node {

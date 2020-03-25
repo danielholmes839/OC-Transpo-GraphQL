@@ -14,8 +14,25 @@ const stopTimeSchema = new Schema({
     },
 
     time: {
-        type: String,
-        required: true
+        hour: {
+            type: Number,
+            required: true
+        },
+
+        minute: {
+            type: Number,
+            required: true
+        },
+
+        string: {
+            type: String,
+            required: true
+        },
+
+        int: {
+            type: Number,
+            required: true
+        }
     },
 
     trip: {
