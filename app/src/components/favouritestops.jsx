@@ -21,11 +21,6 @@ const query = gql`
             time {
               string
             }
-            trip {
-              service {
-                wednesday
-              }
-            }
           }
           route {
             colour
