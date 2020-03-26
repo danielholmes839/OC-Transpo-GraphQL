@@ -17,11 +17,17 @@ stops_df = pd.read_csv('stops.txt')
 trips_df = pd.read_csv('trips.txt')
 
 # Get stop route headsigns
+route_id_to_number = dict()
+for route_id in routes_df.index:
+    number = routes_df.at[route_id, 'route_short_name']
+    route_id_to_number[route_id] = number
+
 headsigns = dict()
-for trip_id in trips_df.index:
-    route_id = trips_df.at[trip_id, 'route_id']
-    headsign = trips_df.at[trip_id, 'trip_headsign']
-    headsigns[trip_id] = headsign
+for i in trips_df.index:
+    print(i)
+    route_id = trips_df.at[i, 'route_id']
+    headsign = trips_df.at[i, 'trip_headsign']
+    headsigns[i] = headsign
 
 
 # Trip to Route dictionary
@@ -53,7 +59,7 @@ for i in stop_times_df.index:
     stop_time_id = trip + stop
 
     if route not in stop_routes[stop]:
-        number = '5'
+        number = route_id_to_number[route]
 
         stop_routes[stop][route] = {
             '_id': stop + route,
