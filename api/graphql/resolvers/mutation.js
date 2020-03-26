@@ -20,10 +20,12 @@ const resolvers = {
         },
 
         userFavouriteStopAdd: async (root, { favouriteStop }, context) => {
+            console.log("?");
             if (context.user == null) {
                 throw new Error("User Missing");
             }
-
+            console.log(context);
+            
             let stop = await stopLoader.load(favouriteStop.stop)     // Check that the stop exists
             if (!stop) { throw new Error('Stop does not exist'); }
             const stopRoutes = new Set(stop.stopRoutes);

@@ -29,18 +29,23 @@ const resolvers = {
             return await populateMany(stopTimes, StopTime);
         },
         nextStopTime: async ({ stopTimes }, args, context) => {
-            // Not Implemented
             const now = new Date();
             const nowInt = (now.getHours() * 60) + now.getMinutes();
-
             const times = await populateMany(stopTimes, StopTime);
 
+            let next = null
+            let nextTimeDelta = null;
+
             for (let stopTime of times) {
-                if (stopTime.time.int > nowInt && valid(stopTime, now)) {
-                    return stopTime;
+                timeDelta = stopTime.time.int - nowInt;
+
+                if (timeDelta > 0 && (timeDelta < nextTimeDelta || nextTimeDelta === null)) {
+                    next = stopTime;
+                    nextTimeDelta = timeDelta;
                 }
             }
-            return times[0];
+
+            return next;
         }
     }
 }

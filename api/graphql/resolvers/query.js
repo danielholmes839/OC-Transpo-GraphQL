@@ -41,7 +41,7 @@ const resolvers = {
 
             // Create the token
             const token = jwt.sign({ user: user._id, email: user.email }, process.env.SECRET_KEY,
-                { expiresIn: '1h' }
+                { expiresIn: '5h' }
             );
 
             return {
@@ -49,7 +49,7 @@ const resolvers = {
                     return await userLoader.load(user._id);
                 },
                 token: token,
-                expiration: 1
+                expiration: 5
             };
         },
     }

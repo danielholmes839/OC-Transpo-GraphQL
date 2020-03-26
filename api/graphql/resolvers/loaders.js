@@ -12,12 +12,7 @@ const docId = (parent, args, context) => {
 const loaders = {
     userLoader: new DataLoader(async (ids) => {
         /* ServiceException Batching  */
-        let users = await populateMany(ids, User);
-        users.map(user => {
-            user.password = null;
-            return user;
-        });
-        return users;
+        return await populateMany(ids, User);
     }),
 
     favouriteStopLoader: new DataLoader(async (favouriteStops) => {
@@ -59,8 +54,6 @@ const loaders = {
         /* ServiceException Batching  */
         return await populateMany(serviceExceptions, ServiceException);
     }),
-
-
 }
 
 module.exports = {
