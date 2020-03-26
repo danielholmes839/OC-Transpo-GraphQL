@@ -19,7 +19,10 @@ const resolvers = {
             return user
         },
 
-        favouriteStopAdd: async (root, { favouriteStop }, context) => {
+        userFavouriteStopAdd: async (root, { favouriteStop }, context) => {
+            if (context.user == null) {
+                throw new Error("User Missing");
+            }
 
             let stop = await stopLoader.load(favouriteStop.stop)     // Check that the stop exists
             if (!stop) { throw new Error('Stop does not exist'); }

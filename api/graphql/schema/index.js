@@ -125,7 +125,7 @@ const schema = `
 
     type Mutation {
         userCreate(email: String!, password: String!): User
-        favouriteStopAdd(favouriteStop: FavouriteStopInput): FavouriteStop
+        userFavouriteStopAdd(favouriteStop: FavouriteStopInput): FavouriteStop
     }
 `;
 
