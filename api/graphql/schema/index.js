@@ -38,7 +38,7 @@ const schema = `
     
     input FavouriteStopInput {
         stop: ID!
-        stopRoutes: [ID!]!
+        stopRoutes: [ID!]
     }
 
     type Stop implements Node {
@@ -49,6 +49,24 @@ const schema = `
         lon: Float!
         routes: [Route!]!
         stopRoutes: [StopRoute!]!
+        gpsData: [RouteGPS!]!
+    }
+
+    type StopGPS {
+        valid: Boolean!
+        routes: [RouteGPS!]!
+    }
+
+    type RouteGPS {
+        number: String!
+        headsign: String!
+        positions: [GPS!]!
+    }
+
+    type GPS {
+        lat: Float!
+        lon: Float!
+        speed: Float!
     }
 
     type StopRoute implements Node {
@@ -58,7 +76,7 @@ const schema = `
         stop: Stop!
         route: Route!
         stopTimes: [StopTime!]!
-        nextStopTime: StopTime!
+        nextStopTimes(limit: Int): [StopTime!]!
     }
 
     type Route implements Node {
