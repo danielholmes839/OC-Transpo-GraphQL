@@ -2,7 +2,19 @@ const DataLoader = require('dataloader');
 const { User, FavouriteStop, Stop, Route, StopRoute, StopTime, Service, ServiceException, Trip } = require('../../models/index');
 
 const populateMany = async (ids, Table) => {
-    return await Table.find({ _id: { $in: ids } });
+    let documents = await Table.find({ _id: { $in: ids } });
+    let sorted_documents = [];
+
+    let o = {}
+    for (let document of documents) {
+        o[document._id] = document;
+    }
+
+    for (let id of ids) {
+        sorted_documents.push(o[id]);
+    }
+    return sorted_documents;
+
 };
 
 const docId = (parent, args, context) => {

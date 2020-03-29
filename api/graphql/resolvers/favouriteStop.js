@@ -1,4 +1,4 @@
-const { StopRoute} = require('../../models/index');
+const { StopRoute } = require('../../models/index');
 const { populateMany, docId, userLoader, stopLoader } = require('./loaders');
 
 const resolvers = {
@@ -10,7 +10,7 @@ const resolvers = {
         stop: async ({ stop }, args, context) => {
             return stopLoader.load(stop);
         },
-        stopRoutes: async ({ stopRoutes }, args, context) => {
+        stopRoutes: async ({ stopRoutes, stop }, args, context) => {
             return populateMany(stopRoutes, StopRoute);
         }
     }

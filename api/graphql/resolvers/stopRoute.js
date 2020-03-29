@@ -1,5 +1,5 @@
 const { StopTime } = require('../../models/index');
-const { populateMany, docId, stopLoader, routeLoader, stopTimeLoader, serviceLoader, serviceExceptionLoader } = require('./loaders');
+const { populateMany, docId, stopLoader, routeLoader, stopTimeLoader, serviceLoader, tripLoader, serviceExceptionLoader } = require('./loaders');
 
 const intToDay = {
     0: 'sunday',
@@ -11,10 +11,22 @@ const intToDay = {
     6: 'saturday'
 }
 
-const valid = (stopTime, date) => {
+const compareDate = (date1, date2) => {
+    if (date1.year >= date2.year && date1.month >= date2.month && date1.day >= date2.day) {
+        return 1; // date1 >= date2
+    } else {
+        return -1; // date1 < date2
+    }
+}
+const valid = async (stopTime, date) => {
     const day = intToDay[date.getDay()];
-    return stopTime[day];
+    const trip = await tripLoader.load(stopTime.trip);
+    const service = await serviceLoader.load(trip.service);
+    /* Checks if there is actually service on that day only other possible issue is service exceptions which may checked later */
+    return (service[day] && compareDate(service.start, date) == -1 && compareDate(service.end, date) == 1);
 };
+
+
 
 const resolvers = {
     StopRoute: {
@@ -28,24 +40,24 @@ const resolvers = {
         stopTimes: async ({ stopTimes }, args, context) => {
             return await populateMany(stopTimes, StopTime);
         },
-        nextStopTime: async ({ stopTimes }, args, context) => {
+        nextStopTimes: async ({ stopTimes }, { limit }, context) => {
+            if (limit === undefined) { limit = 1; }
+
             const now = new Date();
             const nowInt = (now.getHours() * 60) + now.getMinutes();
             const times = await populateMany(stopTimes, StopTime);
 
-            let next = null
-            let nextTimeDelta = null;
+            let set = new Set();    // slightly faster to store this so that it doesn't have to check identical times
+            let nextStopTimes = [];
 
-            for (let stopTime of times) {
-                timeDelta = stopTime.time.int - nowInt;
-
-                if (timeDelta > 0 && (timeDelta < nextTimeDelta || nextTimeDelta === null)) {
-                    next = stopTime;
-                    nextTimeDelta = timeDelta;
+            for (let i = 0; i < times.length && nextStopTimes.length < limit; i++) {
+                if (!set.has(times[i].time.int) && times[i].time.int - nowInt > 0 && valid(times[i], now)) {
+                    nextStopTimes.push(times[i])
+                    set.add(times[i].time.int);
                 }
             }
 
-            return next;
+            return nextStopTimes;
         }
     }
 }
