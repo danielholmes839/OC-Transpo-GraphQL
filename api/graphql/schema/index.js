@@ -49,25 +49,9 @@ const schema = `
         lon: Float!
         routes: [Route!]!
         stopRoutes: [StopRoute!]!
-        gpsData: [RouteGPS!]!
     }
 
-    type StopGPS {
-        valid: Boolean!
-        routes: [RouteGPS!]!
-    }
-
-    type RouteGPS {
-        number: String!
-        headsign: String!
-        positions: [GPS!]!
-    }
-
-    type GPS {
-        lat: Float!
-        lon: Float!
-        speed: Float!
-    }
+    scalar Map
 
     type StopRoute implements Node {
         id: ID!
@@ -77,6 +61,21 @@ const schema = `
         route: Route!
         stopTimes: [StopTime!]!
         nextStopTimes(limit: Int): [StopTime!]!
+        map: Map
+        gps: RouteGPS!
+    }
+
+    type RouteGPS {
+        busCount: Int!
+        buses: [BusGPS!]!
+    }
+
+    type BusGPS {
+        headsign: String!
+        direction: Int!
+        lat: Float!
+        lon: Float!
+        speed: Float!
     }
 
     type Route implements Node {

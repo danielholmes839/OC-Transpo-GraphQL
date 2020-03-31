@@ -1,5 +1,6 @@
 const { StopTime } = require('../../models/index');
-const { populateMany, docId, stopLoader, routeLoader, stopTimeLoader, serviceLoader, tripLoader, serviceExceptionLoader } = require('./loaders');
+const { populateMany, docId, stopLoader, routeLoader, serviceLoader, tripLoader } = require('./loaders');
+const GPSCache = require('../helpers/cache');
 
 const intToDay = {
     0: 'sunday',
@@ -27,7 +28,6 @@ const valid = async (stopTime, date) => {
 };
 
 
-
 const resolvers = {
     StopRoute: {
         id: docId,
@@ -47,17 +47,27 @@ const resolvers = {
             const nowInt = (now.getHours() * 60) + now.getMinutes();
             const times = await populateMany(stopTimes, StopTime);
 
-            let set = new Set();    // slightly faster to store this so that it doesn't have to check identical times
+            let nextTimes = new Set();    // slightly faster to store this so that it doesn't have to check identical times
             let nextStopTimes = [];
 
             for (let i = 0; i < times.length && nextStopTimes.length < limit; i++) {
-                if (!set.has(times[i].time.int) && times[i].time.int - nowInt > 0 && valid(times[i], now)) {
+                if (!nextTimes.has(times[i].time.int) && times[i].time.int - nowInt > 0 && valid(times[i], now)) {
                     nextStopTimes.push(times[i])
-                    set.add(times[i].time.int);
+                    nextTimes.add(times[i].time.int);
                 }
             }
-
             return nextStopTimes;
+        },
+
+        map: async (parent, args, context) => {
+            const stop = await stopLoader.load(parent.stop);
+            const buses = await GPSCache.getRouteData(stop.code, parent.number);
+            return { stop, buses }
+        },
+
+        gps: async (parent, args, context) => {
+            const stop = await stopLoader.load(parent.stop);
+            return await GPSCache.getRouteData(stop.code, parent.number);
         }
     }
 }
