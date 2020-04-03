@@ -1,9 +1,9 @@
 const { StopTime } = require('../../models/index');
-const { populateMany, docId, routeLoader, serviceLoader } = require('./loaders');
+const { populateMany, routeLoader, serviceLoader } = require('../helpers/DataLoaders');
 
 const resolvers = {
     Trip: {
-        id: docId,
+        id: (parent) => parent._id,
         route: async ({ route }, args, context) => {
             return await routeLoader.load(route);
         },

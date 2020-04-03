@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const { populateMany, stopLoader, userLoader } = require('./loaders');
+const { populateMany, stopLoader, userLoader } = require('../helpers/DataLoaders');;
 const { User, FavouriteStop, Stop, StopRoute } = require('../../models/index');
 
 const resolvers = {
     Mutation: {
-        userCreate: async (root, { email, password }, context) => {
+        user_Create: async (root, { email, password }, context) => {
             let user = await User.findOne({ email: email })
             if (user) { throw new Error("This Email is taken"); }
 
@@ -19,10 +19,8 @@ const resolvers = {
             return user
         },
 
-        userFavouriteStopAdd: async (root, { favouriteStop }, context) => {
-            if (context.user == null) {
-                throw new Error("User Missing");
-            }
+        user_FavouriteStop_Add: async (root, { favouriteStop }, context) => {
+            if (context.user == null) { throw new Error("User Missing");}
 
             let stop = await stopLoader.load(favouriteStop.stop)     // Check that the stop exists
             if (!stop) { throw new Error('Stop does not exist'); }

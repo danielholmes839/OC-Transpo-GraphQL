@@ -23,7 +23,7 @@ const schema = `
         favouriteStops: [FavouriteStop!]!
     }
 
-    type LoginData {
+    type LoginPayload {
         user: User!
         token: String!
         expiration: Int!
@@ -34,11 +34,6 @@ const schema = `
         user: User!
         stop: Stop!
         stopRoutes: [StopRoute!]!
-    }
-    
-    input FavouriteStopInput {
-        stop: ID!
-        stopRoutes: [ID!]
     }
 
     type Stop implements Node {
@@ -51,7 +46,7 @@ const schema = `
         stopRoutes: [StopRoute!]!
     }
 
-    scalar Map
+    scalar StopRouteMap
 
     type StopRoute implements Node {
         id: ID!
@@ -61,17 +56,19 @@ const schema = `
         route: Route!
         stopTimes: [StopTime!]!
         nextStopTimes(limit: Int): [StopTime!]!
-        map: Map
-        gps: RouteGPS!
+        map: StopRouteMap
+        gps: StopRouteGPS!
     }
 
-    type RouteGPS {
+    type StopRouteGPS {
+        stopRoute: StopRoute!
         busCount: Int!
-        buses: [BusGPS!]!
+        buses: [Bus!]!
     }
 
-    type BusGPS {
+    type Bus {
         headsign: String!
+        routeNumber: String!
         direction: Int!
         lat: Float!
         lon: Float!
@@ -133,16 +130,30 @@ const schema = `
 
         # Stop Query
         stopGet(stop: ID!): Stop
-        stopSearch(name: String!, limit: Int!): [Stop!]!
+        stopSearch(name: String!, limit: Int): [Stop!]!
         
         # User Query
         userGet: User
-        userLogin(email: String!, password: String!): LoginData
+        userLogin(email: String!, password: String!): LoginPayload
+    }
+
+    interface MutationPayload {
+        sucess: Boolean!
+        errors: [String!]!
+    }
+
+    type UserMutationPayload implements MutationPayload {
+        sucess: Boolean!
+        errors: [String!]! 
+        user: User
     }
 
     type Mutation {
-        userCreate(email: String!, password: String!): User
-        userFavouriteStopAdd(favouriteStop: FavouriteStopInput): FavouriteStop
+        user_Create(email: String!, password: String!): User
+        user_FavouriteStop_Add(stop: ID!, stopRoutes: [ID!]): User
+        user_FavouriteStop_Remove(favouriteStop: ID!): UserMutationPayload
+        user_FavouriteStop_StopRoute_Add(favouriteStop: ID!, stopRoute: ID!): User
+        user_FavouriteStop_StopRoute_Remove(favouriteStop: ID!, stopRoute: ID!): User
     }
 `;
 

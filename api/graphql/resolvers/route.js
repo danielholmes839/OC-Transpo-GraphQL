@@ -1,9 +1,9 @@
 const { Trip, Stop } = require('../../models/index');
-const { populateMany, docId } = require('./loaders');
+const { populateMany } = require('../helpers/DataLoaders');
 
 const resolvers = {
     Route: {
-        id: docId,
+        id: (parent) => parent._id,
         stops: async ({ stops }, args, context) => {
             return await populateMany(stops, Stop);
         },

@@ -17,10 +17,6 @@ const populateMany = async (ids, Table) => {
 
 };
 
-const docId = (parent, args, context) => {
-    return parent._id;
-}
-
 const loaders = {
     userLoader: new DataLoader(async (ids) => {
         /* ServiceException Batching  */
@@ -69,5 +65,5 @@ const loaders = {
 }
 
 module.exports = {
-    populateMany, docId, ...loaders
+    populateMany, ...loaders
 };

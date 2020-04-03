@@ -1,9 +1,9 @@
 const { StopRoute } = require('../../models/index');
-const { populateMany, docId, userLoader, stopLoader } = require('./loaders');
+const { populateMany, userLoader, stopLoader } = require('../helpers/DataLoaders');;
 
 const resolvers = {
     FavouriteStop: {
-        id: docId,
+        id: (parent) => parent._id,
         user: async (parent, args, { user }) => {
             return userLoader.load(user);
         },

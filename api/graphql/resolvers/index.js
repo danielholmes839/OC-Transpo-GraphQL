@@ -1,37 +1,34 @@
 const queryResolvers = require('./query');
 const mutationResolvers = require('./mutation');
-
-const routeResolvers = require('./route');
-const routeGPSResolvers = require('./routegps');
-
 const stopResolvers = require('./stop');
-const stopTimeResolvers = require('./stopTime');
+const routeResolvers = require('./route');
 const stopRouteResolvers = require('./stoproute');
-const favouriteStopResolvers = require('./favouriteStop');
 
+const StopRouteGPS = require('./StopRouteGPS');
+
+const stopRouteMapScalar = require('./StopRouteMap');
 const tripResolvers = require('./trip');
 const serviceResolvers = require('./service');
+const stopTimeResolvers = require('./stopTime');
 const userResolvers = require('./user');
+const favouriteStopResolvers = require('./favouriteStop');
 const nodeResolvers = require('./node');
 
-const mapScalar = require('./map');
 
 const resolvers = {
     Query: queryResolvers.Query,
     Mutation: mutationResolvers.Mutation,
-
-    Route: routeResolvers.Route,
-    RouteGPS: routeGPSResolvers.RouteGPS,
     Stop: stopResolvers.Stop,
-    StopTime: stopTimeResolvers.StopTime,
+    Route: routeResolvers.Route,
     StopRoute: stopRouteResolvers.StopRoute,
-    FavouriteStop: favouriteStopResolvers.FavouriteStop,
+    StopRouteGPS,
+    StopRouteMap: stopRouteMapScalar,
     Trip: tripResolvers.Trip,
     Service: serviceResolvers.Service,
+    StopTime: stopTimeResolvers.StopTime,
     User: userResolvers.User,
-    Node: nodeResolvers.Node,
-
-    Map: mapScalar
+    FavouriteStop: favouriteStopResolvers.FavouriteStop,
+    Node: nodeResolvers.Node
 }
 
 module.exports = resolvers;

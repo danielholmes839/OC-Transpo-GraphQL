@@ -21,6 +21,7 @@ class GPSCache {
             }
         }
         const response = await axios(request);
+        console.log("did request");
         return this.processGPS(response.data);
 
 
@@ -34,6 +35,10 @@ class GPSCache {
         }
         */
         let routes = {}
+        if (data.GetRouteSummaryForStopResult.Routes.Route.length == undefined) {
+            data.GetRouteSummaryForStopResult.Routes.Route = [data.GetRouteSummaryForStopResult.Routes.Route];
+        }
+
         for (let r of data.GetRouteSummaryForStopResult.Routes.Route) {
             let number = r.RouteNo;
             if (!routes.hasOwnProperty(number)) {
@@ -80,7 +85,6 @@ class GPSCache {
         }
 
         else if (!this.stopCache.has(stopCode)) {
-            console.log('update caches');
             this.stopCache.set(stopCode, this.requestGPS(stopCode));
         }
 
@@ -90,11 +94,6 @@ class GPSCache {
         }
         return data[routeNumber];
     }
-
-
-
-
-
 }
 
 

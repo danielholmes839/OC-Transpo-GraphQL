@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const date = require('./date');
+const date = require('./Date');
 
 const Schema = mongoose.Schema;
 

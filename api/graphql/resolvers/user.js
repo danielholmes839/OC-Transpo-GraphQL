@@ -1,12 +1,10 @@
 const { FavouriteStop } = require('../../models/index');
-const { populateMany, docId } = require('./loaders');
+const { populateMany } = require('../helpers/DataLoaders');
 
 var userResolvers = {
     User: {
-        id: docId,
-        password: async(parent, args, context) => {
-            return null;
-        },
+        id: (parent) => parent._id,
+        password: () => null,
         favouriteStops: async ({ favouriteStops }, args, context) => {
             return await populateMany(favouriteStops, FavouriteStop);
         }

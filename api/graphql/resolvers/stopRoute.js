@@ -1,6 +1,6 @@
 const { StopTime } = require('../../models/index');
-const { populateMany, docId, stopLoader, routeLoader, serviceLoader, tripLoader } = require('./loaders');
-const GPSCache = require('../helpers/cache');
+const { populateMany, stopLoader, routeLoader, serviceLoader, tripLoader } = require('../helpers/DataLoaders');
+const GPSCache = require('../helpers/GPSCache');
 
 const intToDay = {
     0: 'sunday',
@@ -29,18 +29,19 @@ const valid = async (stopTime, date) => {
 
 
 const resolvers = {
+    /* Parent is a document from mongodb */
     StopRoute: {
-        id: docId,
-        stop: async ({ stop }, args, context) => {
+        id: (parent) => parent._id,
+        stop: async ({ stop }) => {
             return await stopLoader.load(stop);
         },
-        route: async ({ route }, args, context) => {
+        route: async ({ route }) => {
             return await routeLoader.load(route);
         },
-        stopTimes: async ({ stopTimes }, args, context) => {
+        stopTimes: async ({ stopTimes }) => {
             return await populateMany(stopTimes, StopTime);
         },
-        nextStopTimes: async ({ stopTimes }, { limit }, context) => {
+        nextStopTimes: async ({ stopTimes }, { limit }) => {
             if (limit === undefined) { limit = 1; }
 
             const now = new Date();
@@ -62,12 +63,13 @@ const resolvers = {
         map: async (parent, args, context) => {
             const stop = await stopLoader.load(parent.stop);
             const buses = await GPSCache.getRouteData(stop.code, parent.number);
-            return { stop, buses }
+            return { stop, buses };
         },
 
         gps: async (parent, args, context) => {
             const stop = await stopLoader.load(parent.stop);
-            return await GPSCache.getRouteData(stop.code, parent.number);
+            const buses = await GPSCache.getRouteData(stop.code, parent.number);
+            return { stop, buses };
         }
     }
 }

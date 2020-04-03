@@ -1,12 +1,12 @@
-const Stop = require('./stop');
-const User = require('./user');
-const Trip = require('./trip');
-const Route = require('./route');
-const Service = require('./service');
-const ServiceException = require('./serviceexception');
-const StopTime = require('./stoptime');
-const StopRoute = require('./stoproute');
-const FavouriteStop = require('./favouritestop');
+const Stop = require('./Stop');
+const User = require('./User');
+const Trip = require('./Trip');
+const Route = require('./Route');
+const Service = require('./Service');
+const ServiceException = require('./ServiceException');
+const StopTime = require('./StopTime');
+const StopRoute = require('./StopRoute');
+const FavouriteStop = require('./FavouriteStop');
 
 module.exports = {
     Stop: Stop,

@@ -1,8 +1,8 @@
-const { docId, tripLoader, stopLoader, routeLoader } = require('./loaders');
+const { tripLoader, stopLoader, routeLoader } = require('../helpers/DataLoaders');
 
 const resolvers = {
     StopTime: {
-        id: docId,
+        id: (parent) => parent._id,
         trip: async ({ trip }, args, context) => {
             return await tripLoader.load(trip);
         },
