@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
 const { populateMany, stopLoader, userLoader } = require('../helpers/DataLoaders');;
-const { User, FavouriteStop, Stop, StopRoute } = require('../../models/index');
+const { User, FavouriteStop } = require('../../models/index');
 
 const resolvers = {
     Mutation: {

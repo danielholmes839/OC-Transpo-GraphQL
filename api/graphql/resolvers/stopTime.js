@@ -1,4 +1,4 @@
-const { tripLoader, stopLoader, routeLoader } = require('../helpers/DataLoaders');
+const { tripLoader, stopLoader } = require('../helpers/DataLoaders');
 
 const resolvers = {
     StopTime: {
