@@ -30,6 +30,5 @@ interface Bus {
     speed: number;
 }
 
+
 export { Date, Time, Bus, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException }
-
-

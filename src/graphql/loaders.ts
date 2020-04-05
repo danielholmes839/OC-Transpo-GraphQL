@@ -1,12 +1,15 @@
+import * as DataLoader from 'dataloader';
 import { Model, Document } from 'mongoose';
-import { User, FavouriteStop, Route, Stop, StopRoute, StopTime, Trip, Service, ServiceException } from './types';
 
 import {
-    UserCollection, FavouriteStopCollection, RouteCollection, StopCollection,
-    StopRouteCollection, StopTimeCollection, TripCollection, ServiceCollection,
-    ServiceExceptionCollection
+    User, FavouriteStop, Route, Stop, StopRoute,
+    StopTime, Trip, Service, ServiceException
+} from './types';
+
+import {
+    UserCollection, FavouriteStopCollection, RouteCollection, StopCollection, StopRouteCollection,
+    StopTimeCollection, TripCollection, ServiceCollection, ServiceExceptionCollection
 } from './collections';
-import * as DataLoader from 'dataloader';
 
 
 const populate = async <T extends Document>(ids: string[], collection: Model<T>): Promise<T[]> => {
@@ -34,6 +37,7 @@ const createDataLoader = <T extends Document>(collection: Model<T>): DataLoader<
     })
 }
 
+/* Create a DataLoader for every collection in my Mongodb */
 const userLoader: DataLoader<string, User> = createDataLoader<User>(UserCollection);
 const favouriteStopLoader: DataLoader<string, FavouriteStop> = createDataLoader<FavouriteStop>(FavouriteStopCollection);
 const routeLoader: DataLoader<string, Route> = createDataLoader<Route>(RouteCollection);
