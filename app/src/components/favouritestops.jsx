@@ -1,7 +1,6 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import StopRoute from './stoproute';
 import FavouriteStop from './favouritestop';
 
 const query = gql`
@@ -12,17 +11,18 @@ const query = gql`
         id
         stop {
           name
+          code
         }
         stopRoutes {
           id
           headsign
-          number
-          nextStopTime {
+          nextStopTimes(limit: 5) {
             time {
               string
             }
           }
           route {
+            number
             colour
             textColour
           }
@@ -43,7 +43,7 @@ const FavouriteStops = () => (
           <h1>{data.userGet.email}</h1>
           {
             data.userGet.favouriteStops.map(favouriteStop => {
-              return <FavouriteStop id={favouriteStop.id} key={favouriteStop.id} data={favouriteStop} />
+              return <FavouriteStop id={favouriteStop.id} key={favouriteStop.id} favouriteStop={favouriteStop} />
             })
           }
         </div>

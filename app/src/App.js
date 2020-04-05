@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import FavouriteStops from './components/favouritestops';
-import StopSearch from './components/stopsearch';
-import Login from './components/login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const client = new ApolloClient({
@@ -11,7 +9,7 @@ const client = new ApolloClient({
   request: (operation) => {
     const token = operation.setContext({
       headers: {
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWU3YzNlMmJmOWUwNGI0Mjk0ZTMxOGI3IiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNTg1MjM2MDU4LCJleHAiOjE1ODUyNTQwNTh9.M1ZRGMpGoOssFmnpsYEaOrGGfWqegt31T5wk9x8dScM"
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWU3ZDMyNzU4MjJjNTEyODg4YWJkMDE5IiwiZW1haWwiOiJEYW5pZWwiLCJpYXQiOjE1ODYxMDY3MzIsImV4cCI6MTU4NjEyNDczMn0.tdNLQTn9N_30ycz0Zks5h2Rc8JFB5guaYut1dEK4gwM"
       }
     });
   }
@@ -22,7 +20,6 @@ const App = () => (
   <ApolloProvider client={client}>
     <div className="container my-5">
       <FavouriteStops />
-      <StopSearch />
     </div>
   </ApolloProvider>
 );

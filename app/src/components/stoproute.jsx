@@ -1,22 +1,37 @@
 import React, { Component } from 'react';
+import RouteBadge from './routebadge';
 
-class StopRoute extends Component {
-    render() {
+
+const Title = ({ stopRoute }) => {
+    return (
+        <React.Fragment>
+            <h4 className="lead"><RouteBadge route={stopRoute.route} /> {stopRoute.headsign}</h4>
+            <hr />
+        </React.Fragment>
+    )
+}
+
+const StopRoute = ({ stopRoute }) => {
+    if (stopRoute.nextStopTimes.length > 0) {
         return (
-            <React.Fragment>
-                <div className="col-lg-4 col-sm-12">
-                    <div className="bg-white shadow-lg p-3 rounded mb-3">
-                        <h4 className="lead">
-                            <span className="badge mr-2" style={{
-                                backgroundColor: '#' + this.props.data.route.colour,
-                                color: '#' + this.props.data.route.textColour
-                            }}>{this.props.data.number}</span> {this.props.data.headsign}</h4>
-                        <p>Next Stop: {this.props.data.nextStopTime.time.string}</p>
-                    </div>
+            <div className="col-lg-4 col-sm-12">
+                <div className="bg-white rounded shadow-lg my-3 p-3">
+                    <Title stopRoute={stopRoute}/>
+                    <h4 className="lead">Next Trip: {stopRoute.nextStopTimes.map(stopTime => stopTime.time.string + " ")}</h4>
                 </div>
-            </React.Fragment>
-        );
+            </div>
+        )
+    } else {
+        return (
+            <div className="col-lg-4 col-sm-12">
+                <div className="bg-white rounded shadow-lg my-3 p-3">
+                    <Title stopRoute={stopRoute}/>
+                    <h4 className="lead">No Trips today</h4>
+                </div>
+            </div>
+        )
     }
+
 }
 
 export default StopRoute;
