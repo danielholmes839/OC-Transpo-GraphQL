@@ -8,20 +8,7 @@
     "start:watch": "nodemon",
     "build": "tsc"
   },
-  "nodemonConfig": {
-    "ignore": [
-      "**/*.test.ts",
-      "**/*.spec.ts",
-      ".git",
-      "node_modules"
-    ],
-    "watch": [
-      "src"
-    ],
-    "exec": "npm start",
-    "ext": "ts",
-    "env": {}
-  },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
