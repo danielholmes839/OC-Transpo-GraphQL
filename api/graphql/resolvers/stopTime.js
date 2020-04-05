@@ -8,10 +8,7 @@ const resolvers = {
         },
         stop: async ({ stop }, args, context) => {
             return await stopLoader.load(stop);
-        },
-        route: async ({ route }, args, context) => {
-            return await routeLoader.load(route);
-        },
+        }
     }
 }
 

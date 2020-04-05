@@ -100,7 +100,6 @@ const schema = `
         time: Time!
         trip: Trip!
         stop: Stop!     
-        route: Route!
     }
 
     type Service implements Node {
@@ -125,35 +124,16 @@ const schema = `
     }
 
     type Query {
-        tripGet(trip: ID!): Trip
         routeGet(route: ID!): Route
-
-        # Stop Query
         stopGet(stop: ID!): Stop
         stopSearch(name: String!, limit: Int): [Stop!]!
-        
-        # User Query
         userGet: User
         userLogin(email: String!, password: String!): LoginPayload
     }
 
-    interface MutationPayload {
-        sucess: Boolean!
-        errors: [String!]!
-    }
-
-    type UserMutationPayload implements MutationPayload {
-        sucess: Boolean!
-        errors: [String!]! 
-        user: User
-    }
-
     type Mutation {
         user_Create(email: String!, password: String!): User
-        user_FavouriteStop_Add(stop: ID!, stopRoutes: [ID!]): User
-        user_FavouriteStop_Remove(favouriteStop: ID!): UserMutationPayload
-        user_FavouriteStop_StopRoute_Add(favouriteStop: ID!, stopRoute: ID!): User
-        user_FavouriteStop_StopRoute_Remove(favouriteStop: ID!, stopRoute: ID!): User
+        user_FavouriteStop_Add(stop: ID!, stopRoutes: [ID!]): FavouriteStop
     }
 `;
 

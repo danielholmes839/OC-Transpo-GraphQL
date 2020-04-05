@@ -1,7 +1,7 @@
 module.exports = {
     // StopRouteGPS
     busCount: (parent) => {
-        return parent.length
+        return parent.buses.length
     },
 
     buses: (parent) => {

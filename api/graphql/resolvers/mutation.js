@@ -19,19 +19,19 @@ const resolvers = {
             return user
         },
 
-        user_FavouriteStop_Add: async (root, { favouriteStop }, context) => {
+        user_FavouriteStop_Add: async (root, args , context) => {
             if (context.user == null) { throw new Error("User Missing");}
 
-            let stop = await stopLoader.load(favouriteStop.stop)     // Check that the stop exists
+            let stop = await stopLoader.load(args.stop)     // Check that the stop exists
             if (!stop) { throw new Error('Stop does not exist'); }
 
-            if (favouriteStop.stopRoutes === undefined) {
-                favouriteStop.stopRoutes = stop.stopRoutes;
+            if (args.stopRoutes === undefined) {
+                args.stopRoutes = stop.stopRoutes;
             }
 
             let stopRoutes = new Set(stop.stopRoutes);
 
-            for (let stopRoute of favouriteStop.stopRoutes) {
+            for (let stopRoute of args.stopRoutes) {
                 if (!stopRoutes.has(stopRoute)) {
                     throw new Error(`StopRoute id:${stopRoute} does not exist for Stop id:${favouriteStop.stop}`)
                 }
@@ -46,18 +46,17 @@ const resolvers = {
                 stops.add(favouriteStop.stop);
             });
 
-            if (stops.has(favouriteStop.stop)) {
-                throw new Error(`User already favourites stop id:${favouriteStop.stop}`);
+            if (stops.has(args.stop)) {
+                throw new Error(`User already favourites stop id:${args.stop}`);
             }
 
-            favouriteStop.user = context.user;
-            const favouriteStopDocument = new FavouriteStop(favouriteStop);
+            const favouriteStopDocument = new FavouriteStop({stop: args.stop, stopRoutes: args.stopRoutes, user: context.user});
             await favouriteStopDocument.save();
 
             user.favouriteStops.push(favouriteStopDocument._id);
             await user.save();
 
-            return favouriteStop;
+            return favouriteStopDocument;
         }
     }
 }

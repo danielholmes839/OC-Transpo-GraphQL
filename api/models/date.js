@@ -1,9 +1,4 @@
 module.exports = {
-    yyyymmdd: {
-        type: String,
-        required: true
-    },
-
     year: {
         type: Number,
         required: true
