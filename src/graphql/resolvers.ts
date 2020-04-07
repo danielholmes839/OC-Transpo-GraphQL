@@ -1,5 +1,6 @@
 import { IResolvers } from 'graphql-tools';
 import Query from './Query/resolvers';
+import Mutation from './Mutation/resolvers';
 import User from './User/resolvers';
 import FavouriteStop from './FavouriteStop/resolvers';
 import Route from './Route/resolvers';
@@ -12,6 +13,7 @@ import ServiceException from './ServiceException/resolvers';
 
 const resolvers: IResolvers = {
     Query,
+    Mutation,
     User,
     FavouriteStop,
     Route,
