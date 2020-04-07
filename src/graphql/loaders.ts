@@ -34,7 +34,7 @@ const createDataLoader = <T extends Document>(collection: Model<T>): DataLoader<
     /* Function that creates dataloaders for MongoDB collections */
     return new DataLoader(async (ids: string[]): Promise<(T | Error)[]> => {
         return populate<T>(ids, collection);
-    })
+    }, {cache: false})
 }
 
 /* Create a DataLoader for every collection in my Mongodb */
