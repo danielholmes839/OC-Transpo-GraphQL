@@ -4,11 +4,11 @@ import { ApolloServer } from 'apollo-server-express';
 import { connect } from 'mongoose'
 import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
-//import context from './middleware/auth';
+import context from './middleware/auth';
 
 const app: Application = express();
 const server = new ApolloServer({
-    typeDefs, resolvers //, context
+    typeDefs, resolvers, context
 }).applyMiddleware({ app, path: '/graphql' });
 
 try {

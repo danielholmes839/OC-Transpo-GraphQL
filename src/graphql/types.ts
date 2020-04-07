@@ -30,5 +30,22 @@ interface Bus {
     speed: number;
 }
 
+interface Context {
+    user: string;
+    email: string;
+    authenticated: boolean;
+}
 
-export { Date, Time, Bus, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException }
+interface Login {
+	email: string;
+	password: string;
+}
+
+interface LoginPayload {
+	user: User;
+	token: string;
+	expiration: number;
+}
+
+
+export { Date, Time, Bus, Context, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException, Login, LoginPayload }
