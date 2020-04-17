@@ -1,5 +1,7 @@
 import { Route, Stop, StopRoute, StopTime } from '../types';
 import { routeLoader, stopLoader, stopTimeLoader } from '../loaders';
+import { Bus } from '../LiveBusData/bus';
+import BusAPI from '../LiveBusData/api';
 
 export default {
     stop: (parent: StopRoute): Promise<(Stop | Error)> => {
@@ -10,5 +12,9 @@ export default {
     },
     stopTimes: (parent: StopRoute): Promise<(StopTime | Error)[]> => {
         return stopTimeLoader.loadMany(parent.stopTimes);
+    },
+    busData: async (parent: StopRoute): Promise<Bus[]> => {
+        const stop: Stop = await stopLoader.load(parent.stop);
+        return BusAPI.get(stop, parent.number);
     }
 }
