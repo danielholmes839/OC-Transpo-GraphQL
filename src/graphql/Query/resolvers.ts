@@ -2,7 +2,8 @@ import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 
 import { stopLoader, stopRouteLoader, routeLoader, tripLoader, userLoader, serviceLoader } from '../loaders';
-import { Stop, StopRoute, Route, Trip, User, Service, Context, Login, LoginPayload } from '../types';
+import { Login, LoginPayload } from './types'
+import { Stop, StopRoute, Route, Trip, User, Service, Context } from '../types';
 import { UserCollection } from '../collections';
 
 interface ID {

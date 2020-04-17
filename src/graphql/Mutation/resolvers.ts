@@ -1,7 +1,6 @@
 import { FavouriteStop, Stop, StopRoute, Login, Context, User } from '../types';
 import { stopLoader, stopRouteLoader, favouriteStopLoader, userLoader } from '../loaders';
 import { FavouriteStopCollection, UserCollection } from '../collections';
-import { stringify } from 'querystring';
 
 
 const getValidStopRoutes = (requested: string[], existing: string[]): string[] => {
@@ -13,32 +12,19 @@ const getValidStopRoutes = (requested: string[], existing: string[]): string[] =
     return valid;
 }
 
-
-interface UserFavouriteStopAdd {
-    stop: string;
-    stopRoutes: string[];
+const getFavouriteStop = async (favouriteStopID: string, context: Context): Promise<FavouriteStop> => {
+    /* Get the favourite stop and handles authentication */
+    if (!context.authenticated) throw new Error("Not Authenticated");                               // Authenticated
+    const favouriteStop: FavouriteStop = await favouriteStopLoader.load(favouriteStopID);           // Load FavouriteStop
+    if (!favouriteStop) throw new Error(`FavouriteStop ID:${favouriteStopID} does not exist`);      // FavouriteStop exists
+    if (favouriteStop.user != context.user) throw new Error(`Not Authorized`);                      // FavouriteStop belongs to user
+    return favouriteStop;
 }
-
-interface UserFavouriteStopDelete {
-    favouriteStop: string;
-}
-
-interface UserFavouriteStopRouteAdd {
-    favouriteStop: string;
-    stopRoutes: string[];
-}
-
-interface UserFavouriteStopRouteDelete {
-    favouriteStop: string;
-    stopRoutes: string[];
-}
-
-
-
 
 
 const resolvers = {
     //userCreate: (_: void, email: string, password: String!):
+
     userFavouriteStopAdd: async (_: void, args: UserFavouriteStopAdd, context: Context): Promise<FavouriteStop> => {
         /*  Add FavouriteStop */
         if (!context.authenticated) throw new Error("Not Authenticated");
@@ -65,11 +51,7 @@ const resolvers = {
 
     userFavouriteStopDelete: async (_: void, args: UserFavouriteStopDelete, context: Context): Promise<FavouriteStop> => {
         /* Delete FavouriteStop */
-        if (!context.authenticated) throw new Error("Not Authenticated");                               // Authenticated
-        const favouriteStop: FavouriteStop = await favouriteStopLoader.load(args.favouriteStop);        // Load FavouriteStop
-        if (!favouriteStop) throw new Error(`FavouriteStop ID:${args.favouriteStop} does not exist`);   // FavouriteStop exists
-        if (favouriteStop.user != context.user) throw new Error(`Not Authorized`);                      // FavouriteStop belongs to user
-
+        const favouriteStop: FavouriteStop = await getFavouriteStop(args.favouriteStop, context);
         const user: User = await userLoader.load(context.user);
         user.favouriteStops = user.favouriteStops.filter(id => { if (id != args.favouriteStop) return id });
 
@@ -79,31 +61,25 @@ const resolvers = {
     },
     userFavouriteStopRoutesAdd: async (_: void, args: UserFavouriteStopRouteAdd, context: Context): Promise<FavouriteStop> => {
         /* Adds StopRoutes to FavouriteStop */
-        if (!context.authenticated) throw new Error("Not Authenticated");                               // Authenticated
-        const favouriteStop: FavouriteStop = await favouriteStopLoader.load(args.favouriteStop);        // Load FavouriteStop
-        if (!favouriteStop) throw new Error(`FavouriteStop ID:${args.favouriteStop} does not exist`);   // FavouriteStop exists
-        if (favouriteStop.user != context.user) throw new Error(`Not Authorized`);                      // FavouriteStop belongs to user
-
+        const favouriteStop: FavouriteStop = await getFavouriteStop(args.favouriteStop, context);
         const stop: Stop = await stopLoader.load(favouriteStop.stop);
         const all: Set<string> = new Set(stop.stopRoutes);
         const current: Set<string> = new Set(favouriteStop.stopRoutes);
+
         for (let stopRoute of args.stopRoutes) {
-            if (all.has(stopRoute) && !current.has(stopRoute)) favouriteStop.stopRoutes.push(stopRoute);
+            if (all.has(stopRoute) && !current.has(stopRoute)) {
+                favouriteStop.stopRoutes.push(stopRoute);
+            }
         }
-        console.log(favouriteStop.stopRoutes);
+
         return favouriteStop.save();
 
     },
     userFavouriteStopRoutesDelete: async (_: void, args: UserFavouriteStopRouteDelete, context: Context): Promise<FavouriteStop> => {
         /* Deletes StopRoutes to FavouriteStop */
-        if (!context.authenticated) throw new Error("Not Authenticated");                               // Authenticated
-        const favouriteStop: FavouriteStop = await favouriteStopLoader.load(args.favouriteStop);        // Load FavouriteStop
-        if (!favouriteStop) throw new Error(`FavouriteStop ID:${args.favouriteStop} does not exist`);   // FavouriteStop exists
-        if (favouriteStop.user != context.user) throw new Error(`Not Authorized`);                      // FavouriteStop belongs to user
-
+        const favouriteStop: FavouriteStop = await getFavouriteStop(args.favouriteStop, context);
         const remove: Set<string> = new Set(args.stopRoutes);
-        favouriteStop.stopRoutes = favouriteStop.stopRoutes.filter(id => { if (!remove.has(id)) return id })
-        console.log(favouriteStop.stopRoutes);
+        favouriteStop.stopRoutes = favouriteStop.stopRoutes.filter(id => { if (!remove.has(id)) return id });
         return favouriteStop.save();
     },
 }
