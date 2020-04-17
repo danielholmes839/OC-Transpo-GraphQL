@@ -23,12 +23,6 @@ const typeDefs: string = `
 		favouriteStops: [FavouriteStop]!
 	}
 
-	type LoginPayload {
-		user: User!
-		token: String!
-		expiration: Int!
-	}
-
 	type FavouriteStop implements Node {
 		id: ID!
 		user: User!
@@ -46,58 +40,26 @@ const typeDefs: string = `
 		stopRoutes: [StopRoute!]!
 	}
 
-	scalar StopRouteMap
-
 	type StopRoute implements Node {
 		id: ID!
 		headsign: String!           # route headsign
 		number: String!             # route number
 		stop: Stop!
 		route: Route!
-		stopTimes: [StopTime!]!
-		# nextStopTimes(limit: Int): [StopTime!]!
-		# map: StopRouteMap
-		# gps: StopRouteGPS!
-	}
-
-	type StopRouteGPS {
-		stopRoute: StopRoute!
-		busCount: Int!
-		buses: [Bus!]!
-	}
-
-	type Bus {
-		headsign: String!
-		routeNumber: String!
-		direction: Int!
-		lat: Float!
-		lon: Float!
-		speed: Float!
-	}
-
-	enum RouteType {
-		Streetcar
-		Subway
-		Train
-		Bus
-		Ferry
-		CableTram
-		AerialLift
-		Funicular
-		Trolleybus
-		Monorail
+		stopTimes: [StopTime!]!		
+		busData: LiveBusData! 		# live 
 	}
 
 	type Route implements Node {
 		id: ID!
 		number: String!
-		type: RouteType!
+		type: String!
 		colour: String!
 		textColour: String!
 		trips: [Trip!]!
 		stops: [Stop!]!
 	}
-
+	
 	type Trip implements Node {
 		id: ID!
 		headsign: String!
@@ -120,7 +82,6 @@ const typeDefs: string = `
 		start: Date!
 		end: Date!                         
 		exceptions: [ServiceException!]!
-
 		monday: Boolean!
 		tuesday: Boolean!
 		wednesday: Boolean!
@@ -136,15 +97,41 @@ const typeDefs: string = `
 		removed: Boolean!
 	}
 
+	type LiveBusData {
+		nextBus: Bus
+		buses: [Bus!]!
+		busCount: Int!
+	}
+
+	type Bus {
+		headsign: String!
+		number: String!
+		direction: Int!
+		type: String!
+
+		last: Boolean!			# Last stop of schedule
+		lat: Float
+		lon: Float
+		speed: Float
+		distance: String
+
+		arrival: Time!			# When the bus will arrive
+		adjusted: Boolean!		# Whether or not the arrival time has been adjusted
+	}
+
+	type LoginPayload {
+		user: User!
+		token: String!
+		expiration: Int!
+	}
+
 	type Query {
 		routeGet(id: ID!): Route
 		stopRouteGet(id: ID!): StopRoute
 		tripGet(id: ID!): Trip
 		serviceGet(id: ID!): Stop
-
 		stopGet(id: ID!): Stop
 		stopSearch(name: String!, limit: Int): [Stop!]!
-
 		userGet: User
 		userLogin(email: String!, password: String!): LoginPayload
 	}
