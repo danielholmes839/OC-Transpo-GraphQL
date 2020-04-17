@@ -21,31 +21,10 @@ interface Time {
     int: number;
 }
 
-interface Bus {
-    headsign: string;
-    routeNumber: string;
-    direction: number;
-    lat: number;
-    lon: number;
-    speed: number;
-}
-
 interface Context {
     user: string;
     email: string;
     authenticated: boolean;
 }
 
-interface Login {
-	email: string;
-	password: string;
-}
-
-interface LoginPayload {
-	user: User;
-	token: string;
-	expiration: number;
-}
-
-
-export { Date, Time, Bus, Context, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException, Login, LoginPayload }
+export { Date, Time, Context, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException, Login, LoginPayload }
