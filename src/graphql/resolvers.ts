@@ -10,6 +10,7 @@ import StopTime from './StopTime/resolvers';
 import Trip from './Trip/resolvers';
 import Service from './Service/resolvers';
 import ServiceException from './ServiceException/resolvers';
+import LiveBusData from './LiveBusData/resolvers';
 
 const resolvers: IResolvers = {
     Query,
@@ -22,7 +23,8 @@ const resolvers: IResolvers = {
     StopTime,
     Trip,
     Service,
-    ServiceException
+    ServiceException,
+    LiveBusData
 }
 
 export default resolvers;
