@@ -6,5 +6,10 @@ export default {
         return null;
     },
     buses: (parent: Bus[]): Bus[] => parent,
-    busCount: (parent: Bus[]): number => parent.length
+    busCount: (parent: Bus[]): number => parent.length,
+    busCountGPS: (parent: Bus[]): number => {
+        let count: number = 0;
+        for (let bus of parent) if (bus.hasGPS) count += 1;
+        return count
+    }
 }

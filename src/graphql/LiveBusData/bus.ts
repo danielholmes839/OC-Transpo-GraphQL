@@ -13,7 +13,7 @@ class Bus {
     public lon?: number
     public speed?: number
     public distance?: string    // From the stop its going to
-
+    public hasGPS: boolean;
     // Time
     public arrival: Time        // The time the bus will arrive at the stop     
     public adjusted: boolean;   // Arrival time was adjusted 
@@ -26,6 +26,7 @@ class Bus {
         this.lat = this.parseFloat(trip.Latitude);
         this.lon = this.parseFloat(trip.Longitude);
         this.speed = this.parseFloat(trip.GPSSpeed);
+        this.hasGPS = this.hasPosition();
         this.setDistance(destination);
         this.setArrival(trip);
         this.setAdjusted(trip);
@@ -38,12 +39,12 @@ class Bus {
         return v;
     }
 
-    private hasPosition(): boolean {
+    public hasPosition(): boolean {
         return this.lat != null && this.lon != null;
     }
 
     private setDistance(destination: Stop): void {
-        if (!this.hasPosition()) return;
+        if (!this.hasGPS) return;
         let d: number = Math.sqrt(Math.pow(destination.lat - this.lat, 2) + Math.pow(destination.lon - this.lon, 2)) * 111.139;
         this.distance = d.toFixed(2) + 'km';
     }
