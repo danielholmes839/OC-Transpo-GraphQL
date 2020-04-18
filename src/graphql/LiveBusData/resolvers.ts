@@ -1,4 +1,4 @@
-import { Bus } from './bus';
+import { Bus } from './Bus';
 
 export default {
     nextBus: (parent: Bus[]): Bus => {

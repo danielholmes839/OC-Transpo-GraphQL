@@ -1,7 +1,7 @@
 import { Route, Stop, StopRoute, StopTime } from '../types';
 import { routeLoader, stopLoader, stopTimeLoader } from '../loaders';
-import { Bus } from '../LiveBusData/bus';
-import BusAPI from '../LiveBusData/api';
+import { Bus } from '../LiveBusData/Bus';
+import BusAPI from '../LiveBusData/API';
 import StaticStopRouteMap from '../StaticStopRouteMap/StaticStopRouteMap';
 
 export default {

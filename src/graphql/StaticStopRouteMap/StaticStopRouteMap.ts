@@ -1,5 +1,5 @@
 import StaticMap from './StaticMap';
-import { Bus } from '../LiveBusData/bus';
+import { Bus } from '../LiveBusData/Bus';
 import { Stop } from '../types';
 import { Size } from './types';
 

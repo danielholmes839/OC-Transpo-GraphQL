@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
-import { Bus } from './bus';
-import { BusCache } from './cache';
+import { Bus } from './Bus';
+import { BusCache } from './Cache';
 import { OCTranspoResponse, StopCodeKV } from './types';
 import { Stop, Route } from '../types';
 

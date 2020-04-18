@@ -1,4 +1,4 @@
-import { Bus } from './bus';
+import { Bus } from './Bus';
 /*
     Types for OC Transpo's API for getting GPS data
     It does a lot of weird things
