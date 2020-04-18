@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
 import { Bus } from './Bus';
 import { BusCache } from './Cache';
 import { OCTranspoResponse, StopCodeKV } from './types';
-import { Stop, Route } from '../types';
+import { Stop } from '../types';
 
 class BusAPI {
     base: AxiosRequestConfig;
