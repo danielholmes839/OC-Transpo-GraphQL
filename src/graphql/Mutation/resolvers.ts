@@ -1,7 +1,7 @@
-import { FavouriteStop, Stop, StopRoute, Login, Context, User } from '../types';
-import { stopLoader, stopRouteLoader, favouriteStopLoader, userLoader } from '../loaders';
-import { FavouriteStopCollection, UserCollection } from '../collections';
-
+import { FavouriteStop, Stop, Context, User } from '../types';
+import { stopLoader, favouriteStopLoader, userLoader } from '../loaders';
+import { FavouriteStopCollection } from '../collections';
+import { UserFavouriteStopAdd, UserFavouriteStopDelete, UserFavouriteStopRouteAdd, UserFavouriteStopRouteDelete } from './types';
 
 const getValidStopRoutes = (requested: string[], existing: string[]): string[] => {
     const existingSet: Set<string> = new Set(existing);
