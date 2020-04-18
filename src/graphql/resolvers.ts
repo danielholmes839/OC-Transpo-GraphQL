@@ -11,6 +11,8 @@ import Trip from './Trip/resolvers';
 import Service from './Service/resolvers';
 import ServiceException from './ServiceException/resolvers';
 import LiveBusData from './LiveBusData/resolvers';
+import StaticStopRouteMap from './StaticStopRouteMap/resolvers';
+
 
 const resolvers: IResolvers = {
     Query,
@@ -24,7 +26,8 @@ const resolvers: IResolvers = {
     Trip,
     Service,
     ServiceException,
-    LiveBusData
+    LiveBusData,
+    StaticStopRouteMap
 }
 
 export default resolvers;

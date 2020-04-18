@@ -1,4 +1,6 @@
-const typeDefs: string = `
+import { gql } from 'apollo-server';
+
+const typeDefs = gql`
 	interface Node {
 		id: ID!
 	}
@@ -40,6 +42,8 @@ const typeDefs: string = `
 		stopRoutes: [StopRoute!]!
 	}
 
+	scalar StaticStopRouteMap
+
 	type StopRoute implements Node {
 		id: ID!
 		headsign: String!           # route headsign
@@ -48,6 +52,7 @@ const typeDefs: string = `
 		route: Route!
 		stopTimes: [StopTime!]!		
 		busData: LiveBusData! 		# live 
+		map: StaticStopRouteMap!
 	}
 
 	type Route implements Node {
@@ -101,6 +106,7 @@ const typeDefs: string = `
 		nextBus: Bus
 		buses: [Bus!]!
 		busCount: Int!
+		busCountGPS: Int!
 	}
 
 	type Bus {
@@ -108,13 +114,12 @@ const typeDefs: string = `
 		number: String!
 		direction: Int!
 		type: String!
-
 		last: Boolean!			# Last stop of schedule
 		lat: Float
 		lon: Float
 		speed: Float
 		distance: String
-
+		hasGPS: Boolean!
 		arrival: Time!			# When the bus will arrive
 		adjusted: Boolean!		# Whether or not the arrival time has been adjusted
 	}
