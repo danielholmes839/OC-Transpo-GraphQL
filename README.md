@@ -1,19 +1,22 @@
 # GraphQL API for GTFS data
 
-This repo is a GraphQL API for GTFS (General Transit Feed Specification) data. I'm currently not attempting to support every GTFS dataset only
-the OC Transpo (Ottawa, Canada's transit system) dataset. It was created using apollo-express-server and MongoDB.
-Eventually I will be building an entire web application around this API.
+This is a [GraphQL API](https://graphql.org/) designed for [General Transit Feed Specification](https://developers.google.com/transit/gtfs) 
+(GTFS) data from OC Transpo which is Ottawa's public transit system.
+This API also wraps [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc)
+for live bus data including arrival time and GPS data making it MUCH MUCH MUCH easier to use.
+Built using [Apollo-Server](https://www.apollographql.com/docs/apollo-server/), TypeScript and MongoDB.
 
 ## Schema
 
-The full schema can be found [here](./api/graphql/schema/index.js). The graph below shows the relationship between types:
+The full schema can be found [here](./src/graphql/schema.ts).
+I highly recommend taking at look at the schema using [Graphql Voyager](https://apis.guru/graphql-voyager/) (must copy paste schema).
+This is a simplified diagram showing the relationship between types:
 
 ![schema diagram](content/diagram.png)
 
-## Example Query
+## Example
 
-#### Query
-Obtaining a users favourite stops and the time of each routes next trip
+### Query
 
 ```gql
 query {
@@ -43,7 +46,7 @@ query {
 }
 ```
 
-#### Result
+### Result
 
 ``` json
 {
@@ -143,8 +146,8 @@ query {
 }
 ```
 
-## Example UI
+### Generated UI
 
-This UI was created using the query above
+(Different data but with the same format)
 
 ![example](content/ui.png)
