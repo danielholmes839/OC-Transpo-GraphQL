@@ -8,7 +8,7 @@ class StaticStopRouteMap extends StaticMap {
         super(stop, size);
         this.addStop(stop);
         for (let bus of buses) {
-            if (bus.hasPosition) this.addBus(bus);
+            if (bus.hasGPS) this.addBus(bus);
         }
     }
 
