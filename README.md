@@ -9,7 +9,7 @@ Built using [Apollo-Server](https://www.apollographql.com/docs/apollo-server/), 
 
 ## OC Transpo's REST API
 
-Wrapping OC Transpo's REST API with Graphql provides many benefits:
+Wrapping [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc) with GraphQL provides many benefits:
 
 - Documenting nullable fields. This is not done at all in OC Transpo's documentation. For example in OC Transpo's API GPS data for latitude, longitude and speed are
 returned as strings which can also be empty strings. This in my opinion should be changed to return numbers/floats and null values instead. Which is easy to change GraphQL
