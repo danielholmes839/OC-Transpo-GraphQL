@@ -60,6 +60,7 @@ class BusAPI {
     public async get(stop: Stop, routeNumber: string): Promise<Bus[]> {
         // Get the data for the next 3 buses of a route heading toward that stop
         if (!this.cache.has(stop.code)) {
+            console.log(`OC Transpo API ${stop.code}`)
             this.cache.store(stop.code, this.createKV(stop));                                // update the cache
         }
         let buses: Bus[] = (await this.cache.get(stop.code))[routeNumber];                  // await then get the buses for the route
