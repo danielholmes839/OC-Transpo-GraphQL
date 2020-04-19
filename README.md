@@ -3,22 +3,28 @@
 This is a [GraphQL API](https://graphql.org/) designed for [General Transit Feed Specification](https://developers.google.com/transit/gtfs)
 (GTFS) data from OC Transpo which is Ottawa's public transit system.
 In addition to being able to query GTFS data this API wraps [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc)
-for live buses which includes arrival times and GPS data. Wrapping OC Transpo's REST API with Graphql makes it easier to use by:
-
-- Documenting nullable fields. This is done very poorly in OC Transpo's documentation. For example in OC Transpo's API GPS data for latitude, longitude and speed are
-returned as strings (not number/floats) which can be and are often empty strings. To solve this my schema makes position fields nullable and adds a field "hasGPS" making it easy
-to check when GPS data is available.
-
-- The response structure is made much easier to understand. While using OC Transpo's API I noticed certain fields could be a list of Objects or a single Object.
-I think this is some sort of issue with their API being default XML and being converted to JSON before being sent but I'm not sure.
-Another field only had one nested subfield which was very redundant. I broke the response I was getting down into types you can find them [here](./src/graphql/LiveBusData/types.ts).
-However now with GraphQL the response structure is consistent.
-
-- Fields were renamed to be more accurate and to match what was being used in the rest of the GraphQL API.
-
-- Of course you also gain all the other benefits of a GraphQL API such selecting specific fields, type checking, self documenting schema, and getting all your data in 1 request
+for live buses which includes arrival times and GPS data.
 
 Built using [Apollo-Server](https://www.apollographql.com/docs/apollo-server/), TypeScript and MongoDB.
+
+## OC Transpo's REST API
+
+Wrapping OC Transpo's REST API with Graphql provides many benefits:
+
+- Documenting nullable fields. This is not done at all in OC Transpo's documentation. For example in OC Transpo's API GPS data for latitude, longitude and speed are
+returned as strings which can also be empty strings. This in my opinion should be changed to return numbers/floats and null values instead. Which is easy to change GraphQL
+while also documenting in the schema that GPS data can be nullable. To make it even easier for users I added another field "hasGPS" which returns a boolean value if that bus
+has GPS data
+
+- The response structure is much easier to understand. While using OC Transpo's API I noticed certain fields could be a list of Objects or a single Object.
+I think this is some sort of issue with their API being default XML and being converted to JSON before being sent but I'm not sure.
+Another thing that I noticed was a field that only had one nested subfield which was very redundant.
+I broke the response I was getting down into TypeScript types you can find them [here](./src/graphql/LiveBusData/types.ts).
+GraphQL ensures the response structure is always consistent.
+
+- Fields were renamed to be more accurate and to match what was being used in the rest of the GraphQL API. Irellevant or unusable fields were removed.
+
+- Of course you also gain all the other benefits of a GraphQL API such selecting specific fields, type checking, self documenting schema, and getting all your data in 1 request
 
 ## Schema
 
