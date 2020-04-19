@@ -12,7 +12,7 @@ import Service from './Service/resolvers';
 import ServiceException from './ServiceException/resolvers';
 import LiveBusData from './LiveBusData/resolvers';
 import StaticStopRouteMap from './StaticStopRouteMap/resolvers';
-
+import Distance from './Distance/resolvers';
 
 const resolvers: IResolvers = {
     Query,
@@ -27,7 +27,8 @@ const resolvers: IResolvers = {
     Service,
     ServiceException,
     LiveBusData,
-    StaticStopRouteMap
+    StaticStopRouteMap,
+    Distance
 }
 
 export default resolvers;

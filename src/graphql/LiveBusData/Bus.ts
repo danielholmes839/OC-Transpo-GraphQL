@@ -12,7 +12,7 @@ class Bus {
     public lat?: number
     public lon?: number
     public speed?: number
-    public distance?: string    // From the stop its going to
+    public distance?: number    // Distance from stop in km
     public hasGPS: boolean;
     // Time
     public arrival: Time        // The time the bus will arrive at the stop     
@@ -45,8 +45,8 @@ class Bus {
 
     private setDistance(destination: Stop): void {
         if (!this.hasGPS) return;
-        let d: number = Math.sqrt(Math.pow(destination.lat - this.lat, 2) + Math.pow(destination.lon - this.lon, 2)) * 111.139;
-        this.distance = d.toFixed(2) + 'km';
+        this.distance = Math.sqrt(Math.pow(destination.lat - this.lat, 2) + Math.pow(destination.lon - this.lon, 2)) * 111.139;
+        
     }
 
     private setArrival(trip: OCTranspoTrip): void {

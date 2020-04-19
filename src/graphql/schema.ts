@@ -109,6 +109,8 @@ const typeDefs = gql`
 		busCountGPS: Int!
 	}
 
+	scalar Distance
+	
 	type Bus {
 		headsign: String!
 		number: String!
@@ -118,7 +120,7 @@ const typeDefs = gql`
 		lat: Float
 		lon: Float
 		speed: Float
-		distance: String
+		distance: Distance
 		hasGPS: Boolean!
 		arrival: Time!			# When the bus will arrive
 		adjusted: Boolean!		# Whether or not the arrival time has been adjusted
