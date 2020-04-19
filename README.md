@@ -1,15 +1,29 @@
-# GraphQL API for GTFS data
+# General Transit Feed Specification GraphQL API
 
-This is a [GraphQL API](https://graphql.org/) designed for [General Transit Feed Specification](https://developers.google.com/transit/gtfs) 
+This is a [GraphQL API](https://graphql.org/) designed for [General Transit Feed Specification](https://developers.google.com/transit/gtfs)
 (GTFS) data from OC Transpo which is Ottawa's public transit system.
-This API also wraps [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc)
-for live bus data including arrival time and GPS data making it MUCH MUCH MUCH easier to use.
+In addition to being able to query GTFS data this API wraps [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc)
+for live buses which includes arrival times and GPS data. Wrapping OC Transpo's REST API with Graphql makes it easier to use by:
+
+- Documenting nullable fields. This is done very poorly in OC Transpo's documentation. For example in OC Transpo's API GPS data for latitude, longitude and speed are
+returned as strings (not number/floats) which can be and are often empty strings. To solve this my schema makes position fields nullable and adds a field "hasGPS" making it easy
+to check when GPS data is available.
+
+- The response structure is made much easier to understand. While using OC Transpo's API I noticed certain fields could be a list of Objects or a single Object.
+I think this is some sort of issue with their API being default XML and being converted to JSON before being sent but I'm not sure.
+Another field only had one nested subfield which was very redundant. I broke the response I was getting down into types you can find them [here](./src/graphql/LiveBusData/types.ts).
+However now with GraphQL the response structure is consistent.
+
+- Fields were renamed to be more accurate and to match what was being used in the rest of the GraphQL API.
+
+- Of course you also gain all the other benefits of a GraphQL API such selecting specific fields, type checking, self documenting schema, and getting all your data in 1 request
+
 Built using [Apollo-Server](https://www.apollographql.com/docs/apollo-server/), TypeScript and MongoDB.
 
 ## Schema
 
 The full schema can be found [here](./src/graphql/schema.ts).
-I highly recommend taking at look at the schema using [Graphql Voyager](https://apis.guru/graphql-voyager/) (must copy paste schema).
+I highly recommend taking at look at the schema using [Graphql Voyager](https://apis.guru/graphql-voyager/) (to use it you need to copy paste schema).
 This is a simplified diagram showing the relationship between types:
 
 ![schema diagram](content/diagram.png)
