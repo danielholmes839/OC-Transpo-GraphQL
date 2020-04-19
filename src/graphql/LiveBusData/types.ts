@@ -8,30 +8,30 @@ import { Bus } from './Bus';
 */
 type OCTranspoResponse = {
     StopNo: string;
-    StopDescription: string;                            // Matches stop name in GTFS    maybe it should be named StopName 
+    StopDescription: string;                            // Seems to match stop name in GTFS 
     Error: string;
-    Routes: {                                           // Has only one subfield???     maybe dont                                    
-        Route: OCTranspoRoute | OCTranspoRoute[];       // Can be a list or not???      maybe it should always be a list
+    Routes: {                                           // Only one subfield                                    
+        Route: OCTranspoRoute | OCTranspoRoute[];       // Object or list of objects
     }
 }
 
 type OCTranspoRoute = {
     RouteNo: string;
     RouteHeading: string;
-    Direction: string;
+    Direction: string;                                  
     DirectionID: number;
-    Trips: OCTranspoTrip | OCTranspoTrip[];             // Can be a list or not???      maybe it should always be a list
+    Trips: OCTranspoTrip | OCTranspoTrip[];             // Object or list of objects
 }
 
 type OCTranspoTrip = {
-    RouteHeading: string;
-    RouteNo: string;
+    RouteHeading: string;                               // Matches trip headsign in GTFS
+    RouteNo: string;                                    // Matches route number in GTFS
     DirectionID: number;
-    AdjustedScheduleTime: string;
-    AdjustmentAge: string;
-    TripStartTime: string;
-    LastTripOfSchedule: boolean;
-    BusType: string;
+    AdjustedScheduleTime: string;                       // Minutes after trip start the bus will arrive
+    AdjustmentAge: string;                              // Time in minutes since the AdjustedScheduleTime was changed. -1 means on schedule
+    TripStartTime: string;                              // TripStartTime + AdjustedScheduleTime is when the bus will arrive. This could be done much better
+    LastTripOfSchedule: boolean;                    
+    BusType: string;                                    
     Latitude: string;                                   // sometimes empty string???    maybe the bus is broken
     Longitude: string                                   // sometimes empty string???    maybe the api is broken
     GPSSpeed: string;                                   // sometimes empty string???    maybe there should be feedback 
