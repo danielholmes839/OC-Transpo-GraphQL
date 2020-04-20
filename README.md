@@ -30,7 +30,7 @@ GraphQL ensures the response structure is always consistent.
 
 - Fields were renamed to be more accurate and to match what was being used in the rest of the GraphQL API. Irellevant or unusable fields were removed.
 
-- All the other benefits of a GraphQL API such selecting specific fields, type checking, self documenting schema, and getting all your data in 1 request
+- All the other benefits of a GraphQL API such as selecting specific fields, type checking, self documenting schema, and getting all your data in 1 request
 
 ## Schema
 
