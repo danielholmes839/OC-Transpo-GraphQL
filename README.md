@@ -3,9 +3,13 @@
 This is a [GraphQL API](https://graphql.org/) designed for [General Transit Feed Specification](https://developers.google.com/transit/gtfs)
 (GTFS) data from OC Transpo which is Ottawa's public transit system.
 In addition to being able to query GTFS data this API wraps [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc)
-for live buses which includes updated arrival times and GPS data.
+for live buses which includes updated arrival times and GPS data. The GraphQL API can also generate static maps using Google Maps.
 
-Built using [Apollo-Server](https://www.apollographql.com/docs/apollo-server/), TypeScript and MongoDB.
+Built using
+[TypeScript](https://www.typescriptlang.org/),
+[Apollo-Server](https://www.apollographql.com/docs/apollo-server/),
+[MongoDB](https://www.mongodb.com/) and
+[Google Maps](https://cloud.google.com/maps-platform/maps)
 
 ## OC Transpo's REST API
 
@@ -21,6 +25,8 @@ I think this is some sort of issue with their API being default XML and being co
 Another thing that I noticed was a field that only had one nested subfield which was very redundant.
 I broke the response I was getting from their API down into TypeScript types which highlight these issues you can find them [here](./src/graphql/LiveBusData/types.ts).
 GraphQL ensures the response structure is always consistent.
+
+- Added features to put bus data into google maps and calculate distance from their destination
 
 - Fields were renamed to be more accurate and to match what was being used in the rest of the GraphQL API. Irellevant or unusable fields were removed.
 
