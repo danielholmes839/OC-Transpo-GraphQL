@@ -18,7 +18,7 @@ type OCTranspoResponse = {
 type OCTranspoRoute = {
     RouteNo: string;
     RouteHeading: string;
-    Direction: string;                                  
+    Direction: string;
     DirectionID: number;
     Trips: OCTranspoTrip | OCTranspoTrip[];             // Object or list of objects
 }
@@ -30,14 +30,14 @@ type OCTranspoTrip = {
     AdjustedScheduleTime: string;                       // Minutes after trip start the bus will arrive
     AdjustmentAge: string;                              // Time in minutes since the AdjustedScheduleTime was changed. -1 means on schedule
     TripStartTime: string;                              // TripStartTime + AdjustedScheduleTime is when the bus will arrive. This could be done much better
-    LastTripOfSchedule: boolean;                    
-    BusType: string;                                    
+    LastTripOfSchedule: boolean;
+    BusType: string;
     Latitude: string;                                   // sometimes empty string???    maybe the bus is broken
     Longitude: string                                   // sometimes empty string???    maybe the api is broken
     GPSSpeed: string;                                   // sometimes empty string???    maybe there should be feedback 
 }
 
-type StopCodeKV = {[key: string]: Bus[]}
+type StopCodeKV = { [key: string]: Bus[] }
 
 export {
     OCTranspoResponse, OCTranspoRoute, OCTranspoTrip, StopCodeKV
