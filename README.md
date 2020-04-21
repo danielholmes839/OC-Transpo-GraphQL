@@ -35,7 +35,7 @@ GraphQL ensures the response structure is always consistent.
 ## Travel Planner
 
 I'm currently designing a travel planner using A* search. More details will be added when it's complete.
-The graph data representing the transit system can be found [here](./src/astar/GRAPH.JSON). Below is a visualization of the graph.
+The graph data representing the transit system can be found [here](./src/astar/GRAPH.json). Below is a visualization of the graph.
 
 ![graph](content/graph.png)
 
