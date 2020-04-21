@@ -32,6 +32,13 @@ GraphQL ensures the response structure is always consistent.
 
 - All the other benefits of a GraphQL API such as selecting specific fields, type checking, self documenting schema, and getting all your data in 1 request
 
+## Travel Planner
+
+I'm currently designing a travel planner using A* search. More details will be added when it's complete.
+The graph data representing the transit system can be found [here](./src/astar/GRAPH.JSON). Below is a visualization of the graph.
+
+![graph](content/graph.png)
+
 ## Schema
 
 The full schema can be found [here](./src/graphql/schema.ts).
