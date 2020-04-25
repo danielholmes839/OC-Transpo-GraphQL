@@ -7,6 +7,7 @@ import { StopTime } from './StopTime/types';
 import { Trip } from './Trip/types';
 import { Service } from './Service/types';
 import { ServiceException } from './ServiceException/types';
+import { Schedule } from './Schedule/types'
 
 
 interface Date {
@@ -27,4 +28,4 @@ interface Context {
     authenticated: boolean;
 }
 
-export { Date, Time, Context, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException }
+export { Date, Time, Context, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException, Schedule }

@@ -1,4 +1,4 @@
-import { Route, Stop, StopRoute, StopTime } from '../types';
+import { Route, Stop, StopRoute, StopTime, Schedule } from '../types';
 import { routeLoader, stopLoader, stopTimeLoader } from '../loaders';
 import { Bus } from '../LiveBusData/Bus';
 import BusAPI from '../LiveBusData/BusAPI';
@@ -17,6 +17,9 @@ export default {
     busData: async (parent: StopRoute): Promise<Bus[]> => {
         const stop: Stop = await stopLoader.load(parent.stop);
         return BusAPI.get(stop, parent.number);
+    },
+    schedule: (parent: StopRoute): Schedule => {
+        return { stopTimes: parent.stopTimes }
     },
     map: async (parent: StopRoute): Promise<StaticStopRouteMap> => {
         const stop: Stop = await stopLoader.load(parent.stop);

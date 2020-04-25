@@ -32,6 +32,11 @@ const typeDefs = gql`
 		stopRoutes: [StopRoute!]!
 	}
 
+	type Schedule {
+		next: StopTime
+		all: [StopTime!]!
+	}
+
 	type Stop implements Node {
 		id: ID!
 		name: String!
@@ -52,6 +57,7 @@ const typeDefs = gql`
 		route: Route!
 		stopTimes: [StopTime!]!		
 		busData: LiveBusData! 		# live 
+		schedule: Schedule!
 		map: StaticStopRouteMap!
 	}
 
