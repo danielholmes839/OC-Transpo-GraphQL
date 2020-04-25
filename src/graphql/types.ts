@@ -27,4 +27,4 @@ interface Context {
     authenticated: boolean;
 }
 
-export { Date, Time, Context, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException, Login, LoginPayload }
+export { Date, Time, Context, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException }
