@@ -16,6 +16,24 @@ type EdgeData = {
     routes: string[];
 }
 
+type Explored = { [key: string]: PQNode }
+
+type Leg = {
+    start: string;
+    end: string;
+    routes: string[];
+    distance: number;
+    walk: boolean;
+}
+
+type PQNode = {
+    id: string;             // node id
+    previous: string;       // previous node id
+    weight: number;         // A* priority queue weight
+    distance: number;       // Distance travelled to get to the node
+    walked: boolean         // This node was walked to from previous
+}
+
 export {
-    GraphData, NodeData, EdgeData
+    GraphData, NodeData, EdgeData, Leg, PQNode, Explored
 }
