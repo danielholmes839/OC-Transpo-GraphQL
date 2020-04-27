@@ -35,7 +35,8 @@ class BusAPI {
     private async request(stopCode: string): Promise<OCTranspoResponse> {
         // requests the new live bus data and return the value to be cached
         let config = this.createConfig(stopCode);
-        let data: OCTranspoResponse = (await this.api.get(config.url, config)).data.GetRouteSummaryForStopResult;
+        let response: AxiosResponse = await this.api.get(config.url, config)
+        let data: OCTranspoResponse = response.data.GetRouteSummaryForStopResult;
         return data;
     }
 
@@ -43,6 +44,9 @@ class BusAPI {
         // creates the value to be cached
         let data: OCTranspoResponse = await this.request(stop.code);
         let routes: StopCodeKV = {}
+
+        if (data == undefined) return routes;
+
         if (!Array.isArray(data.Routes.Route)) data.Routes.Route = [data.Routes.Route];
         for (let route of data.Routes.Route) {
             // Routes
