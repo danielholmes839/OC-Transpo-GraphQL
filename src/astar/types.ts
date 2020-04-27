@@ -11,7 +11,7 @@ type NodeData = {
 
 type EdgeData = {
     id: string;
-    time: number;
+    distance: number;
     walkOnly: boolean;
     routes: string[];
 }
