@@ -167,7 +167,7 @@ const typeDefs = gql`
 		userGet: User
 		userLogin(email: String!, password: String!): LoginPayload
 		createTravelPlan(input: TravelPlanInput): TravelPlan
-		stopSearch(name: String!): [Stop!]!
+		stopSearch(name: String!, limit: Int): [Stop!]!
 	}
 
 	type Mutation {

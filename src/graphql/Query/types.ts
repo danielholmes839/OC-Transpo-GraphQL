@@ -18,4 +18,9 @@ interface TravelPlanInput {
     }
 }
 
-export { Login, LoginPayload, TravelPlanInput }
+interface StopSearch {
+    name: string;
+    limit: number;
+}
+
+export { Login, LoginPayload, TravelPlanInput, StopSearch }

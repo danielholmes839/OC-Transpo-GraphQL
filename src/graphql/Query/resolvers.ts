@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { plan, TravelPlan } from '../../astar/index';
 
 import { stopLoader, stopRouteLoader, routeLoader, tripLoader, userLoader, serviceLoader } from '../loaders';
-import { Login, LoginPayload, TravelPlanInput } from './types'
+import { Login, LoginPayload, TravelPlanInput, StopSearch } from './types'
 import { Stop, StopRoute, Route, Trip, User, Service, Context } from '../types';
 import { UserCollection, StopCollection } from '../collections';
 
@@ -54,11 +54,12 @@ const resolvers = {
 		return plan(start.id, end.id);
 	},
 
-	stopSearch: async (_: void, { name }: any): Promise<Stop[]> => {
+	stopSearch: async (_: void, { name, limit }: StopSearch): Promise<Stop[]> => {
+		if (!limit) limit = 3;
 		return StopCollection.find(
 			{ $text: { $search: name } },
 			{ score: { $meta: "textScore" } }
-		).sort({ score: { $meta: "textScore" } }).limit(5)
+		).sort({ score: { $meta: "textScore" } }).limit(limit);
 	}
 }
 
