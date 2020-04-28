@@ -6,7 +6,7 @@ import { plan, TravelPlan } from '../../astar/index';
 import { stopLoader, stopRouteLoader, routeLoader, tripLoader, userLoader, serviceLoader } from '../loaders';
 import { Login, LoginPayload, TravelPlanInput } from './types'
 import { Stop, StopRoute, Route, Trip, User, Service, Context } from '../types';
-import { UserCollection } from '../collections';
+import { UserCollection, StopCollection } from '../collections';
 
 
 interface ID {
@@ -52,6 +52,13 @@ const resolvers = {
 		let [start, end] = <Stop[]>await stopLoader.loadMany([input.start, input.end]);
 		if (start == null || end == null) return null;
 		return plan(start.id, end.id);
+	},
+
+	stopSearch: async (_: void, { name }: any): Promise<Stop[]> => {
+		return StopCollection.find(
+			{ $text: { $search: name } },
+			{ score: { $meta: "textScore" } }
+		).sort({ score: { $meta: "textScore" } }).limit(5)
 	}
 }
 

@@ -164,10 +164,10 @@ const typeDefs = gql`
 		tripGet(id: ID!): Trip
 		serviceGet(id: ID!): Stop
 		stopGet(id: ID!): Stop
-		stopSearch(name: String!, limit: Int): [Stop!]!
 		userGet: User
 		userLogin(email: String!, password: String!): LoginPayload
 		createTravelPlan(input: TravelPlanInput): TravelPlan
+		stopSearch(name: String!): [Stop!]!
 	}
 
 	type Mutation {
