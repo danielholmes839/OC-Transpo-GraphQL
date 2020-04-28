@@ -24,7 +24,6 @@ const nextStopTime = async (stopTimeIDs: string[]): Promise<StopTime> => {
     let stopTimes = <StopTime[]>await stopTimeLoader.loadMany(stopTimeIDs);
     let trips = <Trip[]>await tripLoader.loadMany(stopTimes.map(stopTime => stopTime.trip));
     let services = <Service[]>await serviceLoader.loadMany(trips.map(trip => trip.service));
-
     let date = new Date();
     let day = days[date.getDay()];
     let time = date.getHours() * 60 + date.getMinutes();
