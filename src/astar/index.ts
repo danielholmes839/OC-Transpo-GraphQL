@@ -270,9 +270,7 @@ class Solver {
 
 let graph: Graph = new Graph(data);
 const plan = (start: string, end: string): TravelPlan => {
-    let travelPlan: TravelPlan = new Solver(graph, start, end).solve();
-    //console.log(travelPlan);
-    return travelPlan
+    return new Solver(graph, start, end).solve();
 }
 
 export { plan, TravelPlan, Leg }

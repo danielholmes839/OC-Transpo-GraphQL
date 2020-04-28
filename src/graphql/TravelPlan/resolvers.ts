@@ -12,7 +12,6 @@ export default {
     },
 
     legs: (parent: TravelPlan): Leg[] => {
-        console.log(parent);
         return parent.legs;
     },
 }
