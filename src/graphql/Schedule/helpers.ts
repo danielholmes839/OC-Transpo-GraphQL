@@ -37,7 +37,7 @@ const nextStopTime = async (stopTimeIDs: string[]): Promise<StopTime> => {
     let end = stopTimes.length - 1;
     let middle = Math.floor((start + end) / 2);
 
-    while (start != end - 1) {
+    while (start != middle) {
         if (time > stopTimes[middle].time.int) start = middle;
         else end = middle;
         middle = Math.floor((start + end) / 2);
