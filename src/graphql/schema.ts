@@ -25,7 +25,8 @@ const typeDefs = gql`
 		end: Stop!
 		distance: Distance!
 		instructions: String!
-		routes: [Route!]		# Will be null if walking
+		routes: [Route!]			# Will be null if walking
+		stopRoutes: [StopRoute!]
 		walk: Boolean!
 	}
 

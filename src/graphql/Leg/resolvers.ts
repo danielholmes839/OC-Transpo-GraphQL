@@ -1,6 +1,6 @@
 import { Leg } from '../../astar/index';
-import { Stop, StopRoute } from '../types';
-import { stopLoader, stopRouteLoader } from '../loaders';
+import { Stop, StopRoute, Route } from '../types';
+import { stopLoader, stopRouteLoader, routeLoader } from '../loaders';
 
 export default {
     start: async (parent: Leg): Promise<Stop> => {
@@ -19,10 +19,20 @@ export default {
             // Walking between stops
             return `Walk from ${start.name} to ${end.name}`;
         } else {
-            // Taking a 
-            let route: StopRoute = await stopRouteLoader.load(start.id+parent.routes[0]);
-            return `Take the ${route.number} ${route.headsign} from ${start.name} to ${end.name}`;
+            // Taking a bus
+            let stopRoute: StopRoute = await stopRouteLoader.load(start.id+parent.routes[0]);
+            return `Take the ${stopRoute.number} ${stopRoute.headsign} from ${start.name} to ${end.name}`;
         }
-    } 
+    }, 
+
+    routes: async (parent: Leg): Promise<(Route | Error)[]> => {
+        if (parent.routes == null) return null;
+        return routeLoader.loadMany(parent.routes);
+    },
+
+    stopRoutes: async (parent: Leg): Promise<(StopRoute | Error)[]> => {
+        if (parent.routes == null) return null;
+        return stopRouteLoader.loadMany(parent.routes.map(route => parent.start+route));
+    }
 
 }
