@@ -47,131 +47,146 @@ This is a simplified diagram showing the relationship between types:
 
 ![schema diagram](content/diagram.png)
 
-## Example
+## Examples
 
-### Query
+### Stop Search
+
+Query
 
 ```gql
 query {
-  userGet {
-    email
-    favouriteStops {
+  stopSearch(name:"pleasant park cavendish", limit: 2) {
+    id
+    name
+    stopRoutes {
+      headsign
+      number
+    }
+  }
+}
+```
+
+Result
+
+```json
+{
+  "data": {
+    "stopSearch": [
+      {
+        "id": "AG150",
+        "name": "PLEASANT PARK / CAVENDISH",
+        "stopRoutes": [
+          {
+            "headsign": "Hurdman",
+            "number": "49"
+          }
+        ]
+      },
+      {
+        "id": "AG160",
+        "name": "PLEASANT PARK / CAVENDISH",
+        "stopRoutes": [
+          {
+            "headsign": "Elmvale",
+            "number": "49"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Travel Plan
+
+Query
+
+```gql
+query {
+  createTravelPlan(input:{
+    start: "AK151",
+    end: "CD998"
+  }) {
+    start {
       id
-      stop {
+      name
+    }
+    end {
+      id
+      name
+    }
+    distance
+    legs {
+      distance
+      instructions
+      walk
+      start {
+        id
         name
       }
-      stopRoutes {
+      end {
+        name
         id
-        headsign
-        number
-        nextStopTime {
-          time {
-            string
-          }
-        }
-        route {
-          colour
-          textColour
-        }
       }
     }
   }
 }
 ```
 
-### Result
+Result
 
-``` json
+```json
 {
   "data": {
-    "userGet": {
-      "email": "test@test.com",
-      "favouriteStops": [
+    "createTravelPlan": {
+      "start": {
+        "id": "AK151",
+        "name": "PLEASANT PARK / ARCH"
+      },
+      "end": {
+        "id": "CD998",
+        "name": "UOTTAWA O-TRAIN WEST / OUEST"
+      },
+      "distance": "7.2km",
+      "legs": [
         {
-          "id": "5e7c3e49f9e04b4294e318b8",
-          "stop": {
-            "name": "HURDMAN D"
+          "distance": "5.5km",
+          "instructions": "Take the 49 Hurdman from PLEASANT PARK / ARCH to HURDMAN A",
+          "walk": false,
+          "start": {
+            "id": "AK151",
+            "name": "PLEASANT PARK / ARCH"
           },
-          "stopRoutes": [
-            {
-              "id": "AL05040-313",
-              "headsign": "St-Laurent",
-              "number": "40",
-              "nextStopTime": {
-                "time": {
-                  "string": "12:57"
-                }
-              },
-              "route": {
-                "colour": "D74100",
-                "textColour": "FFFFFF"
-              }
-            },
-            {
-              "id": "AL05046-313",
-              "headsign": "Hurdman",
-              "number": "46",
-              "nextStopTime": {
-                "time": {
-                  "string": "13:09"
-                }
-              },
-              "route": {
-                "colour": "6E6E70",
-                "textColour": "FFFFFF"
-              }
-            }
-          ]
+          "end": {
+            "name": "HURDMAN A",
+            "id": "AF910"
+          }
         },
         {
-          "id": "5e7c46b2f9e04b4294e318b9",
-          "stop": {
-            "name": "ELMVALE MALL STOP"
+          "distance": "24m",
+          "instructions": "Walk from HURDMAN A to HURDMAN O-TRAIN WEST / OUEST",
+          "walk": true,
+          "start": {
+            "id": "AF910",
+            "name": "HURDMAN A"
           },
-          "stopRoutes": [
-            {
-              "id": "AF94048-313",
-              "headsign": "Elmvale",
-              "number": "48",
-              "nextStopTime": {
-                "time": {
-                  "string": "12:57"
-                }
-              },
-              "route": {
-                "colour": "6E6E70",
-                "textColour": "FFFFFF"
-              }
-            },
-            {
-              "id": "AF94049-313",
-              "headsign": "Elmvale",
-              "number": "49",
-              "nextStopTime": {
-                "time": {
-                  "string": "13:27"
-                }
-              },
-              "route": {
-                "colour": "6E6E70",
-                "textColour": "FFFFFF"
-              }
-            },
-            {
-              "id": "AF94090-313",
-              "headsign": "Greenboro",
-              "number": "90",
-              "nextStopTime": {
-                "time": {
-                  "string": "13:04"
-                }
-              },
-              "route": {
-                "colour": "D74100",
-                "textColour": "FFFFFF"
-              }
-            }
-          ]
+          "end": {
+            "name": "HURDMAN O-TRAIN WEST / OUEST",
+            "id": "AF990"
+          }
+        },
+        {
+          "distance": "1.7km",
+          "instructions": "Take the 1 Tunney's Pasture from HURDMAN O-TRAIN WEST / OUEST to UOTTAWA O-TRAIN WEST / OUEST",
+          "walk": false,
+          "start": {
+            "id": "AF990",
+            "name": "HURDMAN O-TRAIN WEST / OUEST"
+          },
+          "end": {
+            "name": "UOTTAWA O-TRAIN WEST / OUEST",
+            "id": "CD998"
+          }
         }
       ]
     }
@@ -179,7 +194,139 @@ query {
 }
 ```
 
-### Generated UI
+### User Login
+
+Query
+
+```gql
+query {
+  userLogin(email:"Daniel", password:"test") {
+    token
+    user {
+      id
+      email
+      favouriteStops {
+        id
+        stop {
+          name
+        }
+        stopRoutes {
+          number
+          headsign
+          map
+          busData {
+            buses {
+              headsign
+              number
+              direction
+              hasGPS
+              adjusted
+              arrival {
+                hour
+                minute
+              }
+            }
+            busCount
+            busCountGPS
+          }
+          schedule {
+            next {
+              id
+              time {
+                hour
+                minute
+                int
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Result
+
+```json
+{
+  "data": {
+    "userLogin": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWU4YmE4MjdkMjA4N2E1ZjljZDExNTIwIiwiZW1haWwiOiJEYW5pZWwiLCJpYXQiOjE1ODgxMDYyMjcsImV4cCI6MTU4ODE5MjYyN30.7zLoQ3a_7oxu4n9QQplcAswseH1Y74uJtoHi8VhgoPA",
+      "user": {
+        "id": "5e8ba827d2087a5f9cd11520",
+        "email": "Daniel",
+        "favouriteStops": [
+          {
+            "id": "5e93cb424512fb0cd060a437",
+            "stop": {
+              "name": "HURDMAN B"
+            },
+            "stopRoutes": [
+              {
+                "number": "9",
+                "headsign": "Hurdman",
+                "map": "https://maps.googleapis.com/maps/api/staticmap?key=SUPERSECRETGOOGLEMAPSAPIKEYWHICHIREMOVED&center=45.412144,-75.66555699999999&size=600x400&markers=color:blue%7Csize:mid%7Clabel:S%7C45.412144,-75.66555699999999",
+                "busData": {
+                  "buses": [
+                    {
+                      "headsign": "Hurdman",
+                      "number": "9",
+                      "direction": 1,
+                      "hasGPS": false,
+                      "adjusted": false,
+                      "arrival": {
+                        "hour": 16,
+                        "minute": 49
+                      }
+                    },
+                    {
+                      "headsign": "Hurdman",
+                      "number": "9",
+                      "direction": 1,
+                      "hasGPS": false,
+                      "adjusted": false,
+                      "arrival": {
+                        "hour": 17,
+                        "minute": 49
+                      }
+                    },
+                    {
+                      "headsign": "Hurdman",
+                      "number": "9",
+                      "direction": 1,
+                      "hasGPS": false,
+                      "adjusted": false,
+                      "arrival": {
+                        "hour": 18,
+                        "minute": 49
+                      }
+                    }
+                  ],
+                  "busCount": 3,
+                  "busCountGPS": 0
+                },
+                "schedule": {
+                  "next": {
+                    "id": "69854135-JAN20-MARBRK20-Weekday-25AF920",
+                    "time": {
+                      "hour": 16,
+                      "minute": 56,
+                      "int": 1016
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+### Prototype Dashboard
 
 (Different data but with the same format)
 
