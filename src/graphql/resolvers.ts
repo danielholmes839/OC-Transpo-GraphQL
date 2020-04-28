@@ -14,6 +14,8 @@ import LiveBusData from './LiveBusData/resolvers';
 import StaticStopRouteMap from './StaticStopRouteMap/resolvers';
 import Distance from './Distance/resolvers';
 import Schedule from './Schedule/resolvers';
+import TravelPlan from './TravelPlan/resolvers';
+import Leg from './Leg/resolvers';
 
 const resolvers: IResolvers = {
     Query,
@@ -30,7 +32,9 @@ const resolvers: IResolvers = {
     LiveBusData,
     StaticStopRouteMap,
     Distance,
-    Schedule
+    Schedule,
+    TravelPlan,
+    Leg
 }
 
 export default resolvers;

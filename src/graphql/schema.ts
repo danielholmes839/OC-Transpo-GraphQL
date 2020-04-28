@@ -1,14 +1,32 @@
 import { gql } from 'apollo-server';
 
 const typeDefs = gql`
-	interface Node {
-		id: ID!
-	}
+	# Fancy distance string
+	scalar Distance
+
+	# URL for google maps static API
+	scalar StaticStopRouteMap
 
 	type Date {
 		year: Int!
 		month: Int!
 		day: Int!
+	}
+
+	type TravelPlan {
+		start: Stop!
+		end: Stop!
+		distance: Distance!
+		legs: [Leg!]!
+	}
+
+	type Leg {
+		start: Stop!	
+		end: Stop!
+		distance: Distance!
+		instructions: String!
+		routes: [Route!]		# Will be null if walking
+		walk: Boolean!
 	}
 
 	type Time {
@@ -18,14 +36,14 @@ const typeDefs = gql`
 		int: Int!
 	}
 
-	type User implements Node {
+	type User {
 		id: ID!
 		email: String!
 		password: String
 		favouriteStops: [FavouriteStop]!
 	}
 
-	type FavouriteStop implements Node {
+	type FavouriteStop {
 		id: ID!
 		user: User!
 		stop: Stop!
@@ -37,7 +55,7 @@ const typeDefs = gql`
 		all: [StopTime!]!
 	}
 
-	type Stop implements Node {
+	type Stop {
 		id: ID!
 		name: String!
 		code: String!
@@ -47,9 +65,7 @@ const typeDefs = gql`
 		stopRoutes: [StopRoute!]!
 	}
 
-	scalar StaticStopRouteMap
-
-	type StopRoute implements Node {
+	type StopRoute {
 		id: ID!
 		headsign: String!           # route headsign
 		number: String!             # route number
@@ -61,7 +77,7 @@ const typeDefs = gql`
 		map: StaticStopRouteMap!
 	}
 
-	type Route implements Node {
+	type Route {
 		id: ID!
 		number: String!
 		type: String!
@@ -71,7 +87,7 @@ const typeDefs = gql`
 		stops: [Stop!]!
 	}
 	
-	type Trip implements Node {
+	type Trip {
 		id: ID!
 		headsign: String!
 		direction: Int!
@@ -80,7 +96,7 @@ const typeDefs = gql`
 		stopTimes: [StopTime!]!
 	}
 
-	type StopTime implements Node {
+	type StopTime {
 		id: ID!
 		sequence: Int!
 		time: Time!
@@ -88,7 +104,7 @@ const typeDefs = gql`
 		stop: Stop!     
 	}
 
-	type Service implements Node {
+	type Service {
 		id: ID!
 		start: Date!
 		end: Date!                         
@@ -102,7 +118,7 @@ const typeDefs = gql`
 		sunday: Boolean!
 	}
 
-	type ServiceException implements Node {
+	type ServiceException {
 		id: ID!
 		date: Date!
 		removed: Boolean!
@@ -114,8 +130,6 @@ const typeDefs = gql`
 		busCount: Int!
 		busCountGPS: Int!
 	}
-
-	scalar Distance
 	
 	type Bus {
 		headsign: String!
@@ -130,6 +144,11 @@ const typeDefs = gql`
 		hasGPS: Boolean!
 		arrival: Time!			# When the bus will arrive
 		adjusted: Boolean!		# Whether or not the arrival time has been adjusted
+	}
+
+	input TravelPlanInput {
+		start: ID!
+		end: ID!
 	}
 
 	type LoginPayload {
@@ -147,6 +166,7 @@ const typeDefs = gql`
 		stopSearch(name: String!, limit: Int): [Stop!]!
 		userGet: User
 		userLogin(email: String!, password: String!): LoginPayload
+		createTravelPlan(input: TravelPlanInput): TravelPlan
 	}
 
 	type Mutation {

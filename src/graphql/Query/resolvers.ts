@@ -1,10 +1,13 @@
-import * as jwt from 'jsonwebtoken';
-import * as bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
+import { plan, TravelPlan } from '../../astar/index';
 
 import { stopLoader, stopRouteLoader, routeLoader, tripLoader, userLoader, serviceLoader } from '../loaders';
-import { Login, LoginPayload } from './types'
+import { Login, LoginPayload, TravelPlanInput } from './types'
 import { Stop, StopRoute, Route, Trip, User, Service, Context } from '../types';
 import { UserCollection } from '../collections';
+
 
 interface ID {
 	id: string;
@@ -19,14 +22,14 @@ const createToken = (user: User): string => {
 };
 
 const resolvers = {
-	stopGet: (parent: void, { id }: ID): Promise<Stop> => stopLoader.load(id),
-	stopRouteGet: (parent: void, { id }: ID): Promise<StopRoute> => stopRouteLoader.load(id),
-	routeGet: (parent: void, { id }: ID): Promise<Route> => routeLoader.load(id),
-	tripGet: (parent: void, { id }: ID): Promise<Trip> => tripLoader.load(id),
-	serviceGet: (parent: void, { id }: ID): Promise<Service> => serviceLoader.load(id),
+	stopGet: (_: void, args: ID): Promise<Stop> => stopLoader.load(args.id),
+	stopRouteGet: (_: void, args: ID): Promise<StopRoute> => stopRouteLoader.load(args.id),
+	routeGet: (_: void, args: ID): Promise<Route> => routeLoader.load(args.id),
+	tripGet: (_: void, args: ID): Promise<Trip> => tripLoader.load(args.id),
+	serviceGet: (_: void, args: ID): Promise<Service> => serviceLoader.load(args.id),
 
 	// User Queries
-	userGet: (parent: void, args: void, context: Context): Promise<User> => {
+	userGet: (_: void, args: void, context: Context): Promise<User> => {
 		if (context.authenticated) return userLoader.load(context.user);
 		throw new Error('Request Not Authenticated');
 	},
@@ -43,6 +46,12 @@ const resolvers = {
 			token: createToken(user),
 			expiration: 24
 		}
+	},
+
+	createTravelPlan: async (_: void, { input }: TravelPlanInput): Promise<TravelPlan> => {
+		let [start, end] = <Stop[]>await stopLoader.loadMany([input.start, input.end]);
+		if (start == null || end == null) return null;
+		return plan(start.id, end.id);
 	}
 }
 

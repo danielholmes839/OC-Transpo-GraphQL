@@ -11,4 +11,11 @@ interface LoginPayload {
     expiration: number;
 }
 
-export { Login, LoginPayload }
+interface TravelPlanInput {
+    input: {
+        start: string;
+        end: string;
+    }
+}
+
+export { Login, LoginPayload, TravelPlanInput }
