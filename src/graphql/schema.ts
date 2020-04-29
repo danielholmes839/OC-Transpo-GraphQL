@@ -6,6 +6,7 @@ const typeDefs = gql`
 
 	# URL for google maps static API
 	scalar StaticStopRouteMap
+	scalar StaticTravelPlanMap
 
 	type Date {
 		year: Int!
@@ -18,6 +19,7 @@ const typeDefs = gql`
 		end: Stop!
 		distance: Distance!
 		legs: [Leg!]!
+		map(width: Int, height: Int, zoom: Int): StaticTravelPlanMap!
 	}
 
 	type Leg {

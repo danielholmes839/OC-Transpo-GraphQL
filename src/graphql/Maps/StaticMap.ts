@@ -13,7 +13,7 @@ class StaticMap {
         this.url += `&${name}=${value}`;
     }
 
-    public addMarker(colour: string, size: string, label: string, lat: number, lon: number): void {
+    public addMarker(colour: string, size: string, label: string | number, lat: number, lon: number): void {
         this.url += `&markers=color:${colour}|size:${size}|label:${label}|${lat},${lon}`;
     }
 

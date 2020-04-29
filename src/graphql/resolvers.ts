@@ -11,7 +11,7 @@ import Trip from './Trip/resolvers';
 import Service from './Service/resolvers';
 import ServiceException from './ServiceException/resolvers';
 import LiveBusData from './LiveBusData/resolvers';
-import StaticStopRouteMap from './StaticStopRouteMap/resolvers';
+import { StaticStopRouteMap, StaticTravelPlanMap } from './Maps/resolvers';
 import Distance from './Distance/resolvers';
 import Schedule from './Schedule/resolvers';
 import TravelPlan from './TravelPlan/resolvers';
@@ -31,6 +31,7 @@ const resolvers: IResolvers = {
     ServiceException,
     LiveBusData,
     StaticStopRouteMap,
+    StaticTravelPlanMap,
     Distance,
     Schedule,
     TravelPlan,
