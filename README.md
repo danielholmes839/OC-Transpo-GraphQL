@@ -328,6 +328,4 @@ Result
 
 ### Prototype Dashboard
 
-(Different data but with the same format)
-
 ![example](content/ui.png)
