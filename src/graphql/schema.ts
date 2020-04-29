@@ -75,7 +75,7 @@ const typeDefs = gql`
 		stopTimes: [StopTime!]!		
 		busData: LiveBusData! 		# live 
 		schedule: Schedule!
-		map: StaticStopRouteMap!
+		map(width: Int, height: Int, zoom: Int): StaticStopRouteMap!
 	}
 
 	type Route {

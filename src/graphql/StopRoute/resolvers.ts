@@ -1,8 +1,11 @@
-import { Route, Stop, StopRoute, StopTime, Schedule } from '../types';
-import { routeLoader, stopLoader, stopTimeLoader } from '../loaders';
-import { Bus } from '../LiveBusData/Bus';
 import BusAPI from '../LiveBusData/BusAPI';
 import StaticStopRouteMap from '../StaticStopRouteMap/StaticStopRouteMap';
+import { Size } from '../StaticStopRouteMap/types';
+import { Bus } from '../LiveBusData/Bus';
+import { Route, Stop, StopRoute, StopTime, Schedule } from '../types';
+import { routeLoader, stopLoader, stopTimeLoader } from '../loaders';
+
+
 
 export default {
     stop: (parent: StopRoute): Promise<(Stop | Error)> => {
@@ -21,10 +24,10 @@ export default {
     schedule: (parent: StopRoute): Schedule => {
         return { stopTimes: parent.stopTimes }
     },
-    map: async (parent: StopRoute): Promise<StaticStopRouteMap> => {
+    map: async (parent: StopRoute, { width = 640, height = 320, zoom=13 }: Size & {zoom: number} ): Promise<StaticStopRouteMap> => {
         const stop: Stop = await stopLoader.load(parent.stop);
         const buses: Bus[] = await BusAPI.get(stop, parent.number);
-        let m = new StaticStopRouteMap(stop, buses, { width: 600, height: 400 })
+        let m = new StaticStopRouteMap(stop, buses, { width, height }, zoom)
         return m;
     }
 }

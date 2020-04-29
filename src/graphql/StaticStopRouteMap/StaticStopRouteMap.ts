@@ -4,8 +4,8 @@ import { Stop } from '../types';
 import { Size } from './types';
 
 class StaticStopRouteMap extends StaticMap {
-    public constructor(stop: Stop, buses: Bus[], size: Size) {
-        super(stop, size);
+    public constructor(stop: Stop, buses: Bus[], size: Size, zoom: number) {
+        super(stop, size, zoom);
         this.addStop(stop);
         for (let bus of buses) {
             if (bus.hasGPS) this.addBus(bus);
