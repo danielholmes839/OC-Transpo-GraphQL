@@ -22,7 +22,7 @@ type Leg = {
 
 class Graph {
     /* Graph representing the OC Transpo transit system */
-    private nodes: { [key: string]: Node };                 // nodes
+    private nodes: { [key: string]: Node };
     public constructor(data: GraphData) {
         /* Graph constructor */
         this.nodes = {}
@@ -112,45 +112,42 @@ class TravelPlan {
 
     private addLegs(explored: Explored): void {
         this.legs = [];
-        let routes = new Set<string>(this.path[0].edges[this.path[1].id].routes);
-        let start = this.start;
+        let routes = new Set<string>(this.path[0].edges[this.path[1].id].routes);   // avaible routes
+        let start = this.start;                                                     // node where the leg starts 
 
-        for (let i = 0; i < this.path.length - 1; i++) {
-            let current: Node = this.path[i];
-            let next: Node = this.path[i + 1]
-            let edge: Edge = current.edges[next.id];
+        for (let i = 1; i < this.path.length - 1; i++) {
+            // Adds legs by checking if a transfer is required
+            let current = this.path[i];
+            let next = this.path[i + 1]
+            let edge = current.edges[next.id];
 
             if (next.id === this.end.id) {
+                // The next node is the end of the travel plan the leg will end there
                 let distance = explored[current.id].distance + edge.distance - explored[start.id].distance;
                 if (edge.walkOnly) {
                     this.addLeg(start, next, null, distance, true);
                 } else {
                     this.addLeg(start, next, Array.from(routes), distance, false);
                 }
-                //if (edge.walkOnly) console.log(`walk from ${start.name} to ${next.name}`);
-                //else console.log(`take ${routes.values().next().value} from ${start.name} to ${next.name}`);
                 break;
             }
 
             if (edge.walkOnly) {
+                // The edge is walk only so it will be it's own leg
                 let distance = explored[next.id].distance - explored[start.id].distance;
                 this.addLeg(start, next, null, distance, true);
-                //console.log(`walk from ${start.name} to ${next.name}`);
                 routes = new Set<string>(next.routes);
                 start = next;
                 continue;
             }
 
-            //console.log(i, routes);
-            //let routes_to_next = new Set<string>(routes);
             for (let route of routes) if (!edge.routes.has(route)) {
+                // Remove routes that cannot be taken to the next node
                 routes.delete(route);
                 if (routes.size === 0) {
-                    //console.log(routes_to_next)
-                    //console.log(`take ${route} from ${start.name} to ${next.name}`);
+                    // No remaining routes create a new leg
                     let distance = explored[next.id].distance - explored[start.id].distance;
                     this.addLeg(start, next, [route], distance, false);
-
                     routes = new Set<string>(next.routes);
                     start = next;
                 }
@@ -181,15 +178,6 @@ class TravelPlan {
         }
         this.path.reverse();
     }
-
-    private logPath(): void {
-        for (let i = 0; i < this.path.length; i++) {
-            let stop = this.path[i];
-            console.log(i, stop.id, stop.name);
-        }
-    }
-
-
 }
 
 
@@ -216,6 +204,7 @@ class Solver {
             comparator: (a, b): number => a.weight - b.weight
         });
 
+        // Queue first element 
         this.priorityQueue.queue({
             id: this.start.id,
             previous: null,
@@ -241,19 +230,23 @@ class Solver {
 
         while (this.priorityQueue.length > 0) {
             let explore: PQNode = this.priorityQueue.dequeue();
-            if (explore.id === this.end.id) return new TravelPlan(explore, this.explored, this.graph);
-            this.explored[explore.id] = explore;
+            if (explore.id === this.end.id) {
+                return new TravelPlan(explore, this.explored, this.graph);
+            }
 
-            let previous: Node = this.graph.getNode(explore.id);              // node to expand
+            this.explored[explore.id] = explore;                                // add to explored
+
+            let previous = this.graph.getNode(explore.id);                      // node to expand
 
             for (let id of Object.keys(previous.edges)) {
+                // Add each edge to the queue
                 if (id in this.explored) continue;
-                let edge: Edge = previous.edges[id];                          // edge to the next node
-                let next: Node = this.graph.getNode(edge.id);                 // the next node
+                let edge = previous.edges[id];                                  // edge to the next node
+                let next = this.graph.getNode(edge.id);                         // the next node
 
-                let delay: number = this.calculateDelay(previous.edges[id], edge);
+                let delay = this.calculateDelay(previous.edges[id], edge);
                 let distance = explore.distance + edge.distance;
-                let weight: number = distance + delay + this.end.distance(next) * 0.8;
+                let weight = distance + delay + this.end.distance(next) * 0.8;
 
                 this.priorityQueue.queue({
                     id,
@@ -268,7 +261,7 @@ class Solver {
 }
 
 
-let graph: Graph = new Graph(data);
+let graph = new Graph(data);
 const plan = (start: string, end: string): TravelPlan => {
     return new Solver(graph, start, end).solve();
 }

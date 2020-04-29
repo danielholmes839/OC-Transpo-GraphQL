@@ -1,4 +1,4 @@
-interface Schedule {
+type Schedule = {
     stopTimes: string[];
 }
 

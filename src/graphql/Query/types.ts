@@ -1,24 +1,24 @@
 import { User } from '../types';
 
-interface Login {
+type Login = {
     email: string;
     password: string;
 }
 
-interface LoginPayload {
+type LoginPayload = {
     user: User;
     token: string;
     expiration: number;
 }
 
-interface TravelPlanInput {
+type TravelPlanInput = {
     input: {
         start: string;
         end: string;
     }
 }
 
-interface StopSearch {
+type StopSearch = {
     name: string;
     limit: number;
 }

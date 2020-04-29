@@ -10,19 +10,19 @@ import { ServiceException } from './ServiceException/types';
 import { Schedule } from './Schedule/types'
 
 
-interface Date {
+type Date = {
     year: number;
     month: number;
     day: number;
 }
 
-interface Time {
+type Time = {
     hour: number;
     minute: number;
     int: number;
 }
 
-interface Context {
+type Context = {
     user: string;
     email: string;
     authenticated: boolean;
