@@ -1,6 +1,7 @@
 import PriorityQueue from 'ts-priority-queue';
 import { GraphData, NodeData, EdgeData, data } from './data';
-
+import { stopLoader } from '../graphql/loaders';
+import { Stop } from '../graphql/types';
 
 type Explored = { [key: string]: PQNode }
 
@@ -177,6 +178,12 @@ class TravelPlan {
             node = explored[node.previous];
         }
         this.path.reverse();
+    }
+
+    public async stops(): Promise<Stop[]> {
+        let ids: string[] = [this.legs[0].start];
+        for (let leg of this.legs) ids.push(leg.end);
+        return <Stop[]> await stopLoader.loadMany(ids);
     }
 }
 
