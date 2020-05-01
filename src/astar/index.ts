@@ -102,13 +102,10 @@ class TravelPlan {
     public distance: number;
 
     public constructor(end: PQNode, explored: Explored, graph: Graph) {
-        //console.log('-------------------------');
         this.distance = end.distance;
         this.end = graph.getNode(end.id)
         this.createPath(end, explored, graph);
-        //this.logPath();
         this.addLegs(explored);
-        //console.log(this.legs);
     }
 
     private addLegs(explored: Explored): void {
@@ -183,7 +180,7 @@ class TravelPlan {
     public async stops(): Promise<Stop[]> {
         let ids: string[] = [this.legs[0].start];
         for (let leg of this.legs) ids.push(leg.end);
-        return <Stop[]> await stopLoader.loadMany(ids);
+        return <Stop[]>await stopLoader.loadMany(ids);
     }
 }
 
@@ -207,6 +204,7 @@ class Solver {
     }
 
     private createQueue(): void {
+        // Initialize the queue
         this.priorityQueue = new PriorityQueue<PQNode>({
             comparator: (a, b): number => a.weight - b.weight
         });
@@ -240,21 +238,22 @@ class Solver {
             if (explore.id === this.end.id) {
                 return new TravelPlan(explore, this.explored, this.graph);
             }
-
             this.explored[explore.id] = explore;                                // add to explored
 
             let previous = this.graph.getNode(explore.id);                      // node to expand
 
             for (let id of Object.keys(previous.edges)) {
-                // Add each edge to the queue
                 if (id in this.explored) continue;
+
+                // Add each edge to the queue
                 let edge = previous.edges[id];                                  // edge to the next node
                 let next = this.graph.getNode(edge.id);                         // the next node
 
-                let delay = this.calculateDelay(previous.edges[id], edge);
-                let distance = explore.distance + edge.distance;
-                let weight = distance + delay + this.end.distance(next) * 0.8;
+                let delay = this.calculateDelay(previous.edges[id], edge);      // delay when switching routes
+                let distance = explore.distance + edge.distance;                // distance in km to get to this node
+                let weight = distance + delay + this.end.distance(next) * 0.8;  // final weight of the node in the priority queue
 
+                // Queue the new node
                 this.priorityQueue.queue({
                     id,
                     previous: explore.id,
