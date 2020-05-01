@@ -84,7 +84,7 @@ const typeDefs = gql`
 		id: ID!
 		number: String!
 		type: String!
-		colour: String!
+		backgroundColour: String!
 		textColour: String!
 		trips: [Trip!]!
 		stops: [Stop!]!
