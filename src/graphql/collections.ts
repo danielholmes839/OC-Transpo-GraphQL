@@ -9,7 +9,7 @@ const Date: Schema = new Schema({
 const Time: Schema = new Schema({
     hour: { type: Number, required: true },
     minute: { type: Number, required: true },
-    int: { type: Number, required: true }
+    int: { type: Number, required: true, index: true }
 });
 
 import { FavouriteStopCollection } from './FavouriteStop/model';
