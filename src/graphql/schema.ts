@@ -8,6 +8,12 @@ const typeDefs = gql`
 	scalar StaticStopRouteMap
 	scalar StaticTravelPlanMap
 
+	type Time {
+		string: String!
+		int: Int!
+		remaining: Int!						# remaining time in minutes until this time
+	}
+
 	type Date {
 		year: Int!
 		month: Int!
@@ -30,13 +36,6 @@ const typeDefs = gql`
 		routes: [Route!]			# Will be null if walking
 		stopRoutes: [StopRoute!]
 		walk: Boolean!
-	}
-
-	type Time {
-		hour: Int!
-		minute: Int!
-		string: String!
-		int: Int!
 	}
 
 	type User {

@@ -58,4 +58,4 @@ const nextStopTimes = async (stopTimeIDs: string[], find: number = 1): Promise<S
     return found
 }
 
-export { nextStopTimes }
+export { currentTime, currentDay, nextStopTimes }
