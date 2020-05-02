@@ -20,7 +20,9 @@ type OCTranspoRoute = {
     RouteHeading: string;
     Direction: string;
     DirectionID: number;
-    Trips: OCTranspoTrip | OCTranspoTrip[];             // Object or list of objects
+    Trips: {                                            // Again another nested object with only one field
+        Trip: OCTranspoTrip | OCTranspoTrip[];          // Object or list of objects
+    }             
 }
 
 type OCTranspoTrip = {

@@ -46,7 +46,7 @@ class Bus {
     private setDistance(destination: Stop): void {
         if (!this.hasGPS) return;
         this.distance = Math.sqrt(Math.pow(destination.lat - this.lat, 2) + Math.pow(destination.lon - this.lon, 2)) * 111.139;
-        
+
     }
 
     private setArrival(trip: OCTranspoTrip): void {

@@ -51,9 +51,9 @@ class BusAPI {
         for (let route of data.Routes.Route) {
             // Routes
             if (!routes.hasOwnProperty(route.RouteNo)) routes[route.RouteNo] = [];
-            if (!Array.isArray(route.Trips)) route.Trips = [route.Trips];
+            if (!Array.isArray(route.Trips.Trip)) route.Trips.Trip = [route.Trips.Trip];
 
-            for (let trip of route.Trips) {
+            for (let trip of route.Trips.Trip) {
                 // Trips
                 routes[route.RouteNo].push(new Bus(trip, route, stop))
             }
