@@ -54,7 +54,7 @@ const typeDefs = gql`
 	}
 
 	type Schedule {
-		next: StopTime
+		next(number: Int): [StopTime!]!		# next n stop times 
 		all: [StopTime!]!
 	}
 
@@ -104,6 +104,7 @@ const typeDefs = gql`
 		sequence: Int!
 		time: Time!
 		trip: Trip!
+		# add service to db model then field here in the schema and resolvers then add $lookup in schedule/helpers.ts
 		stop: Stop!     
 	}
 

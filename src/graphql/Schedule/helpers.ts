@@ -1,4 +1,7 @@
+import { performance } from 'perf_hooks';
+
 import { StopTime, Service, Trip } from '../types';
+import { StopTimeCollection } from '../collections';
 import { stopTimeLoader, serviceLoader, tripLoader } from '../loaders';
 
 
@@ -13,45 +16,46 @@ const days = {
 }
 
 const currentTime = (): number => {
-    return
+    let date = new Date();
+    return date.getHours() * 60 + date.getMinutes();
 }
 
 const currentDay = (): string => {
-    return
+    let date = new Date();
+    return days[date.getDay()];
 }
 
-const nextStopTime = async (stopTimeIDs: string[]): Promise<StopTime> => {
-    let stopTimes = <StopTime[]>await stopTimeLoader.loadMany(stopTimeIDs);
+const nextStopTimes = async (stopTimeIDs: string[], find: number = 1): Promise<StopTime[]> => {
+    let day = currentDay();
+    let time = currentTime();
+
+    let stopTimes = await StopTimeCollection.find({
+        'time.int': { $gt: time },
+        _id: { $in: stopTimeIDs },
+    }).sort({ 'time.int': 1 }).limit(find*8);
+
+    if (stopTimes.length === 0) return [];
+
+    // Load trips and service to check if the stoptime is avaible on this day
+    // Should be able to do this with a $lookup query but not quire sure how yet
     let trips = <Trip[]>await tripLoader.loadMany(stopTimes.map(stopTime => stopTime.trip));
     let services = <Service[]>await serviceLoader.loadMany(trips.map(trip => trip.service));
-    let date = new Date();
-    let day = days[date.getDay()];
-    let time = date.getHours() * 60 + date.getMinutes();
 
+    // Check service
     let stopTime: StopTime;
-    let service: Service
+    let service: Service;
+    let found: StopTime[] = [];
 
-    // Binary Search for start position
-    // There can be hundreds of stop times so its worth it to do a binary search
-    let start = 0;
-    let end = stopTimes.length - 1;
-    let middle = Math.floor((start + end) / 2);
-
-    while (start != middle) {
-        if (time > stopTimes[middle].time.int) start = middle;
-        else end = middle;
-        middle = Math.floor((start + end) / 2);
-    }
-
-    // Then find the next valid StopTime with service on the day
-    for (let i = end; i < stopTimes.length; i++) {
+    for (let i=0; i<stopTimes.length && found.length < find; i++) {
         stopTime = stopTimes[i];
         if (time < stopTime.time.int) {
             service = services[i]
-            if (service[day]) return stopTime;
+            if (service[day]) {
+                found.push(stopTime);
+            }
         }
     }
-    return null
+    return found
 }
 
-export { nextStopTime }
+export { nextStopTimes }
