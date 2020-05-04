@@ -19,6 +19,7 @@ class Bus {
     public adjusted: boolean;   // Arrival time was adjusted 
 
     public constructor(trip: OCTranspoTrip, route: OCTranspoRoute, destination: Stop) {
+        console.log(trip);
         this.headsign = route.RouteHeading;
         this.number = route.RouteNo;
         this.direction = route.DirectionID;
