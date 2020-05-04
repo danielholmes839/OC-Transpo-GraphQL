@@ -32,7 +32,7 @@ const nextStopTimes = async (stopTimeIDs: string[], find: number = 1): Promise<S
     let stopTimes = await StopTimeCollection.find({
         'time.int': { $gt: time },
         _id: { $in: stopTimeIDs },
-    }).sort({ 'time.int': 1 }).limit(find*8);
+    }).sort({ 'time.int': 1 }).limit(find * 8);
 
     if (stopTimes.length === 0) return [];
 
@@ -46,7 +46,7 @@ const nextStopTimes = async (stopTimeIDs: string[], find: number = 1): Promise<S
     let service: Service;
     let found: StopTime[] = [];
 
-    for (let i=0; i<stopTimes.length && found.length < find; i++) {
+    for (let i = 0; i < stopTimes.length && found.length < find; i++) {
         stopTime = stopTimes[i];
         if (time < stopTime.time.int) {
             service = services[i]
