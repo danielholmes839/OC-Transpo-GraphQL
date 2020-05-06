@@ -36,10 +36,9 @@ const nextStopTimes = async (stopTimeIDs: string[], find: number = 1): Promise<S
     }).sort({ 'time': 1 }).limit(find * 5);
     if (stopTimes.length === 0) return [];
 
-    // Load trips and service to check if the stoptime is avaible on this day
-    // Should be able to do this with a $lookup query but not quire sure how yet
-    let trips = <Trip[]>await tripLoader.loadMany(stopTimes.map(stopTime => stopTime.trip));
-    let services = <Service[]>await serviceLoader.loadMany(trips.map(trip => trip.service));
+    // Load service to check if the stoptime is avaible on this day
+    // Should be able to do this with a $lookup query but not quite sure how yet
+    let services = <Service[]>await serviceLoader.loadMany(stopTimes.map(stopTime => stopTime.service));
 
     // Check service
     let stopTime: StopTime;
