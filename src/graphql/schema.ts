@@ -104,7 +104,7 @@ const typeDefs = gql`
 		sequence: Int!
 		time: Time!
 		trip: Trip!
-		# add service to db model then field here in the schema and resolvers then add $lookup in schedule/helpers.ts
+		service: Service!
 		stop: Stop!     
 	}
 

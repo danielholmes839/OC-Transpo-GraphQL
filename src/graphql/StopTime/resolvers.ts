@@ -1,5 +1,5 @@
-import { StopTime, Trip, Stop, Route } from '../types';
-import { tripLoader, stopLoader, routeLoader } from '../loaders';
+import { StopTime, Trip, Stop, Service } from '../types';
+import { tripLoader, stopLoader, serviceLoader } from '../loaders';
 
 export default {
     trip: (parent: StopTime): Promise<(Trip | Error)> => {
@@ -8,5 +8,9 @@ export default {
 
     stop: (parent: StopTime): Promise<(Stop | Error)> => {
         return stopLoader.load(parent.stop);
+    },
+
+    service: (parent: StopTime): Promise<(Service | Error)> => {
+        return serviceLoader.load(parent.service);
     }
 }
