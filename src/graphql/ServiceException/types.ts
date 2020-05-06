@@ -3,7 +3,7 @@ import { Date } from '../types';
 
 interface ServiceException extends Document { 
     date: Date;
-    removed: true;
+    removed: boolean;
 }
 
 export { ServiceException };

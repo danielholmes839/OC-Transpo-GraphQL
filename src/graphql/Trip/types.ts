@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-interface Trip extends Document { 
+interface Trip extends Document {
     headsign: string;
     direction: number;
     route: string;

@@ -3,10 +3,10 @@ import { Time } from '../types'
 
 interface StopTime extends Document {
     sequence: number;
-    time: Time;
-    trip: string;
+    time: number;
     stop: string;
-    route: string;
+    trip: string;
+    service: string;
 }
 
 export { StopTime };

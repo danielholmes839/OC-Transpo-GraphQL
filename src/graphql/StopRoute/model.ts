@@ -7,6 +7,17 @@ const schema: Schema = new Schema({
         required: true
     },
 
+    stop: {
+        type: String,
+        ref: 'Stop'
+    },
+
+    route: {
+        type: String,
+        ref: 'Route'
+    },
+
+
     number: {
         type: String,
         required: true
@@ -15,16 +26,6 @@ const schema: Schema = new Schema({
     headsign: {
         type: String,
         required: true
-    },
-
-    route: {
-        type: String,
-        ref: 'Route'
-    },
-
-    stop: {
-        type: String,
-        ref: 'Stop'
     },
 
     stopTimes: [

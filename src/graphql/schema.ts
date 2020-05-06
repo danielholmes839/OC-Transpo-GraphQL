@@ -10,8 +10,10 @@ const typeDefs = gql`
 
 	type Time {
 		string: String!
-		int: Int!
 		remaining: Int!						# remaining time in minutes until this time
+		int: Int!
+		hour: Int!
+		minute: Int!
 	}
 
 	type Date {

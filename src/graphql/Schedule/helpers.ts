@@ -2,7 +2,7 @@ import { performance } from 'perf_hooks';
 
 import { StopTime, Service, Trip } from '../types';
 import { StopTimeCollection } from '../collections';
-import { stopTimeLoader, serviceLoader, tripLoader } from '../loaders';
+import { stopTimeLoader, serviceLoader, tripLoader, stopLoader } from '../loaders';
 
 
 const days = {
@@ -29,11 +29,11 @@ const nextStopTimes = async (stopTimeIDs: string[], find: number = 1): Promise<S
     let day = currentDay();
     let time = currentTime();
 
+    // Query stop times
     let stopTimes = await StopTimeCollection.find({
-        'time.int': { $gt: time },
+        'time': { $gt: time },
         _id: { $in: stopTimeIDs },
-    }).sort({ 'time.int': 1 }).limit(find * 8);
-
+    }).sort({ 'time': 1 }).limit(find * 5);
     if (stopTimes.length === 0) return [];
 
     // Load trips and service to check if the stoptime is avaible on this day
@@ -44,13 +44,15 @@ const nextStopTimes = async (stopTimeIDs: string[], find: number = 1): Promise<S
     // Check service
     let stopTime: StopTime;
     let service: Service;
+    let duplicates = new Set<number>();
     let found: StopTime[] = [];
 
     for (let i = 0; i < stopTimes.length && found.length < find; i++) {
         stopTime = stopTimes[i];
-        if (time < stopTime.time.int) {
+        if (time < stopTime.time && !duplicates.has(stopTime.time)) {
             service = services[i]
             if (service[day]) {
+                duplicates.add(stopTime.time);
                 found.push(stopTime);
             }
         }

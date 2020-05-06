@@ -16,16 +16,10 @@ type Date = {
     day: number;
 }
 
-type Time = {
-    hour: number;
-    minute: number;
-    int: number;
-}
-
 type Context = {
     user: string;
     email: string;
     authenticated: boolean;
 }
 
-export { Date, Time, Context, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException, Schedule }
+export { Date, Context, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException, Schedule }

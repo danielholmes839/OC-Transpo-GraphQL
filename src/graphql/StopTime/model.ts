@@ -1,6 +1,5 @@
 import { Schema, Model, model } from "mongoose";
 import { StopTime } from './types';
-import { Time } from "../collections";
 
 const schema: Schema = new Schema({
     _id: {
@@ -13,16 +12,24 @@ const schema: Schema = new Schema({
         required: true
     },
 
-    time: Time,
+    time: {
+        type: Number,
+        required: true
+    },
+
+    stop: {
+        type: String,
+        ref: 'Stop'
+    },
 
     trip: {
         type: String,
         ref: 'Trip'
     },
 
-    stop: {
+    service: {
         type: String,
-        ref: 'Stop'
+        ref: 'Service'
     }
 });
 

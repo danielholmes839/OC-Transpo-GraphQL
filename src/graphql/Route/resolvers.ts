@@ -23,14 +23,6 @@ export default {
     },
 
     type: (parent: Route): string => {
-        return routeTypeString[parent.routeType];
-    },
-
-    textColour: (parent: Route): string => {
-        return '#'+parent.textColour;
-    },
-
-    backgroundColour: (parent: Route): string => {
-        return '#'+parent.colour;
+        return routeTypeString[parent.type];
     }
 };

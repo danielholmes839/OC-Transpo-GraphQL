@@ -1,4 +1,4 @@
-import { Stop, Time } from "../types";
+import { Stop } from "../types";
 import { OCTranspoTrip, OCTranspoRoute } from "./types";
 
 class Bus {
@@ -15,7 +15,7 @@ class Bus {
     public distance?: number    // Distance from stop in km
     public hasGPS: boolean;
     // Time
-    public arrival: Time        // The time the bus will arrive at the stop     
+    public arrival: number      // The time the bus will arrive at the stop     
     public adjusted: boolean;   // Arrival time was adjusted 
 
     public constructor(trip: OCTranspoTrip, route: OCTranspoRoute, destination: Stop) {
@@ -53,9 +53,7 @@ class Bus {
     private setArrival(trip: OCTranspoTrip): void {
         let [h, m] = trip.TripStartTime.split(':');
         let int: number = (parseInt(h) * 60 + parseInt(m) + parseInt(trip.AdjustedScheduleTime)) % 1440;
-        let hour: number = Math.floor(int / 60) % 24;
-        let minute: number = int % 60;
-        this.arrival = { hour, minute, int };
+        this.arrival = int;
     }
 
     private setAdjusted(trip: OCTranspoTrip) {

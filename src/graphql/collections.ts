@@ -6,12 +6,6 @@ const Date: Schema = new Schema({
     day: { type: Number, required: true }
 });
 
-const Time: Schema = new Schema({
-    hour: { type: Number, required: true },
-    minute: { type: Number, required: true },
-    int: { type: Number, required: true, index: true }
-});
-
 import { FavouriteStopCollection } from './FavouriteStop/model';
 import { UserCollection } from './User/model';
 import { StopCollection } from './Stop/model';
@@ -23,6 +17,6 @@ import { ServiceCollection } from './Service/model';
 import { ServiceExceptionCollection } from './ServiceException/model';
 
 export {
-    Date, Time, UserCollection, FavouriteStopCollection, StopCollection, StopRouteCollection,
+    Date, UserCollection, FavouriteStopCollection, StopCollection, StopRouteCollection,
     RouteCollection, StopTimeCollection, TripCollection, ServiceCollection, ServiceExceptionCollection
 };
