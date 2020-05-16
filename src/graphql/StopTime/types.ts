@@ -1,5 +1,4 @@
-import { Document } from "mongoose";
-import { Time } from '../types'
+import { Document } from 'mongoose';
 
 interface StopTime extends Document {
     sequence: number;
