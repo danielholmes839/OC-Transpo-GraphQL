@@ -6,7 +6,6 @@
   "scripts": {
     "start": "ts-node ./src/server.ts",
     "start:watch": "nodemon",
-    "upload": "node --inspect=4000 -r ts-node/register ./src/upload.ts",
     "build": "tsc"
   },
   "keywords": [],
