@@ -3,7 +3,7 @@ import { Stop } from '../types';
 import { stopLoader } from '../loaders';
 import { Size } from '../Maps/types';
 import StaticTravelPlanMap from '../Maps/StaticTravelPlanMap';
-import { PossibleFragmentSpreadsRule } from 'graphql';
+
 
 export default {
     start: async (parent: TravelPlan): Promise<Stop> => {
