@@ -31,8 +31,8 @@ const nextStopTimes = async (stopTimeIDs: string[], find: number = 1): Promise<S
 
     // Query stop times
     let stopTimes = await StopTimeCollection.find({
-        'time': { $gt: time },
         _id: { $in: stopTimeIDs },
+        'time': { $gt: time },
     }).sort({ 'time': 1 }).limit(find * 5);
     if (stopTimes.length === 0) return [];
 
