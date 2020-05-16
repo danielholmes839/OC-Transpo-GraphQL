@@ -6,6 +6,8 @@ import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
 import context from './middleware/auth';
 
+const port = process.env.PORT || 3000;
+
 const app: Application = express();
 const server = new ApolloServer({
     typeDefs, resolvers, context
@@ -18,4 +20,4 @@ try {
     console.log('Couldnt connect to mongodb');
 }
 
-app.listen({ port: 3000 }, () => { console.log(`Server ready at http://localhost:3000/graphql`); });
+app.listen({ port }, () => { console.log(`Server ready at http://localhost:${port}/graphql`); });
