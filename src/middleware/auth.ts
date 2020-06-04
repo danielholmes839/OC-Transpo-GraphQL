@@ -1,19 +1,22 @@
 const jwt = require('jsonwebtoken');
 
-
-const auth = (context) => {
+type TokenData = {
+    user: string;
+    email: string;
+}
+const apollo_auth = ({ req }) => {
+    /* Authenticate the user */
     try {
-        const token = context.req.headers.token;
-        const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-        const user = decodedToken.user;
-        const email = decodedToken.email;
+        const token: string = req.headers.token;
+        const data: TokenData = jwt.verify(token, process.env.SECRET_KEY);
         return {
-            user: user,
-            email: email,
+            user: data.user,
+            email: data.user,
             authenticated: true
         }
+    }
 
-    } catch {
+    catch {
         return {
             user: null,
             email: null,
@@ -22,4 +25,4 @@ const auth = (context) => {
     }
 }
 
-export default auth;
+export default apollo_auth;
