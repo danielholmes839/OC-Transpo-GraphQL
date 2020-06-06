@@ -26,7 +26,7 @@
     "typescript": "^3.9.2"
   },
   "dependencies": {
-    "apollo-server": "^2.11.0",
+    "apollo-server": "^2.14.2",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "dataloader": "^2.0.0",
