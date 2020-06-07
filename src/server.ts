@@ -22,7 +22,9 @@ const start = async (): Promise<void> => {
     const server = new ApolloServer({
         typeDefs: schema,
         resolvers: resolvers,
-        context: auth
+        context: auth,
+        introspection: true,
+        playground: true,
     });
 
     await connect_db();
