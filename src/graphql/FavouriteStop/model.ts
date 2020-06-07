@@ -1,3 +1,4 @@
+/* Favourite Stop MongoDB Model */
 import { Schema, Model, model } from "mongoose";
 import { FavouriteStop } from './types';
 

@@ -15,10 +15,7 @@ interface ID {
 
 const createToken = (user: User): string => {
 	/* Create a Json Web Token */
-	return jwt.sign(
-		{ user: user.id, email: user.email }, process.env.SECRET_KEY,
-		{ expiresIn: '24h' }
-	);
+	return jwt.sign({ user: user.id, email: user.email }, process.env.SECRET_KEY, { expiresIn: '24h' });
 };
 
 const resolvers = {

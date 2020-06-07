@@ -2,6 +2,11 @@ import { GraphQLScalarType } from 'graphql';
 import { isNull } from 'util';
 
 const serialize = (distanceKM: number): string => {
+    /* 
+        Distances
+        0.5 -> '500m',
+        1.68 -> '1.7km'
+    */
     if (isNull(distanceKM)) {
         return null;
     } else if (distanceKM >= 1) {

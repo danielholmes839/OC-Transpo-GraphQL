@@ -7,17 +7,17 @@ import auth from './middleware/auth';
 
 const port = process.env.PORT || 3000;
 
-const connect = async () => {
+const connect_db = async () => {
     /* Connect to mongodb */
     const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-5ui2q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
-    try { 
+    try {
         await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
     }
-    catch { 
+    catch {
         console.log(`Couldn't connect mongoose to MongoDB`);
     }
 }
-const development = async (): Promise<void> => {
+const start = async (): Promise<void> => {
     /* Development Config  */
     const server = new ApolloServer({
         typeDefs: schema,
@@ -25,9 +25,9 @@ const development = async (): Promise<void> => {
         context: auth
     });
 
-    await connect();
+    await connect_db();
     const { url } = await server.listen({ port });
     console.log(`🚀  Server ready at ${url}`);
 }
 
-development();
+start();
