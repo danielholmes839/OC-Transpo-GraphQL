@@ -4,8 +4,8 @@ import { Bus } from './Bus';
     It does a lot of weird things
     By default it is XML but it can be parsed to json with a request parameter
     Maybe some of the issues are from it converting XML to JSON
-
 */
+
 type OCTranspoResponse = {
     StopNo: string;
     StopDescription: string;                            // Seems to match stop name in GTFS 

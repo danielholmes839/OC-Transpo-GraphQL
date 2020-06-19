@@ -43,16 +43,33 @@ class BusAPI {
     private async createKV(stop: Stop): Promise<StopCodeKV> {
         // creates the value to be cached
         let data: OCTranspoResponse = await this.request(stop.code);
-        let routes: StopCodeKV = {}
+        let routes: StopCodeKV = {} // This object will be cached
 
-        if (data == undefined) return routes;
+        if (data == undefined) {
+            // Could not access OC Transpo so return an empty object
+            console.log('Could not access OC Transpo');
+            return routes;
+        }
 
-        if (!Array.isArray(data.Routes.Route)) data.Routes.Route = [data.Routes.Route];
+        if (!Array.isArray(data.Routes.Route)) {
+            // Routes is not a list
+            data.Routes.Route = [data.Routes.Route];
+        }
+
         for (let route of data.Routes.Route) {
-            // Routes
-            if (!routes.hasOwnProperty(route.RouteNo)) routes[route.RouteNo] = [];
-            if (!Array.isArray(route.Trips.Trip)) route.Trips.Trip = [route.Trips.Trip];
+            // Process each route
+            if (!routes.hasOwnProperty(route.RouteNo)) {
+                // Make an array to store buses for this route
+                routes[route.RouteNo] = [];
+            }
+
+            if (!Array.isArray(route.Trips.Trip)) {
+                // Trips is not a list
+                route.Trips.Trip = [route.Trips.Trip];
+            }
+
             for (let trip of route.Trips.Trip) {
+                // Bus is created for every trip
                 if (trip != undefined) routes[route.RouteNo].push(new Bus(trip, route, stop));
             }
         }
