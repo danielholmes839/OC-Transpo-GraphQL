@@ -1,25 +1,22 @@
 import { gql } from 'apollo-server';
 
 const typeDefs = gql`
-	# Fancy distance string
-	scalar Distance
-
-	# URL for google maps static API
-	scalar StaticStopRouteMap
-	scalar StaticTravelPlanMap
+	scalar Distance							# Fancy distance string
+	scalar StaticStopRouteMap				# static google maps URL for a StopRoute
+	scalar StaticTravelPlanMap				# static google maps URL for a TravelPlan
 
 	type Time {
-		string: String!
-		remaining: Int!						# remaining time in minutes until this time
-		int: Int!
-		hour: Int!
-		minute: Int!
+		int: Int!							# Time as an integer (minutes into the day)
+		hour: Int!							# Hour as an integer
+		minute: Int!						# Minute as an integer
+		string: String!						# Time as a string
+		remaining: Int!						# Minutes until this time
 	}
 
 	type Date {
-		year: Int!
+		year: Int!					
 		month: Int!
-		day: Int!
+		day: Int!				
 	}
 
 	type TravelPlan {
@@ -39,7 +36,8 @@ const typeDefs = gql`
 		stopRoutes: [StopRoute!]
 		walk: Boolean!
 	}
-
+	
+	"User type"
 	type User {
 		id: ID!
 		email: String!
@@ -47,6 +45,8 @@ const typeDefs = gql`
 		favouriteStops: [FavouriteStop]!
 	}
 
+	# Favourite Stop type
+	# Saves the users favourite stops and the routes belonging to that stop 
 	type FavouriteStop {
 		id: ID!
 		user: User!
@@ -54,11 +54,13 @@ const typeDefs = gql`
 		stopRoutes: [StopRoute!]!
 	}
 
+	# Schedule type for StopRoute type
 	type Schedule {
-		next(number: Int): [StopTime!]!		# next n stop times 
+		next(number: Int): [StopTime!]!
 		all: [StopTime!]!
 	}
 
+	# Stop type
 	type Stop {
 		id: ID!
 		name: String!
@@ -69,17 +71,20 @@ const typeDefs = gql`
 		stopRoutes: [StopRoute!]!
 	}
 
+	# StopRoute type
+	# Represents a route part of a stop
 	type StopRoute {
 		id: ID!
-		headsign: String!           # route headsign
-		number: String!             # route number
-		stop: Stop!
+		headsign: String!           	# route headsign
+		number: String!             	# route number
+		stop: Stop!						
 		route: Route!
-		liveBusData: LiveBusData! 		# live 
+		liveBusData: LiveBusData!
 		schedule: Schedule!
 		map(width: Int, height: Int, zoom: Int): StaticStopRouteMap!
 	}
 
+	# Route type
 	type Route {
 		id: ID!
 		number: String!
@@ -90,6 +95,7 @@ const typeDefs = gql`
 		stops: [Stop!]!
 	}
 	
+	# Trip type
 	type Trip {
 		id: ID!
 		headsign: String!
@@ -99,6 +105,7 @@ const typeDefs = gql`
 		stopTimes: [StopTime!]!
 	}
 
+	# StopTime type
 	type StopTime {
 		id: ID!
 		sequence: Int!
@@ -108,11 +115,13 @@ const typeDefs = gql`
 		stop: Stop!     
 	}
 
+	# Service type
 	type Service {
 		id: ID!
 		start: Date!
 		end: Date!                         
 		exceptions: [ServiceException!]!
+	
 		monday: Boolean!
 		tuesday: Boolean!
 		wednesday: Boolean!
@@ -128,6 +137,22 @@ const typeDefs = gql`
 		removed: Boolean!
 	}
 
+	type GPS {
+		lat: Float
+		lon: Float
+		speed: Float
+		distance: Distance
+	}
+
+	type Bus {
+		headsign: String!
+		number: String!
+		direction: Int!			# 0 or 1 (I think)
+		gps: GPS
+		arrival: Time!			# When the bus will arrive
+		onTime: Boolean!		# Whether or not the arrival time has been adjusted
+	}
+
 	type LiveBusData {
 		nextBus: Bus
 		buses: [Bus!]!
@@ -135,26 +160,6 @@ const typeDefs = gql`
 		busCountGPS: Int!
 	}
 	
-	type Bus {
-		headsign: String!
-		number: String!
-		direction: Int!
-		type: String!
-		last: Boolean!			# Last stop of schedule
-		lat: Float
-		lon: Float
-		speed: Float
-		distance: Distance
-		hasGPS: Boolean!
-		arrival: Time!			# When the bus will arrive
-		adjusted: Boolean!		# Whether or not the arrival time has been adjusted
-	}
-
-	input TravelPlanInput {
-		start: ID!
-		end: ID!
-	}
-
 	type LoginPayload {
 		user: User!
 		token: String!
@@ -162,23 +167,40 @@ const typeDefs = gql`
 	}
 
 	type Query {
-		routeGet(id: ID!): Route
-		stopRouteGet(id: ID!): StopRoute
-		tripGet(id: ID!): Trip
-		serviceGet(id: ID!): Stop
-		stopGet(id: ID!): Stop
-		userGet: User
-		userLogin(email: String!, password: String!): LoginPayload
-		createTravelPlan(input: TravelPlanInput): TravelPlan
-		stopSearch(name: String!, limit: Int): [Stop!]!
+		# Stop Queries
+		Stop_get(stop: ID!): Stop
+		Stop_getMany(stops: [ID!]!): [Stop!]!
+		Stop_search(name: String!, limit: Int): [Stop!]!
+
+		# Route Queries
+		Route_get(route: ID!): Route
+		Route_getMany(routes: [ID!]!): [Route]!
+
+		# StopRoute Queries
+		StopRoute_get(stopRoute: ID!): StopRoute
+		StopRoute_getMany(stopRoutes: [ID!]!): [StopRoute]!
+
+		# Trip Queries
+		Trip_get(trip: ID!): Trip
+
+		# Service
+		Service_get(service: ID!): Stop
+
+		# User Queries
+		User_get: User
+		User_login(email: String!, password: String!): LoginPayload
+
+		# TravelPlan Queries
+		TravelPlan_get(start: ID!, end: ID!): TravelPlan
+		
 	}
 
 	type Mutation {
-		userCreate(email: String!, password: String!): User
-		userFavouriteStopAdd(stop: ID!, stopRoutes: [ID!]): FavouriteStop
-		userFavouriteStopDelete(favouriteStop: ID!): FavouriteStop
-		userFavouriteStopRoutesAdd(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
-		userFavouriteStopRoutesDelete(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
+		User_create(email: String!, password: String!): User
+		User_FavouriteStop_add(stop: ID!): FavouriteStop
+		User_FavouriteStop_remove(favouriteStop: ID!): FavouriteStop
+		User_FavouriteStop_StopRoute_add(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
+		User_FavouriteStop_StopRoute_remove(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
 	}
 `
 
