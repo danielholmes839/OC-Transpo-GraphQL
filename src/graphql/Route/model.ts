@@ -11,4 +11,4 @@ const schema: Schema = new Schema({
     trips: [{ type: String, ref: 'Trip' }]
 });
 
-export const RouteCollection: Model<Route> = model<Route>('Route', schema);
+export const RouteModel: Model<Route> = model<Route>('Route', schema);

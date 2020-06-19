@@ -11,5 +11,5 @@ const schema: Schema = new Schema({
     stopRoutes: [{ type: String, ref: 'StopRoute' }]
 });
 schema.index({ name: "text", description: "text"})
-export const StopCollection: Model<Stop> = model<Stop>('Stop', schema);
+export const StopModel: Model<Stop> = model<Stop>('Stop', schema);
 

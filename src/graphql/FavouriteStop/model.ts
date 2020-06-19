@@ -8,4 +8,4 @@ const schema: Schema = new Schema({
     stopRoutes: [{ type: String, ref: 'StopRoute' }]
 });
 
-export const FavouriteStopCollection: Model<FavouriteStop> = model<FavouriteStop>('FavouriteStop', schema);
+export const FavouriteStopModel: Model<FavouriteStop> = model<FavouriteStop>('FavouriteStop', schema);

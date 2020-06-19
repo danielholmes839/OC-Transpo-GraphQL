@@ -35,4 +35,4 @@ const schema: Schema = new Schema({
     ]
 });
 
-export const TripCollection: Model<Trip> = model<Trip>('Trip', schema);
+export const TripModel: Model<Trip> = model<Trip>('Trip', schema);

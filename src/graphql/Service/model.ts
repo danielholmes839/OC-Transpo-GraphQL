@@ -1,5 +1,5 @@
 import { Schema, Model, model } from 'mongoose';
-import { Date } from '../collections';
+import { Date } from '../models';
 import { Service } from './types';
 
 const schema: Schema = new Schema({
@@ -16,4 +16,4 @@ const schema: Schema = new Schema({
     sunday: { type: Boolean, required: true }
 });
 
-export const ServiceCollection: Model<Service> = model<Service>('Service', schema);
+export const ServiceModel: Model<Service> = model<Service>('Service', schema);

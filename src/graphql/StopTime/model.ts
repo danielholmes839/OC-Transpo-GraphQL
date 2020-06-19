@@ -33,4 +33,4 @@ const schema: Schema = new Schema({
     }
 });
 
-export const StopTimeCollection: Model<StopTime> = model<StopTime>('StopTime', schema);
+export const StopTimeModel: Model<StopTime> = model<StopTime>('StopTime', schema);
