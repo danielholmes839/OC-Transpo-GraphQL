@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
-type TokenData = {
+type Token = {
     user: string;
     email: string;
 }
@@ -9,7 +9,7 @@ const apollo_auth = ({ req }) => {
     /* Authenticate the user using apollo server middle ware */
     try {
         const token: string = req.headers.token;
-        const data: TokenData = <TokenData>jwt.verify(token, process.env.SECRET_KEY);
+        const data: Token = <Token>jwt.verify(token, process.env.SECRET_KEY);
         return {
             user: data.user,
             email: data.user,
