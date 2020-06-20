@@ -1,0 +1,10 @@
+mutation {
+  User_create(email: "test@test.com", password: "password") {
+    id
+    email
+    password # null
+    favouriteStops {
+      id
+    }
+  }
+}

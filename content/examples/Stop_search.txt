@@ -1,0 +1,14 @@
+query {
+  Stop_search(name: "hurdman d", limit: 3) {
+    id
+    name
+    code
+    lat
+    lon
+    stopRoutes {
+      id
+      headsign
+      number
+    }
+  }
+}
