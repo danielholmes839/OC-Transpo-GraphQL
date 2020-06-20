@@ -14,6 +14,7 @@ const routeTypeString = {
     12: "Monorail"
 };
 
+// Route Resolvers
 export default {
     trips: (parent: Route): Promise<(Trip | Error)[]> => {
         return tripLoader.loadMany(parent.trips);

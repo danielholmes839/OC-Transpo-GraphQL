@@ -15,6 +15,7 @@ const serialize = (distanceKM: number): string => {
     return (distanceKM * 1000).toFixed(0) + 'm';
 }
 
+// Distance Scalar Type
 export default new GraphQLScalarType({
     name: 'Distance',
     description: 'string representing distance with units in km or m',

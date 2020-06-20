@@ -1,12 +1,13 @@
 import { currentTime } from '../Schedule/helpers';
 
-
+// Time Resolvers
 export default {
     string: (parent: number): string => {
         let hour = Math.floor(parent / 60);
+        let hour_str = (hour == 0) ? `0${hour}` : `${hour}`;
         let minute = parent % 60;
-        let minute_str: string = (minute < 10) ? `0${minute}` : `${minute}`;
-        return `${hour}:${minute_str}`;
+        let minute_str = (minute < 10) ? `0${minute}` : `${minute}`;
+        return `${hour_str}:${minute_str}`;
     },
 
     remaining: (parent: number): number => {
@@ -15,7 +16,7 @@ export default {
     },
 
     int: (parent: number): number => parent,
-    
+
     hour: (parent: number): number => {
         return Math.floor(parent / 60);
     },

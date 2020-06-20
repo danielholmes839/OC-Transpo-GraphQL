@@ -1,6 +1,7 @@
 import { Stop, StopRoute, User, FavouriteStop } from '../types';
 import { stopLoader, stopRouteLoader, userLoader } from '../loaders';
 
+// FavouriteStop Resolvers
 export default {
     user: (parent: FavouriteStop): Promise<(User | Error)> => {
         return userLoader.load(parent.user);

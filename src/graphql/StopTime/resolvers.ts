@@ -1,6 +1,7 @@
 import { StopTime, Trip, Stop, Service } from '../types';
 import { tripLoader, stopLoader, serviceLoader } from '../loaders';
 
+// StopTime Resolvers
 export default {
     trip: (parent: StopTime): Promise<(Trip | Error)> => {
         return tripLoader.load(parent.trip);

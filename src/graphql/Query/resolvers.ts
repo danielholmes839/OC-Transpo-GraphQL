@@ -9,6 +9,7 @@ import { Stop, StopRoute, Route, Trip, User, Service, Context } from '../types';
 import { UserModel, StopModel } from '../models';
 
 
+// Query Resolvers
 export default {
 	// Stop Queries
 	Stop_get: (_: void, args: { stop: string }): Promise<Stop> => {

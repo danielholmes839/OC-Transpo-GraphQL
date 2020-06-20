@@ -4,26 +4,6 @@ import { FavouriteStopModel } from '../models';
 import { UserModel } from '../User/model';
 import bcrypt from 'bcrypt';
 
-
-const getValidStopRoutes = (requested: string[], existing: string[]): string[] => {
-    const existingSet: Set<string> = new Set(existing);
-    const valid: string[] = [];
-    for (let stopRoute of requested) {
-        if (existingSet.has(stopRoute)) valid.push(stopRoute);
-    }
-    return valid;
-}
-
-const getFavouriteStop = async (favouriteStopID: string, context: Context): Promise<FavouriteStop> => {
-    /* Get the favourite stop and handles authentication */
-    if (!context.authenticated) throw new Error("Not Authenticated");                                       // Authenticated
-    const favouriteStop: FavouriteStop = await favouriteStopLoader.load(favouriteStopID);                   // Load FavouriteStop
-    if (favouriteStop === null) throw new Error(`FavouriteStop ID:${favouriteStopID} does not exist`);      // FavouriteStop exists
-    if (favouriteStop.user != context.user) throw new Error(`Not Authorized`);                              // FavouriteStop belongs to user
-    return favouriteStop;
-}
-
-
 type User_create_args = {
     email: string;
     password: string;
@@ -42,6 +22,16 @@ type User_FavouriteStop_StopRoute_mutation_args = {
     stopRoutes: string[];
 }
 
+const getFavouriteStop = async (favouriteStopID: string, context: Context): Promise<FavouriteStop> => {
+    /* Get the favourite stop and handles authentication */
+    if (!context.authenticated) throw new Error("Not Authenticated");                                       // Authenticated
+    const favouriteStop: FavouriteStop = await favouriteStopLoader.load(favouriteStopID);                   // Load FavouriteStop
+    if (favouriteStop === null) throw new Error(`FavouriteStop ID:${favouriteStopID} does not exist`);      // FavouriteStop exists
+    if (favouriteStop.user != context.user) throw new Error(`Not Authorized`);                              // FavouriteStop belongs to user
+    return favouriteStop;
+}
+
+// Mutation Resolvers
 export default {
     User_create: async (_: void, { email, password }: User_create_args, context: Context): Promise<User> => {
         /* Create a User */

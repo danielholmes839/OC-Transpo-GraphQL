@@ -4,7 +4,7 @@ import { stopLoader } from '../loaders';
 import { Size } from '../Maps/types';
 import StaticTravelPlanMap from '../Maps/StaticTravelPlanMap';
 
-
+// Travel Plan Resolvers
 export default {
     start: async (parent: TravelPlan): Promise<Stop> => {
         return await stopLoader.load(parent.start.id);

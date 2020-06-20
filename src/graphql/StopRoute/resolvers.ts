@@ -5,8 +5,7 @@ import { Bus } from '../LiveBusData/Bus';
 import { Route, Stop, StopRoute, StopTime, Schedule } from '../types';
 import { routeLoader, stopLoader, stopTimeLoader } from '../loaders';
 
-
-
+// StopRoute Resolvers
 export default {
     stop: (parent: StopRoute): Promise<(Stop | Error)> => {
         return stopLoader.load(parent.stop);

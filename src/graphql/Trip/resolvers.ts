@@ -1,6 +1,7 @@
-import { Trip, Route, Service, StopTime} from '../types';
+import { Trip, Route, Service, StopTime } from '../types';
 import { routeLoader, serviceLoader, stopTimeLoader } from '../loaders';
 
+// Trip Resolvers
 export default {
     route: (parent: Trip): Promise<(Route | Error)> => {
         return routeLoader.load(parent.route);
