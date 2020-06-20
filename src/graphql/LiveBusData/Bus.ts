@@ -48,17 +48,19 @@ class Bus {
         this.number = route.RouteNo;
         this.direction = route.DirectionID;
         this.gps = GPS.create(trip, destination);
-        this.arrival = this.getTime(trip);
+        this.arrival = this.getArrivalTime(trip);
+        this.onTime = this.getOnTime(trip);
     }
 
-    private getTime(trip: OCTranspoTrip): number {
+    private getArrivalTime(trip: OCTranspoTrip): number {
         let [h, m] = trip.TripStartTime.split(':');
-        let int = (parseInt(h) * 60 + parseInt(m) + parseInt(trip.AdjustedScheduleTime)) % 1440;
+        let start = (parseInt(h) * 60 + parseInt(m)) % 1440; // sometimes trip start times can be something like 24:30 instead of 00:30. I've seen 25 in their gtfs dataset too
+        let int = (start + parseInt(trip.AdjustedScheduleTime)) % 1440;
         return int;
     }
 
     private getOnTime(trip: OCTranspoTrip) {
-        return parseInt(trip.AdjustedScheduleTime) < 0;
+        return parseInt(trip.AdjustmentAge) < 0;
     }
 }
 

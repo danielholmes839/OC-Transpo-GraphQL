@@ -34,6 +34,7 @@ class BusAPI {
 
     private async request(stopCode: string): Promise<OCTranspoResponse> {
         // requests the new live bus data and return the value to be cached
+        console.log(`OC Transpo API ${stopCode}`);
         let config = this.createConfig(stopCode);
         let response: AxiosResponse = await this.api.get(config.url, config)
         let data: OCTranspoResponse = response.data.GetRouteSummaryForStopResult;
@@ -79,8 +80,9 @@ class BusAPI {
     public async get(stop: Stop, routeNumber: string): Promise<Bus[]> {
         // Get the data for the next 3 buses of a route heading toward that stop
         if (!this.cache.has(stop.code)) {
-            console.log(`OC Transpo API ${stop.code}`)
             this.cache.store(stop.code, this.createKV(stop));                                // update the cache
+        } else {
+            console.log(`OC Transpo Cache STOP:${stop.code} ROUTE:${routeNumber}`);
         }
         let buses: Bus[] = (await this.cache.get(stop.code))[routeNumber];                  // await then get the buses for the route
         if (!buses) buses = [];                                                             // empty array if there's no buses
