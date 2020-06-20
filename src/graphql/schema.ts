@@ -150,6 +150,7 @@ const typeDefs = gql`
 		direction: Int!			# 0 or 1 (I think)
 		gps: GPS
 		arrival: Time!			# When the bus will arrive
+		age: Int! 				# Time since lat updated in minutes
 		onTime: Boolean!		# Whether or not the arrival time has been adjusted
 	}
 

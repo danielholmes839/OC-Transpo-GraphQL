@@ -41,6 +41,7 @@ class Bus {
 
     public gps: GPS | null      // Sometimes there's no GPS data
     public arrival: number      // The time the bus will arrive at the stop
+    public age: number
     public onTime: boolean
 
     public constructor(trip: OCTranspoTrip, route: OCTranspoRoute, destination: Stop) {
@@ -49,6 +50,7 @@ class Bus {
         this.direction = route.DirectionID;
         this.gps = GPS.create(trip, destination);
         this.arrival = this.getArrivalTime(trip);
+        this.age = this.getAge(trip);
         this.onTime = this.getOnTime(trip);
     }
 
@@ -61,6 +63,10 @@ class Bus {
 
     private getOnTime(trip: OCTranspoTrip) {
         return parseInt(trip.AdjustmentAge) < 0;
+    }
+
+    private getAge(trip: OCTranspoTrip) {
+        return Math.max(parseInt(trip.AdjustmentAge), 0);
     }
 }
 
