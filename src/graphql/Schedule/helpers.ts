@@ -1,7 +1,7 @@
 import { performance } from 'perf_hooks';
 
 import { StopTime, Service, Trip } from '../types';
-import { StopTimeCollection } from '../collections';
+import { StopTimeModel } from '../models';
 import { stopTimeLoader, serviceLoader, tripLoader, stopLoader } from '../loaders';
 
 
@@ -30,7 +30,7 @@ const nextStopTimes = async (stopTimeIDs: string[], find: number = 1): Promise<S
     let time = currentTime();
 
     // Query stop times
-    let stopTimes = await StopTimeCollection.find({
+    let stopTimes = await StopTimeModel.find({
         _id: { $in: stopTimeIDs },
         'time': { $gt: time },
     }).sort({ 'time': 1 }).limit(find * 5);
