@@ -11,11 +11,9 @@ type LoginPayload = {
     expiration: number;
 }
 
-type TravelPlanInput = {
-    input: {
-        start: string;
-        end: string;
-    }
+type TravelPlan_get_args = {
+    start: string;
+    end: string;
 }
 
 type StopSearch = {
@@ -23,4 +21,4 @@ type StopSearch = {
     limit: number;
 }
 
-export { Login, LoginPayload, TravelPlanInput, StopSearch }
+export { Login, LoginPayload, TravelPlan_get_args, StopSearch }

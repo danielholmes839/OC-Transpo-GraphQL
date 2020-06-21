@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { plan, TravelPlan } from '../../astar/index';
 
 import { stopLoader, stopRouteLoader, routeLoader, tripLoader, userLoader, serviceLoader } from '../loaders';
-import { Login, LoginPayload, TravelPlanInput, StopSearch } from './types'
+import { Login, LoginPayload, TravelPlan_get_args, StopSearch } from './types'
 import { Stop, StopRoute, Route, Trip, User, Service, Context } from '../types';
 import { UserModel, StopModel } from '../models';
 
@@ -81,10 +81,10 @@ export default {
 	},
 
 	// TravelPlan Queries
-	TravelPlan_get: async (_: void, { input }: TravelPlanInput): Promise<TravelPlan> => {
-		let [start, end] = <Stop[]>await stopLoader.loadMany([input.start, input.end]);
-		if (start == null || end == null) return null;
-		return plan(start.id, end.id);
+	TravelPlan_get: async (_: void, { start, end }: TravelPlan_get_args): Promise<TravelPlan> => {
+		let [start_document, end_document] = <Stop[]>await stopLoader.loadMany([start, end]);
+		if (start_document == null || end_document == null) return null;
+		return plan(start, end);
 	},
 }
 
