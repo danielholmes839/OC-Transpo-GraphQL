@@ -37,6 +37,16 @@ This is a simplified diagram of the most important types:
 
 ![schema diagram](content/diagram.png)
 
-## Prototype Dashboard
+## WEBSITE IN DEVELOPMENT
 
-![example](content/ui.png)
+### Stop Route
+
+![stoproute](content/stoproute.png)
+
+### Search
+
+![search](content/search.png)
+
+### User
+
+![user](content/user.png)
