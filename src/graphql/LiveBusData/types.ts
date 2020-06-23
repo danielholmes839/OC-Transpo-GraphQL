@@ -8,10 +8,10 @@ import { Bus } from './Bus';
 
 type OCTranspoResponse = {
     StopNo: string;
-    StopDescription: string;                            // Seems to match stop name in GTFS 
+    StopDescription: string;                                            // Seems to match stop name in GTFS 
     Error: string;
-    Routes: {                                           // Only one subfield                                    
-        Route: OCTranspoRoute | OCTranspoRoute[];       // Object or list of objects
+    Routes: {                                                           // Only one subfield                                    
+        Route: OCTranspoRoute | OCTranspoRoute[] | undefined;           // Object or list of objects
     }
 }
 
@@ -20,8 +20,8 @@ type OCTranspoRoute = {
     RouteHeading: string;
     Direction: string;
     DirectionID: number;
-    Trips: {                                                    // Again another nested object with only one field
-        Trip: OCTranspoTrip | OCTranspoTrip[] | undefined;      // Object or list of objects
+    Trips: {                                                            // Again another nested object with only one field
+        Trip: OCTranspoTrip | OCTranspoTrip[] | undefined;              // Object or list of objects
     }
 }
 

@@ -59,6 +59,10 @@ class BusAPI {
 
         for (let route of data.Routes.Route) {
             // Process each route
+            if (route == null) {
+                continue;
+            }
+
             if (!routes.hasOwnProperty(route.RouteNo)) {
                 // Make an array to store buses for this route
                 routes[route.RouteNo] = [];
