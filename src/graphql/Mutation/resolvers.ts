@@ -68,7 +68,7 @@ export default {
         // Create the favourite stop
         let favouriteStop = new FavouriteStopModel({
             user: context.user,
-            stop: stop,
+            stop: args.stop,
             stopRoutes: stop.stopRoutes
         });
 
