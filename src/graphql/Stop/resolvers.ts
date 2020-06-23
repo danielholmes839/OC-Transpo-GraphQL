@@ -9,5 +9,9 @@ export default {
 
     stopRoutes: (parent: Stop): Promise<(StopRoute | Error)[]> => {
         return stopRouteLoader.loadMany(parent.stopRoutes);
+    },
+
+    code: (parent: Stop) => {
+        return parent.code.substring(0, parent.code.length - 2);
     }
 }
