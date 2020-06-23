@@ -23,6 +23,14 @@ export default {
     map: async (parent: StopRoute, { width = 640, height = 320, zoom = 13 }: Size & { zoom: number }): Promise<StaticStopRouteMap> => {
         const stop: Stop = await stopLoader.load(parent.stop);
         const buses: Bus[] = await BusAPI.get(stop, parent.number);
-        return new StaticStopRouteMap(stop, buses, { width, height }, zoom)
+
+        for (let bus of buses) {
+            // There needs to be atleast one bus with GPS to make a map
+            if (bus.gps !== null) {
+                return new StaticStopRouteMap(stop, buses, { width, height }, zoom);
+            }
+        }
+
+        return null;
     }
 }

@@ -37,7 +37,6 @@ const typeDefs = gql`
 		walk: Boolean!
 	}
 	
-	"User type"
 	type User {
 		id: ID!
 		email: String!
@@ -81,7 +80,7 @@ const typeDefs = gql`
 		route: Route!
 		liveBusData: LiveBusData!
 		schedule: Schedule!
-		map(width: Int, height: Int, zoom: Int): StaticStopRouteMap!
+		map(width: Int, height: Int, zoom: Int): StaticStopRouteMap
 	}
 
 	# Route type
