@@ -2,7 +2,7 @@ import { FavouriteStop, Stop, Context, User } from '../types';
 import { stopLoader, favouriteStopLoader, userLoader } from '../loaders';
 import { FavouriteStopModel } from '../models';
 import { UserModel } from '../User/model';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 type User_create_args = {
     email: string;

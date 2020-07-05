@@ -1,12 +1,12 @@
 import DataLoader from 'dataloader';
 import { Model, Document } from 'mongoose';
 
-import { 
+import {
     User, FavouriteStop, Route, Stop, StopRoute, StopTime, Trip, Service, ServiceException
 } from './types';
 
 import {
-    UserModel, FavouriteStopModel, RouteModel, StopModel, 
+    UserModel, FavouriteStopModel, RouteModel, StopModel,
     StopRouteModel, StopTimeModel, TripModel, ServiceModel, ServiceExceptionModel
 } from './models';
 
@@ -23,8 +23,8 @@ const populate = async <T extends Document>(ids: string[], model: Model<T>): Pro
 
     // "re-sorting" by ids
     let o = {};
-    for (let document of documents) { 
-        o[document._id] = document 
+    for (let document of documents) {
+        o[document._id] = document
     }
 
     for (let id of ids) {
