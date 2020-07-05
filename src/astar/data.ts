@@ -17,6 +17,6 @@ type EdgeData = {
     routes: string[];
 }
 
-let data: GraphData = JSON.parse(fs.readFileSync('./src/astar/GRAPH.json').toString()).nodes;
+let data: GraphData = JSON.parse(fs.readFileSync('./data/GRAPH.json').toString()).nodes;
 
 export { data, GraphData, NodeData, EdgeData };
