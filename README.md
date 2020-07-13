@@ -10,7 +10,7 @@ Built using
 
 ## Examples
 
-The API is currently deployed to Heroku: [https://octranspo-graphql.herokuapp.com/graphql](https://octranspo-graphql.herokuapp.com/graphql). I wrote some example queries to try [here](./content/examples)!
+The API is currently deployed to AWS Elastic Beanstalk: [http://octranspo-graphql.us-east-1.elasticbeanstalk.com/](http://octranspo-graphql.us-east-1.elasticbeanstalk.com/). I wrote some example queries to try [here](./content/examples)!
 
 ## OC Transpo's REST API
 
