@@ -1,7 +1,9 @@
 import PriorityQueue from 'ts-priority-queue';
+import { Stop } from 'api/types';
+import { createLoaders } from 'api/loaders';
 import { GraphData, NodeData, EdgeData, data } from './data';
-import { stopLoader } from '../graphql/loaders';
-import { Stop } from '../graphql/types';
+
+const { stopLoader } = createLoaders(false, null);
 
 type Explored = { [key: string]: PQNode }
 
