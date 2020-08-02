@@ -1,8 +1,12 @@
+import config from './config';
+config();
+
+// GraphQL server code
+import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server';
-import mongoose from 'mongoose'
-import schema from './graphql/schema';
-import resolvers from './graphql/resolvers';
-import auth from './middleware/auth';
+import schema from 'api/schema';
+import resolvers from 'api/resolvers';
+import { middleware } from './middleware';
 
 
 const port = process.env.PORT || 3000;
@@ -22,7 +26,7 @@ const start = async (): Promise<void> => {
     const server = new ApolloServer({
         typeDefs: schema,
         resolvers: resolvers,
-        context: auth,
+        context: middleware,
         introspection: true,
         playground: true,
     });

@@ -5,7 +5,11 @@
     "outDir": "dist",
     "sourceMap": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": "./src",
+    "plugins": [
+      { "transform": "transformer-module" },
+    ]
   },
   "include": [
     "src/**/*.ts"
