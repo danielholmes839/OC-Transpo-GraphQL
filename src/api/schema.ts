@@ -161,7 +161,7 @@ const typeDefs = gql`
 	}
 	
 	type Login {	
-		user: String!			# I do not want to return the full user - I wa
+		user: String!			# I do not want to return the full user...
 		token: String!
 		expiration: Int!
 	}
