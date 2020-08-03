@@ -31,7 +31,9 @@ const config = () => {
             return origRequire.call(this, existsPath || request)
         }
     })()
-    process.env = dotenv.config().parsed;
+    if (process.env.mode !== 'production') {
+        process.env = dotenv.config().parsed;
+    }
 }
 
 export default config;

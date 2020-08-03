@@ -1,8 +1,5 @@
 import config from './config';
-if (process.env.mode !== 'production') {
-    config();
-}
-
+config(); 
 
 // GraphQL server code
 import mongoose from 'mongoose';
