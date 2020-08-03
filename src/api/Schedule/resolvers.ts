@@ -1,6 +1,6 @@
 import { Schedule } from './types';
 import { StopTime } from '../types';
-import { nextStopTimes } from './helpers';
+import { get_next_stop_times } from './helpers';
 import { Context } from 'middleware'
 
 type Next_args = {
@@ -14,8 +14,7 @@ export default {
         return stopTimeLoader.loadMany(parent.stopTimes);
     },
 
-    next: async (parent: Schedule, { number }: Next_args = { number: 1 }, context: Context): Promise<StopTime[]> => {
-        const { serviceLoader } = context.loaders;
-        return await nextStopTimes(parent.stopTimes, number, serviceLoader);
+    next: async (parent: Schedule, { number }: Next_args = { number: 1 }, context: Context): Promise<(StopTime | Error)[]> => {
+        return await get_next_stop_times(parent.stopTimes, number, context);
     }
 };

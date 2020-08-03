@@ -1,4 +1,7 @@
-import { currentTime } from '../Schedule/helpers';
+const current_time = () => {
+    let date = new Date();
+    return (date.getHours() * 60) + date.getMinutes();
+}
 
 // Time Resolvers
 export default {
@@ -11,7 +14,7 @@ export default {
     },
 
     remaining: (parent: number): number => {
-        let now = currentTime();
+        let now = current_time();
         return (parent > now) ? parent - now : (1440 - parent) + now;
     },
 
