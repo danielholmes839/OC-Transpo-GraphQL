@@ -20,7 +20,13 @@ export default {
 	},
 
 	Stop_search: async (_: void, { name, limit }: StopSearch): Promise<Stop[]> => {
-		if (!limit) limit = 3;
+		if (limit == null) limit = 3;
+		// Search by stop code first
+		let stops = await StopModel.find({ code: name });
+		if (stops.length !== 0) {
+			return stops;
+		}
+		// Search by stop name
 		return StopModel.find(
 			{ $text: { $search: name } },
 			{ score: { $meta: 'textScore' } }
