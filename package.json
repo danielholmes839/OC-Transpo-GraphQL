@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./dist/server.js",
     "start:watch": "nodemon",
-    "build": "tsc"
+    "build": "tsc",
+    "update": "npm run build && node ./dist/update.js"
   },
   "author": "",
   "license": "ISC",
