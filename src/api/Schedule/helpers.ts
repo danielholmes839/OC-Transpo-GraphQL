@@ -30,6 +30,20 @@ const zip = <T1, T2>(a: T1[], b: T2[]): [T1, T2][] => {
     return a.map((element: T1, index: number) => [element, b[index]])
 }
 
+const getUnique = (arr: AccurateStopTime[]): AccurateStopTime[] => {
+    // https://reactgo.com/removeduplicateobjects/#:~:text=Here%20is%20my%20implementation%20to,%2C%20final)%20%3D%3E%20final.
+    // store the comparison  values in array
+    const unique = arr.map(e => e.time)
+
+        // store the indexes of the unique objects
+        .map((e, i, final) => final.indexOf(e) === i && i)
+
+        // eliminate the false indexes & return unique objects
+        .filter((e) => arr[e]).map(e => arr[e]);
+
+    return unique;
+}
+
 const get_next_stop_times = async (stop_time_ids: string[], limit: number, context: Context): Promise<(StopTime | Error)[]> => {
     const { stopTimeLoader, serviceLoader } = context.loaders;
     let date = new Date();
@@ -67,9 +81,11 @@ const get_next_stop_times = async (stop_time_ids: string[], limit: number, conte
         }
     }
 
+    stop_times_today = getUnique(stop_times_today);
+    stop_times_tommorow = getUnique(stop_times_tommorow);
     stop_times_today.sort((a: AccurateStopTime, b: AccurateStopTime) => a.time - b.time);
     stop_times_tommorow.sort((a: AccurateStopTime, b: AccurateStopTime) => a.time - b.time);
-    
+
     // Create the list of next stop times 
     let today_index = stop_times_today.findIndex((stop_time: AccurateStopTime) => stop_time.time > current_time)
     let next_stop_times: string[] = []
@@ -77,7 +93,7 @@ const get_next_stop_times = async (stop_time_ids: string[], limit: number, conte
         next_stop_times = stop_times_today.slice(today_index, today_index + limit).map(stop_time => stop_time.id);
     }
 
-    // Add the stop times for tommorow
+    // Add the stop times for tommorow if there's not enough stop times today 
     let i = 0;
     while ((next_stop_times.length < limit) && (i < stop_times_tommorow.length)) {
         if (stop_times_tommorow[i].time > current_time) { break; }
