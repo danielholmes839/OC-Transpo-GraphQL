@@ -8,12 +8,12 @@ export default {
     string: (parent: number): string => {
         let hour = Math.floor(parent / 60);
         let half = 'am';
-        if (hour > 24) {
+        if (hour >= 24) {
             hour %= 12;
-        } else if ( hour > 12) {
+        } else if (hour > 12) {
             hour %= 12;
             half = 'pm';
-        } 
+        }
 
         if (hour === 0) {
             hour = 12
