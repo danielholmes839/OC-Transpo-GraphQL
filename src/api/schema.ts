@@ -169,7 +169,7 @@ const typeDefs = gql`
 	type Query {
 		# Stop Queries
 		Stop_get(stop: ID!): Stop
-		Stop_getMany(stops: [ID!]!): [Stop!]!
+		Stop_getMany(stops: [ID!]!): [Stop]!
 		Stop_search(name: String!, limit: Int): [Stop!]!
 
 		# Route Queries
@@ -192,7 +192,6 @@ const typeDefs = gql`
 
 		# TravelPlan Queries
 		TravelPlan_get(start: ID!, end: ID!): TravelPlan
-		
 	}
 
 	type Mutation {
