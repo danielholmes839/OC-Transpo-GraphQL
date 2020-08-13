@@ -17,6 +17,7 @@ import Schedule from './Schedule/resolvers';
 import TravelPlan from './TravelPlan/resolvers';
 import Leg from './Leg/resolvers';
 import Time from './Time/resolvers';
+import Date from './Date/resolvers';
 
 const resolvers: IResolvers = {
     Query,
@@ -37,7 +38,8 @@ const resolvers: IResolvers = {
     Schedule,
     TravelPlan,
     Leg,
-    Time
+    Time,
+    Date
 }
 
 export default resolvers;

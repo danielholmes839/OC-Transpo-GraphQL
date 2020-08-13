@@ -16,7 +16,8 @@ const typeDefs = gql`
 	type Date {
 		year: Int!					
 		month: Int!
-		day: Int!				
+		day: Int!
+		string: String!			
 	}
 
 	type TravelPlan {
@@ -111,7 +112,9 @@ const typeDefs = gql`
 		time: Time!
 		trip: Trip!
 		service: Service!
-		stop: Stop!     
+		stop: Stop!   
+		route: Route!
+		stopRoute: StopRoute!  
 	}
 
 	# Service type
@@ -168,23 +171,29 @@ const typeDefs = gql`
 
 	type Query {
 		# Stop Queries
-		Stop_get(stop: ID!): Stop
-		Stop_getMany(stops: [ID!]!): [Stop]!
+		Stop_get(id: ID!): Stop
+		Stop_getMany(ids: [ID!]!): [Stop]!
 		Stop_search(name: String!, limit: Int): [Stop!]!
-
+		
 		# Route Queries
-		Route_get(route: ID!): Route
-		Route_getMany(routes: [ID!]!): [Route]!
-
+		Route_get(id: ID!): Route
+		Route_getMany(ids: [ID!]!): [Route]!
+		
 		# StopRoute Queries
-		StopRoute_get(stopRoute: ID!): StopRoute
-		StopRoute_getMany(stopRoutes: [ID!]!): [StopRoute]!
-
+		StopRoute_get(id: ID!): StopRoute
+		StopRoute_getMany(ids: [ID!]!): [StopRoute]!
+		
 		# Trip Queries
-		Trip_get(trip: ID!): Trip
+		Trip_get(id: ID!): Trip
+		Trip_getMany(ids: [ID!]!): [Trip]!
 
-		# Service
-		Service_get(service: ID!): Stop
+		# StopTime Queries
+		StopTime_get(id: ID!): StopTime
+		StopTime_getMany(ids: [ID!]!): [StopTime]!
+
+		# Service Queries
+		Service_get(id: ID!): Service
+		Service_getMany(ids: ID!): [Service]!
 
 		# User Queries
 		User_get: User

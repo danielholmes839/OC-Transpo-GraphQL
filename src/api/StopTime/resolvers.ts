@@ -1,5 +1,5 @@
 import { Context } from 'middleware';
-import { StopTime, Trip, Stop, Service } from 'api/types';
+import { StopTime, Trip, Stop, Route, StopRoute, Service } from 'api/types';
 
 // StopTime Resolvers
 export default {
@@ -11,6 +11,16 @@ export default {
     stop: (parent: StopTime, _: void, context: Context): Promise<(Stop | Error)> => {
         const { stopLoader } = context.loaders;
         return stopLoader.load(parent.stop);
+    },
+
+    route: (parent: StopTime, _: void, context: Context): Promise<(Route | Error)> => {
+        const { routeLoader } = context.loaders;
+        return routeLoader.load(parent.route);
+    },
+
+    stopRoute: (parent: StopTime, _: void, context: Context): Promise<(StopRoute | Error)> => {
+        const { stopRouteLoader } = context.loaders;
+        return stopRouteLoader.load(parent.stopRoute);
     },
 
     service: (parent: StopTime, _: void, context: Context): Promise<(Service | Error)> => {

@@ -2,21 +2,24 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Context } from 'middleware'
 import { plan, TravelPlan } from 'astar';
-import { Stop, StopRoute, Route, Trip, User, Service } from 'api/types';
+import { Stop, StopTime, StopRoute, Route, Trip, User, Service } from 'api/types';
 import { UserModel, StopModel } from 'api/models';
 import { Login, LoginPayload, TravelPlan_get_args, StopSearch } from './types'
 
 // Query Resolvers
+type GetQuery = { id: string };
+type GetManyQuery = { ids: string[] };
+
 export default {
 	// Stop Queries
-	Stop_get: (_: void, args: { stop: string }, context: Context): Promise<Stop> => {
+	Stop_get: (_: void, { id }: GetQuery, context: Context): Promise<Stop> => {
 		const { stopLoader } = context.loaders
-		return stopLoader.load(args.stop);
+		return stopLoader.load(id);
 	},
 
-	Stop_getMany: (_: void, args: { stops: string[] }, context: Context): Promise<(Stop | Error)[]> => {
+	Stop_getMany: (_: void, { ids }: GetManyQuery, context: Context): Promise<(Stop | Error)[]> => {
 		const { stopLoader } = context.loaders
-		return stopLoader.loadMany(args.stops);
+		return stopLoader.loadMany(ids);
 	},
 
 	Stop_search: async (_: void, { name, limit }: StopSearch): Promise<Stop[]> => {
@@ -36,37 +39,58 @@ export default {
 	},
 
 	// Route Queries
-	Route_get: (_: void, args: { route: string }, context: Context): Promise<Route> => {
+	Route_get: (_: void, { id }: GetQuery, context: Context): Promise<Route> => {
 		const { routeLoader } = context.loaders
-		return routeLoader.load(args.route);
+		return routeLoader.load(id);
 	},
 
-	Route_getMany: (_: void, args: { routes: string[] }, context: Context): Promise<(Route | Error)[]> => {
+	Route_getMany: (_: void, { ids }: GetManyQuery, context: Context): Promise<(Route | Error)[]> => {
 		const { routeLoader } = context.loaders;
-		return routeLoader.loadMany(args.routes);
+		return routeLoader.loadMany(ids);
 	},
 
 	// StopRoute Queries
-	StopRoute_get: (_: void, args: { stopRoute: string }, context: Context): Promise<StopRoute> => {
+	StopRoute_get: (_: void, { id }: GetQuery, context: Context): Promise<StopRoute> => {
 		const { stopRouteLoader } = context.loaders;
-		return stopRouteLoader.load(args.stopRoute);
+		return stopRouteLoader.load(id);
 	},
 
-	StopRoute_getMany: (_: void, args: { stopRoutes: string[] }, context: Context): Promise<(StopRoute | Error)[]> => {
+	StopRoute_getMany: (_: void, { ids }: GetManyQuery, context: Context): Promise<(StopRoute | Error)[]> => {
 		const { stopRouteLoader } = context.loaders;
-		return stopRouteLoader.loadMany(args.stopRoutes);
+		return stopRouteLoader.loadMany(ids);
 	},
 
 	// Trip Queries
-	Trip_get: (_: void, args: { trip: string }, context: Context): Promise<Trip> => {
+	Trip_get: (_: void, { id }: GetQuery, context: Context): Promise<Trip> => {
 		const { tripLoader } = context.loaders;
-		return tripLoader.load(args.trip);
+		return tripLoader.load(id);
+	},
+
+	Trip_getMany: (_: void, { ids }: GetManyQuery, context: Context): Promise<(Trip | Error)[]> => {
+		const { tripLoader } = context.loaders;
+		return tripLoader.loadMany(ids);
 	},
 
 	// Service Queries
-	Service_get: (_: void, args: { service: string }, context: Context): Promise<Service> => {
+	Service_get: (_: void, { id }: GetQuery, context: Context): Promise<Service> => {
 		const { serviceLoader } = context.loaders;
-		return serviceLoader.load(args.service);
+		return serviceLoader.load(id);
+	},
+
+	Service_getMany: (_: void, { ids }: GetManyQuery, context: Context): Promise<(Service | Error)[]> => {
+		const { serviceLoader } = context.loaders;
+		return serviceLoader.loadMany(ids);
+	},
+
+	// StopTime Queries
+	StopTime_get: (_: void, { id }: GetQuery, context: Context): Promise<StopTime> => {
+		const { stopTimeLoader } = context.loaders;
+		return stopTimeLoader.load(id);
+	},
+
+	StopTime_getMany: (_: void, { ids }: GetManyQuery, context: Context): Promise<(StopTime | Error)[]> => {
+		const { stopTimeLoader } = context.loaders;
+		return stopTimeLoader.loadMany(ids);
 	},
 
 	// User Queries

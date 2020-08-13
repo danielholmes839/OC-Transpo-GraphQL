@@ -23,6 +23,16 @@ const schema: Schema = new Schema({
         ref: 'Stop'
     },
 
+    route: {
+        type: String,
+        ref: 'Route'
+    },
+
+    stopRoute: {
+        type: String,
+        ref: 'StopRoute'
+    },
+
     trip: {
         type: String,
         ref: 'Trip'
