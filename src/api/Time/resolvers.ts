@@ -7,22 +7,25 @@ const current_time = () => {
 export default {
     string: (parent: number): string => {
         let hour = Math.floor(parent / 60);
+        
+        // Determine AM/PM
         let half = 'am';
         if (hour >= 24) {
-            hour %= 12;
-        } else if (hour > 12) {
-            hour %= 12;
+            half = 'am';
+        } else if (hour >= 12) {
             half = 'pm';
         }
 
+        // hour % 0 and if the remainder is 0 replace with 12
+        hour %= 12;
         if (hour === 0) {
             hour = 12
         }
 
-        let hour_str = (hour == 0) ? `0${hour}` : `${hour}`;
+        // Create the string
         let minute = parent % 60;
         let minute_str = (minute < 10) ? `0${minute}` : `${minute}`;
-        return `${hour_str}:${minute_str}${half}`;
+        return `${hour}:${minute_str}${half}`;
     },
 
     remaining: (parent: number): number => {
