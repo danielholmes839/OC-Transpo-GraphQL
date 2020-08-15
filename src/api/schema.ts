@@ -19,24 +19,6 @@ const typeDefs = gql`
 		day: Int!
 		string: String!			
 	}
-
-	type TravelPlan {
-		start: Stop!
-		end: Stop!
-		distance: Distance!
-		legs: [Leg!]!
-		map(width: Int, height: Int, zoom: Int): StaticTravelPlanMap!
-	}
-
-	type Leg {
-		start: Stop!	
-		end: Stop!
-		distance: Distance!
-		instructions: String!
-		routes: [Route!]			# Will be null if walking
-		stopRoutes: [StopRoute!]
-		walk: Boolean!
-	}
 	
 	type User {
 		id: ID!
@@ -81,7 +63,7 @@ const typeDefs = gql`
 		route: Route!
 		liveBusData: LiveBusData!
 		schedule: Schedule!
-		map(width: Int, height: Int, zoom: Int): StaticStopRouteMap
+		map(width: Int, height: Int): StaticStopRouteMap
 	}
 
 	# Route type
@@ -198,9 +180,6 @@ const typeDefs = gql`
 		# User Queries
 		User_get: User
 		User_login(email: String!, password: String!): Login
-
-		# TravelPlan Queries
-		TravelPlan_get(start: ID!, end: ID!): TravelPlan
 	}
 
 	type Mutation {

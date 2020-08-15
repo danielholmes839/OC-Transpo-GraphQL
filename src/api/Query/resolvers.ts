@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Context } from 'middleware'
-import { plan, TravelPlan } from 'astar';
 import { Stop, StopTime, StopRoute, Route, Trip, User, Service } from 'api/types';
 import { UserModel, StopModel } from 'api/models';
 import { Login, LoginPayload, TravelPlan_get_args, StopSearch } from './types'
@@ -114,14 +113,6 @@ export default {
 			token: jwt.sign({ user: user.id, email: user.email }, process.env.SECRET_KEY, { expiresIn: '24h' }),
 			expiration: 24
 		}
-	},
-
-	// TravelPlan Queries
-	TravelPlan_get: async (_: void, { start, end }: TravelPlan_get_args, context: Context): Promise<TravelPlan> => {
-		const { stopLoader } = context.loaders;
-		let [start_document, end_document] = <Stop[]>await stopLoader.loadMany([start, end]);
-		if (start_document == null || end_document == null) return null;
-		return plan(start, end);
-	},
+	}
 }
 

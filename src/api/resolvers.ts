@@ -14,8 +14,6 @@ import LiveBusData from './LiveBusData/resolvers';
 import { StaticStopRouteMap, StaticTravelPlanMap } from './Maps/resolvers';
 import Distance from './Distance/resolvers';
 import Schedule from './Schedule/resolvers';
-import TravelPlan from './TravelPlan/resolvers';
-import Leg from './Leg/resolvers';
 import Time from './Time/resolvers';
 import Date from './Date/resolvers';
 
@@ -36,8 +34,6 @@ const resolvers: IResolvers = {
     StaticTravelPlanMap,
     Distance,
     Schedule,
-    TravelPlan,
-    Leg,
     Time,
     Date
 }
