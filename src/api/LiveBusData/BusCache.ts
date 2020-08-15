@@ -7,7 +7,7 @@ class BusCache {
 
     public constructor() {
         /* Cache Constructor */
-        this.cache = new NodeCache({ stdTTL: 60 });
+        this.cache = new NodeCache({ stdTTL: 30 });
     }
 
     public has(key: string): boolean {
