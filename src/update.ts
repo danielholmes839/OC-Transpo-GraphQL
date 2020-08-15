@@ -7,7 +7,7 @@ import { Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException } fro
 import { StopModel, StopRouteModel, RouteModel, StopTimeModel, TripModel, ServiceModel, ServiceExceptionModel } from 'api/models';
 
 let config = {
-    input: './data/database',
+    input: './data',
     models: [StopModel, StopRouteModel, RouteModel, StopTimeModel, TripModel, ServiceModel, ServiceExceptionModel],
     file: ['STOPS.json', 'STOP_ROUTES.json', 'ROUTES.json', 'STOP_TIMES.json', 'TRIPS.json', 'SERVICES.json', 'SERVICE_EXCEPTIONS.json']
 }
