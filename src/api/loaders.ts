@@ -70,12 +70,12 @@ const createAuthDataLoader = <T extends Document>(user: string, get_user: (docum
 }
 
 
-type AuthLoaders = {
-    userLoader: DataLoader<string, User>;
-    favouriteStopLoader: DataLoader<string, FavouriteStop>;
+interface AuthLoaders {
+    userLoader?: DataLoader<string, User>;
+    favouriteStopLoader?: DataLoader<string, FavouriteStop>;
 }
 
-type OpenLoaders = {
+interface OpenLoaders {
     routeLoader: DataLoader<string, Route>;
     stopLoader: DataLoader<string, Stop>;
     stopRouteLoader: DataLoader<string, StopRoute>;
@@ -85,17 +85,7 @@ type OpenLoaders = {
     serviceExceptionLoader: DataLoader<string, ServiceException>;
 }
 
-type Loaders = {
-    userLoader: DataLoader<string, User> | null;
-    favouriteStopLoader: DataLoader<string, FavouriteStop> | null;
-    routeLoader: DataLoader<string, Route>;
-    stopLoader: DataLoader<string, Stop>;
-    stopRouteLoader: DataLoader<string, StopRoute>;
-    stopTimeLoader: DataLoader<string, StopTime>;
-    tripLoader: DataLoader<string, Trip>;
-    serviceLoader: DataLoader<string, Service>;
-    serviceExceptionLoader: DataLoader<string, ServiceException>;
-}
+type Loaders = OpenLoaders & AuthLoaders
 
 const createAuthLoaders = (user: string): AuthLoaders => {
     /* Loader for documents that require authentication (belong to the authenticated user) */
@@ -126,11 +116,7 @@ const createLoaders = (authenticated: boolean, user: string): Loaders => {
             ...createOpenLoaders()
         }
     } else {
-        return {
-            ...createOpenLoaders(),
-            userLoader: null,
-            favouriteStopLoader: null
-        }
+        return createOpenLoaders()
     }
 }
 
