@@ -30,8 +30,6 @@ class StaticStopRouteMap extends StaticMap {
     }
 
     public static zoom(center: Position, buses: Bus[], size: Size): number {
-        console.log(center);
-        console.log(buses);
         let max_latitude = 0;
         let max_longitude = 0;
 
