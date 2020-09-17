@@ -110,7 +110,7 @@ export default {
 		// Return the user, jwt, expiration
 		return {
 			user: user.id,
-			token: jwt.sign({ user: user.id, email: user.email }, process.env.SECRET_KEY, { expiresIn: '24h' }),
+			token: jwt.sign({ user: user.id, email: user.email }, process.env.BCRYPT_KEY, { expiresIn: '24h' }),
 			expiration: 24
 		}
 	}
