@@ -17,7 +17,7 @@ const middleware = ({ req }) => {
     /* Authenticate and create data loaders */
     try {
         const token: string = req.headers.token;
-        const data: Token = <Token>jwt.verify(token, process.env.SECRET_KEY);
+        const data: Token = <Token>jwt.verify(token, process.env.BCRYPT_KEY);
         return {
             user: data.user,
             email: data.user,
