@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import { Context } from 'middleware'
 import { Stop, StopTime, StopRoute, Route, Trip, User, Service } from 'api/types';
 import { UserModel, StopModel } from 'api/models';
-import { Login, LoginPayload, TravelPlan_get_args, StopSearch } from './types'
+import { Login, StopSearch } from './types'
 
 // Query Resolvers
 type GetQuery = { id: string };
@@ -95,24 +95,20 @@ export default {
 	// User Queries
 	User_get: (_: void, __: void, context: Context): Promise<User> => {
 		/* Get a user by the authentication token */
-		if (!context.authenticated) throw new Error('Authentication Failed');
+		if (!context.authenticated) throw new Error('Authentication Required');
 		const { userLoader } = context.loaders;
 		return userLoader.load(context.user);
 	},
 
-	User_login: async (_: void, login: Login, context: Context): Promise<LoginPayload> => {
+	User_login: async (_: void, login: Login, context: Context): Promise<String> => {
 		/* Login a user and return a json web token */
 		const user: User = await UserModel.findOne({ email: login.email });						// Find existing user
-		if (!user) throw new Error('Authentication Failed');									// No existing user
+		if (!user) throw new Error('Incorrect username or password');							// No existing user
 		const authenticated: boolean = await bcrypt.compare(login.password, user.password);		// Check if passwords match
-		if (!authenticated) throw new Error('Authentication Failed');							// Password don't match
+		if (!authenticated) throw new Error('Incorrect username or password');					// Password don't match
 
 		// Return the user, jwt, expiration
-		return {
-			user: user.id,
-			token: jwt.sign({ user: user.id, email: user.email }, process.env.BCRYPT_KEY, { expiresIn: '24h' }),
-			expiration: 24
-		}
+		return jwt.sign({ user: user.id, email: user.email }, process.env.BCRYPT_KEY, { expiresIn: '24h' })
 	}
 }
 
