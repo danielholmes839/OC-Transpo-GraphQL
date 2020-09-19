@@ -6,26 +6,17 @@ const current_time = () => {
 // Time Resolvers
 export default {
     string: (parent: number): string => {
-        let hour = Math.floor(parent / 60);
         
-        // Determine AM/PM
-        let half = 'am';
-        if (hour >= 24) {
-            half = 'am';
-        } else if (hour >= 12) {
-            half = 'pm';
-        }
+        let hour = Math.floor(parent / 60) % 24;
+        let half = (hour < 12) ? 'am' : 'pm';
 
-        // hour % 0 and if the remainder is 0 replace with 12
         hour %= 12;
-        if (hour === 0) {
-            hour = 12
-        }
-
-        // Create the string
+        hour = (hour === 0) ? 12 : hour;
+        
         let minute = parent % 60;
-        let minute_str = (minute < 10) ? `0${minute}` : `${minute}`;
-        return `${hour}:${minute_str}${half}`;
+        let minute_str = (minute < 10) ? `0${minute}` : minute;
+        
+        return `${hour }:${minute_str}${half}`;
     },
 
     remaining: (parent: number): number => {
@@ -33,13 +24,5 @@ export default {
         return (parent > now) ? parent - now : (1440 - parent) + now;
     },
 
-    int: (parent: number): number => parent,
-
-    hour: (parent: number): number => {
-        return Math.floor(parent / 60);
-    },
-
-    minute: (parent: number): number => {
-        return parent % 60;
-    }
+    int: (parent: number): number => parent
 }
