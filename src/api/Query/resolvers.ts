@@ -108,7 +108,7 @@ export default {
 		if (!authenticated) throw new Error('Incorrect username or password');					// Password don't match
 
 		// Return the user, jwt, expiration
-		return jwt.sign({ user: user.id, email: user.email }, process.env.BCRYPT_KEY, { expiresIn: '24h' })
+		return jwt.sign({ user: user.id, email: user.email }, process.env.JWT_KEY, { expiresIn: '24h' })
 	}
 }
 
