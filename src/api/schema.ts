@@ -1,15 +1,12 @@
 import gql from 'graphql-tag';
 
 const typeDefs = gql`
-	scalar Distance							# Fancy distance string
+	scalar Distance							# Distance string "5km", "3.1km", "800m"
 	scalar StaticStopRouteMap				# static google maps URL for a StopRoute
-	scalar StaticTravelPlanMap				# static google maps URL for a TravelPlan
 
 	type Time {
 		int: Int!							# Time as an integer (minutes into the day)
-		hour: Int!							# Hour as an integer
-		minute: Int!						# Minute as an integer
-		string: String!						# Time as a string
+		string: String!						# Time as a string - could add more formatting options later...
 		remaining: Int!						# Minutes until this time
 	}
 
@@ -23,12 +20,9 @@ const typeDefs = gql`
 	type User {
 		id: ID!
 		email: String!
-		password: String
 		favouriteStops: [FavouriteStop]!
 	}
 
-	# Favourite Stop type
-	# Saves the users favourite stops and the routes belonging to that stop 
 	type FavouriteStop {
 		id: ID!
 		user: User!
@@ -36,13 +30,6 @@ const typeDefs = gql`
 		stopRoutes: [StopRoute!]!
 	}
 
-	# Schedule type for StopRoute type
-	type Schedule {
-		next(number: Int): [StopTime!]!
-		all: [StopTime!]!
-	}
-
-	# Stop type
 	type Stop {
 		id: ID!
 		name: String!
@@ -53,20 +40,22 @@ const typeDefs = gql`
 		stopRoutes: [StopRoute!]!
 	}
 
-	# StopRoute type
-	# Represents a route part of a stop
 	type StopRoute {
 		id: ID!
-		headsign: String!           	# route headsign
-		number: String!             	# route number
+		headsign: String!
+		number: String!
 		stop: Stop!						
 		route: Route!
-		liveBusData: LiveBusData!
 		schedule: Schedule!
+		liveBusData: LiveBusData!
 		map(width: Int, height: Int): StaticStopRouteMap
 	}
 
-	# Route type
+	type Schedule {
+		next(number: Int): [StopTime!]!
+		all: [StopTime!]!
+	}
+
 	type Route {
 		id: ID!
 		number: String!
@@ -77,7 +66,6 @@ const typeDefs = gql`
 		stops: [Stop!]!
 	}
 	
-	# Trip type
 	type Trip {
 		id: ID!
 		headsign: String!
@@ -87,7 +75,6 @@ const typeDefs = gql`
 		stopTimes: [StopTime!]!
 	}
 
-	# StopTime type
 	type StopTime {
 		id: ID!
 		sequence: Int!
@@ -99,13 +86,11 @@ const typeDefs = gql`
 		stopRoute: StopRoute!  
 	}
 
-	# Service type
 	type Service {
 		id: ID!
 		start: Date!
 		end: Date!                         
-		exceptions: [ServiceException!]!
-	
+		exceptions: [ServiceException!]!	
 		monday: Boolean!
 		tuesday: Boolean!
 		wednesday: Boolean!
@@ -131,10 +116,9 @@ const typeDefs = gql`
 	type Bus {
 		headsign: String!
 		number: String!
-		direction: Int!			# 0 or 1 only  (I think)
 		gps: GPS
-		arrival: Time!			# When the bus will arrive
 		age: Int! 				# Time since lat updated in minutes
+		arrival: Time!			# When the bus will arrive
 		onTime: Boolean!		# Whether or not the arrival time has been adjusted
 	}
 
@@ -143,12 +127,6 @@ const typeDefs = gql`
 		buses: [Bus!]!
 		busCount: Int!
 		busCountGPS: Int!
-	}
-	
-	type Login {	
-		user: String!			# I do not want to return the full user...
-		token: String!
-		expiration: Int!
 	}
 
 	type Query {
@@ -179,7 +157,7 @@ const typeDefs = gql`
 
 		# User Queries
 		User_get: User
-		User_login(email: String!, password: String!): Login
+		User_login(email: String!, password: String!): String
 	}
 
 	type Mutation {
