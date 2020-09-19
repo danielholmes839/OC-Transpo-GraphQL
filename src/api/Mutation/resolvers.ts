@@ -39,7 +39,7 @@ export default {
     User_FavouriteStop_add: async (_: void, args: User_FavouriteStop_add_args, context: Context): Promise<FavouriteStop> => {
         /*  Add a FavouriteStop to a user */
         // Make sure the user is authenticated
-        if (!context.authenticated) throw new Error('Not Authenticated');
+        if (!context.authenticated) throw new Error('Authentication Required');
         const { userLoader, favouriteStopLoader, stopLoader } = context.loaders
 
         // Make sure the stop they want to favourite exists
@@ -71,7 +71,7 @@ export default {
 
     User_FavouriteStop_remove: async (_: void, args: User_FavouriteStop_remove_args, context: Context): Promise<FavouriteStop> => {
         /* Remove a FavouriteStop */
-        if (!context.authenticated) throw new Error('Not Authenticated');
+        if (!context.authenticated) throw new Error('Authentication Required');
         const { userLoader, favouriteStopLoader } = context.loaders;
         let favouriteStop: FavouriteStop = await favouriteStopLoader.load(args.favouriteStop);
         let user: User = await userLoader.load(context.user);
@@ -83,7 +83,7 @@ export default {
 
     User_FavouriteStop_StopRoutes_add: async (_: void, args: User_FavouriteStop_StopRoute_mutation_args, context: Context): Promise<FavouriteStop> => {
         /* Adds StopRoutes to FavouriteStop */
-        if (!context.authenticated) throw new Error('Not Authenticated');
+        if (!context.authenticated) throw new Error('Authentication Required');
         const { stopLoader, favouriteStopLoader } = context.loaders
         let favouriteStop: FavouriteStop = await favouriteStopLoader.load(args.favouriteStop);
         let stop: Stop = await stopLoader.load(favouriteStop.stop);
@@ -100,7 +100,7 @@ export default {
 
     User_FavouriteStop_StopRoutes_remove: async (_: void, args: User_FavouriteStop_StopRoute_mutation_args, context: Context): Promise<FavouriteStop> => {
         /* Deletes StopRoutes to FavouriteStop */
-        if (!context.authenticated) throw new Error('Not Authenticated');
+        if (!context.authenticated) throw new Error('Authentication Required');
         const { favouriteStopLoader } = context.loaders
         let favouriteStop: FavouriteStop = await favouriteStopLoader.load(args.favouriteStop);
         let remove: Set<string> = new Set(args.stopRoutes);
