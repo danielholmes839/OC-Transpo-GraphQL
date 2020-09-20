@@ -21,7 +21,7 @@ const delete_collection = async <T extends Document>(model: Model<T>) => {
     try {
         await model.collection.drop();
     } catch (error) {
-        console.log(error);
+        console.log(`Could not delete ${model.modelName} - don't worry though`);
     }
 }
 
