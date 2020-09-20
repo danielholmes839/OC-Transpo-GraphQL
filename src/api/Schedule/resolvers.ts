@@ -1,19 +1,9 @@
 import { Context } from 'middleware'
 import { StopTime, Service } from '../types';
-import { stopTimeServiceToday, stopTimeServiceTommorow, getCurrentTime } from 'helpers';
+import { stopTimeServiceToday, stopTimeServiceTomorrow } from 'helpers';
 
 type Next_args = {
     limit: number;
-}
-
-const days = {
-    0: 'sunday',
-    1: 'monday',
-    2: 'tuesday',
-    3: 'wednesday',
-    4: 'thursday',
-    5: 'friday',
-    6: 'saturday'
 }
 
 // Schedule Resolvers
@@ -23,25 +13,19 @@ export default {
         return await stopTimeLoader.loadMany(stopTimeIds);
     },
 
-    next: async (stopTimeIds: string[], { limit = 1 }: Next_args, context: Context): Promise<(StopTime | Error)[]> => {
-        const { stopTimeLoader, serviceLoader } = context.loaders;
-        let day: number = new Date().getDay();
-        let time: number = getCurrentTime();
-
-        // access service with service[yesterday], service[tommorow], service[tommorow],
-        let yesterday: string = days[(day + 6) % 7]
-        let today: string = days[day];
-        let tommorow: string = days[(day + 1) % 7];
+    next: async (stopTimeIds: string[], { limit = 1 }: Next_args, { loaders, datetime }: Context): Promise<(StopTime | Error)[]> => {
+        const { stopTimeLoader, serviceLoader } = loaders;
+        const { yesterday, today, tommorow, currentTime } = datetime;
 
         let stopTimes: StopTime[] = <StopTime[]>await stopTimeLoader.loadMany(stopTimeIds);
         let services: Service[] = <Service[]>await serviceLoader.loadMany(stopTimes.map(stopTime => stopTime.service));
 
-        let index = 0
+        let index = 0;
         let valid: StopTime[] = stopTimes.filter((stopTime: StopTime, i: number) => {
             let service: Service = services[i];
-            if (stopTime.time >= time && stopTimeServiceToday(stopTime, service, today, yesterday)) {
+            if (stopTime.time >= currentTime && stopTimeServiceToday(stopTime, service, today, yesterday)) {
                 return true;
-            } else if (stopTime.time < time && stopTimeServiceTommorow(stopTime, service, today, tommorow)) {
+            } else if (stopTime.time < currentTime && stopTimeServiceTomorrow(stopTime, service, today, tommorow)) {
                 index += 1;
                 return true;
             }

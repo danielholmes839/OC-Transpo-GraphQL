@@ -89,7 +89,9 @@ const typeDefs = gql`
 
 	type StopTimeService {
 		service: Service!
-		serviceIsNextDay: Boolean!
+		serviceToday: Boolean!
+		serviceTomorrow: Boolean!
+		serviceIsNextDay: Boolean!  # The time of the stop time was originally past 24 hours
 		monday: Boolean!
 		tuesday: Boolean!
 		wednesday: Boolean!
@@ -103,7 +105,9 @@ const typeDefs = gql`
 		id: ID!
 		start: Date!
 		end: Date!                         
-		exceptions: [ServiceException!]!	
+		exceptions: [ServiceException!]!
+		serviceToday: Boolean!
+		serviceTomorrow: Boolean!	
 		monday: Boolean!
 		tuesday: Boolean!
 		wednesday: Boolean!
