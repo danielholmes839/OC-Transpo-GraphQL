@@ -1,7 +1,4 @@
-const getCurrentTime = (): number => {
-    let date = new Date();
-    return (date.getHours() * 60) + date.getMinutes();
-}
+import { getCurrentTime } from 'helpers';
 
 const intRemaining = (parent: number): number => {
     let currentTime = getCurrentTime();
@@ -15,11 +12,11 @@ export default {
         let half = (hour < 12) ? 'am' : 'pm';
         hour %= 12
         hour = (hour === 0) ? 12 : hour;
-        
+
         let minute = parent % 60;
         let minute_str = (minute < 10) ? `0${minute}` : minute;
-        
-        return `${hour }:${minute_str}${half}`;
+
+        return `${hour}:${minute_str}${half}`;
     },
 
     stringRemaining: (parent: number): string => {
