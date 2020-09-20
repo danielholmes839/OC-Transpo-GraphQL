@@ -1,4 +1,5 @@
 import { getCurrentTime } from 'helpers';
+import { Context } from 'middleware';
 
 const intRemaining = (parent: number): number => {
     let currentTime = getCurrentTime();
@@ -27,6 +28,7 @@ export default {
     },
 
     int: (parent: number): number => parent,
-    intRemaining: intRemaining
+    intRemaining: intRemaining,
+    passed: (parent: number, _: void, { datetime }: Context): boolean => datetime.currentTime > parent
 
 }

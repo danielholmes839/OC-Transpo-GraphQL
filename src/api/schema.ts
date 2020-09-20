@@ -5,10 +5,11 @@ const typeDefs = gql`
 	scalar StaticStopRouteMap				# static google maps URL for a StopRoute
 
 	type Time {
-		int: Int!							# Time as an integer (minutes into the day)
+		int: Int!							# Minutes into the day
+		intRemaining: Int!					# Minutes until this time
 		string: String!						# Time as a string - could add more formatting options later...
-		intRemaining: Int!
 		stringRemaining: String!			# Minutes until this time
+		passed: Boolean!					# Currently past this time
 	}
 
 	type Date {
