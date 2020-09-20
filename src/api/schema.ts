@@ -1,24 +1,6 @@
 import gql from 'graphql-tag';
 
 const typeDefs = gql`
-	scalar Distance							# Distance string "5km", "3.1km", "800m"
-	scalar StaticStopRouteMap				# static google maps URL for a StopRoute
-
-	type Time {
-		int: Int!							# Minutes into the day
-		intRemaining: Int!					# Minutes until this time
-		string: String!						# Time as a string - could add more formatting options later...
-		stringRemaining: String!			# Minutes until this time
-		passed: Boolean!					# Currently past this time
-	}
-
-	type Date {
-		year: Int!					
-		month: Int!
-		day: Int!
-		string: String!			
-	}
-	
 	type User {
 		id: ID!
 		email: String!
@@ -186,6 +168,26 @@ const typeDefs = gql`
 		User_FavouriteStop_remove(favouriteStop: ID!): FavouriteStop
 		User_FavouriteStop_StopRoutes_add(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
 		User_FavouriteStop_StopRoutes_remove(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
+	}
+
+	# Scalar Types
+	scalar Distance							# Distance string "5km", "3.1km", "800m"
+	scalar StaticStopRouteMap				# static google maps URL for a StopRoute
+
+	# Date and Time
+	type Time {
+		int: Int!							# Minutes into the day
+		intRemaining: Int!					# Minutes until this time
+		string: String!						# Time as a string - could add more formatting options later...
+		stringRemaining: String!			# Minutes until this time
+		passed: Boolean!					# Currently past this time
+	}
+
+	type Date {
+		year: Int!					
+		month: Int!
+		day: Int!
+		string: String!			
 	}
 `
 
