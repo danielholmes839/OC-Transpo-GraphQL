@@ -1,16 +1,19 @@
-const current_time = () => {
+const getCurrentTime = (): number => {
     let date = new Date();
     return (date.getHours() * 60) + date.getMinutes();
+}
+
+const intRemaining = (parent: number): number => {
+    let currentTime = getCurrentTime();
+    return (parent > currentTime) ? parent - currentTime : (1440 - currentTime) + parent;
 }
 
 // Time Resolvers
 export default {
     string: (parent: number): string => {
-        
-        let hour = Math.floor(parent / 60) % 24;
+        let hour = Math.floor(parent / 60);
         let half = (hour < 12) ? 'am' : 'pm';
-
-        hour %= 12;
+        hour %= 12
         hour = (hour === 0) ? 12 : hour;
         
         let minute = parent % 60;
@@ -19,10 +22,14 @@ export default {
         return `${hour }:${minute_str}${half}`;
     },
 
-    remaining: (parent: number): number => {
-        let now = current_time();
-        return (parent > now) ? parent - now : (1440 - parent) + now;
+    stringRemaining: (parent: number): string => {
+        let remaining: number = intRemaining(parent);
+        let hours = Math.floor(remaining / 60);
+        let minutes = Math.floor(remaining % 60);
+        return (hours !== 0) ? `${hours}h ${minutes}m` : `${minutes}m`;
     },
 
-    int: (parent: number): number => parent
+    int: (parent: number): number => parent,
+    intRemaining: intRemaining
+
 }

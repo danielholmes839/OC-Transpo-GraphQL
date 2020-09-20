@@ -41,6 +41,11 @@ const schema: Schema = new Schema({
     service: {
         type: String,
         ref: 'Service'
+    }, 
+
+    serviceIsNextDay: {
+        type: Boolean,
+        required: true
     }
 });
 

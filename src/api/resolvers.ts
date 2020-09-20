@@ -8,6 +8,7 @@ import Stop from './Stop/resolvers';
 import StopRoute from './StopRoute/resolvers';
 import StopTime from './StopTime/resolvers';
 import Trip from './Trip/resolvers';
+import StopTimeService from './StopTimeService/resolvers';
 import Service from './Service/resolvers';
 import ServiceException from './ServiceException/resolvers';
 import LiveBusData from './LiveBusData/resolvers';
@@ -27,6 +28,7 @@ const resolvers: IResolvers = {
     StopRoute,
     StopTime,
     Trip,
+    StopTimeService,
     Service,
     ServiceException,
     LiveBusData,

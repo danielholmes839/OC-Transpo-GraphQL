@@ -8,6 +8,7 @@ interface StopTime extends Document {
     stopRoute: string;
     trip: string;
     service: string;
+    serviceIsNextDay: boolean;
 }
 
 export { StopTime };

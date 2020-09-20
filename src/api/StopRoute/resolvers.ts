@@ -1,5 +1,5 @@
 import { Context } from 'middleware';
-import { Route, Stop, StopRoute, Schedule } from 'api/types';
+import { Route, Stop, StopRoute } from 'api/types';
 import StaticStopRouteMap from 'api/Maps/StaticStopRouteMap';
 import { Size } from 'api/Maps/types';
 import BusAPI from 'api/LiveBusData/BusAPI';
@@ -21,8 +21,8 @@ export default {
         const stop: Stop = await stopLoader.load(parent.stop);
         return BusAPI.get(stop, parent.number);
     },
-    schedule: (parent: StopRoute, _: void, context: Context): Schedule => {
-        return { stopTimes: parent.stopTimes }
+    schedule: (parent: StopRoute, _: void): string[] => {
+        return parent.stopTimes
     },
 
     map: async (parent: StopRoute, { width = 640, height = 320 }: Size, context: Context): Promise<StaticStopRouteMap> => {

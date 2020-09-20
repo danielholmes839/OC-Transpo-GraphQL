@@ -7,7 +7,8 @@ const typeDefs = gql`
 	type Time {
 		int: Int!							# Time as an integer (minutes into the day)
 		string: String!						# Time as a string - could add more formatting options later...
-		remaining: Int!						# Minutes until this time
+		intRemaining: Int!
+		stringRemaining: String!			# Minutes until this time
 	}
 
 	type Date {
@@ -52,7 +53,7 @@ const typeDefs = gql`
 	}
 
 	type Schedule {
-		next(number: Int): [StopTime!]!
+		next(limit: Int): [StopTime!]!
 		all: [StopTime!]!
 	}
 
@@ -80,10 +81,22 @@ const typeDefs = gql`
 		sequence: Int!
 		time: Time!
 		trip: Trip!
-		service: Service!
+		service: StopTimeService!
 		stop: Stop!   
 		route: Route!
 		stopRoute: StopRoute!  
+	}
+
+	type StopTimeService {
+		service: Service!
+		serviceIsNextDay: Boolean!
+		monday: Boolean!
+		tuesday: Boolean!
+		wednesday: Boolean!
+		thursday: Boolean!
+		friday: Boolean!
+		saturday: Boolean!
+		sunday: Boolean!
 	}
 
 	type Service {

@@ -1,8 +1,11 @@
 import { Context } from 'middleware';
-import { StopTime, Trip, Stop, Route, StopRoute, Service } from 'api/types';
+import { StopTime, Trip, Stop, Route, StopRoute, Service, StopTimeService } from 'api/types';
+
 
 // StopTime Resolvers
 export default {
+    time: (parent: StopTime): Number => parent.time,
+
     trip: (parent: StopTime, _: void, context: Context): Promise<(Trip | Error)> => {
         const { tripLoader } = context.loaders;
         return tripLoader.load(parent.trip);
@@ -23,8 +26,11 @@ export default {
         return stopRouteLoader.load(parent.stopRoute);
     },
 
-    service: (parent: StopTime, _: void, context: Context): Promise<(Service | Error)> => {
+    service: async (parent: StopTime, _: void, context: Context): Promise<StopTimeService> => {
         const { serviceLoader } = context.loaders;
-        return serviceLoader.load(parent.service);
+        return {
+            serviceIsNextDay: parent.serviceIsNextDay,
+            service: <Service> await serviceLoader.load(parent.service)
+        }
     }
 }
