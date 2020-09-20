@@ -53,8 +53,10 @@ const typeDefs = gql`
 	}
 
 	type Schedule {
-		next(limit: Int): [StopTime!]!
-		all: [StopTime!]!
+		next(limit: Int): [StopTime!]!  # Contains stop times today, then tomorrow when necessary
+		all: [StopTime!]!				# All stop times
+		allToday: [StopTime!]!			# All stop times today
+		allTomorrow: [StopTime!]!		# All stop times tommorow
 	}
 
 	type Route {

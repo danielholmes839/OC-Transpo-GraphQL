@@ -9,7 +9,7 @@ type Token = {
 type TimeData = {
     yesterday: string;
     today: string;
-    tommorow: string;
+    tomorrow: string;
     currentTime: number;
     currentDate: Date;
 }
@@ -32,7 +32,7 @@ const timeMiddleware = (): TimeData => {
     return {
         yesterday: getYesterday(date),
         today: getToday(date),
-        tommorow: getTomorrow(date),
+        tomorrow: getTomorrow(date),
         currentDate: date,
         currentTime: getCurrentTime()
     }

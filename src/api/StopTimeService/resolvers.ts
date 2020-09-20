@@ -14,7 +14,7 @@ const serviceFunctions = {
 export default {
     service: (parent: StopTimeService) => parent.service,
     serviceToday: (parent: StopTimeService, _: void, { datetime }: Context) => serviceFunctions[datetime.today](parent),
-    serviceTomorrow: (parent: StopTimeService, _: void, { datetime }: Context) => serviceFunctions[datetime.tommorow](parent),
+    serviceTomorrow: (parent: StopTimeService, _: void, { datetime }: Context) => serviceFunctions[datetime.tomorrow](parent),
     serviceIsNextDay: (parent: StopTimeService) => parent.serviceIsNextDay,
     ...serviceFunctions
 }

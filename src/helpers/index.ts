@@ -26,9 +26,9 @@ const stopTimeServiceToday = (stopTime: StopTime, service: Service, today: strin
     return (!stopTime.serviceIsNextDay && service[today]) || (stopTime.serviceIsNextDay && service[yesterday]);
 }
 
-const stopTimeServiceTomorrow = (stopTime: StopTime, service: Service, today: string, tommorow: string): boolean => {
-    // Service tommorow for a stop time
-    return (!stopTime.serviceIsNextDay && service[tommorow]) || (stopTime.serviceIsNextDay && service[today]);
+const stopTimeServiceTomorrow = (stopTime: StopTime, service: Service, today: string, tomorrow: string): boolean => {
+    // Service tomorrow for a stop time
+    return (!stopTime.serviceIsNextDay && service[tomorrow]) || (stopTime.serviceIsNextDay && service[today]);
 }
 
 export { days, getCurrentTime, getYesterday, getToday, getTomorrow, stopTimeServiceToday, stopTimeServiceTomorrow }
