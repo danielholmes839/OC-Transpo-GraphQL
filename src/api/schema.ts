@@ -91,6 +91,7 @@ const typeDefs = gql`
 		start: Date!
 		end: Date!                         
 		exceptions: [ServiceException!]!
+		exceptionCount: Int!
 		serviceToday: Boolean!
 		serviceTomorrow: Boolean!	
 		monday: Boolean!
