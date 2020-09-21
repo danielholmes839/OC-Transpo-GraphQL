@@ -55,7 +55,7 @@ export default {
         // Slice valid stop times into a list
         let next: StopTime[] = valid.slice(index, index + limit);
         if (next.length < limit) {
-            return next.concat(valid.slice(0, limit));
+            return next.concat(valid.slice(0, limit - next.length));
         }
         return next;
     }
