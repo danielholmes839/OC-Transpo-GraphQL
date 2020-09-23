@@ -48,9 +48,49 @@ There is also a user system. This allows users to add / remove favourite stops, 
 - Better error messages for mutations, and queries... I'm currently just throwing errors in my code which isn't ideal.
 
 ## Full Schema
-2020/09/20
+
+2020/09/23 [Schema file](./src/api/schema.ts)
 
 ```graphql
+type Query {
+    # Stop Queries
+    Stop_get(id: ID!): Stop
+    Stop_getMany(ids: [ID!]!): [Stop]!
+    Stop_search(name: String!, limit: Int): [Stop!]!
+
+    # Route Queries
+    Route_get(id: ID!): Route
+    Route_getMany(ids: [ID!]!): [Route]!
+
+    # StopRoute Queries
+    StopRoute_get(id: ID!): StopRoute
+    StopRoute_getMany(ids: [ID!]!): [StopRoute]!
+
+    # Trip Queries
+    Trip_get(id: ID!): Trip
+    Trip_getMany(ids: [ID!]!): [Trip]!
+
+    # StopTime Queries
+    StopTime_get(id: ID!): StopTime
+    StopTime_getMany(ids: [ID!]!): [StopTime]!
+
+    # Service Queries
+    Service_get(id: ID!): Service
+    Service_getMany(ids: ID!): [Service]!
+
+    # User Queries
+    User_get: User
+    User_login(email: String!, password: String!): String
+}
+
+type Mutation {
+    User_create(email: String!, password: String!): User
+    User_FavouriteStop_add(stop: ID!): FavouriteStop
+    User_FavouriteStop_remove(favouriteStop: ID!): FavouriteStop
+    User_FavouriteStop_StopRoutes_add(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
+    User_FavouriteStop_StopRoutes_remove(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
+}
+
 type User {
     id: ID!
     email: String!
@@ -124,16 +164,11 @@ type StopTime {
 
 type StopTimeService {
     service: Service!
-    serviceToday: Boolean!
-    serviceTomorrow: Boolean!
-    serviceIsNextDay: Boolean!  # The time of the stop time was originally past 24 hours
-    monday: Boolean!
-    tuesday: Boolean!
-    wednesday: Boolean!
-    thursday: Boolean!
-    friday: Boolean!
-    saturday: Boolean!
-    sunday: Boolean!
+    serviceIsNextDay: Boolean!  # The time of the stop time was originally past 24 hours therefore the days are different than on the service field just above
+    runningToday: Boolean!
+    runningTomorrow: Boolean!
+    runningOn(day: Day!): Boolean!
+    running(days: [Day!]!): [Boolean!]!
 }
 
 type Service {
@@ -141,37 +176,17 @@ type Service {
     start: Date!
     end: Date!
     exceptions: [ServiceException!]!
-    serviceToday: Boolean!
-    serviceTomorrow: Boolean!
-    monday: Boolean!
-    tuesday: Boolean!
-    wednesday: Boolean!
-    thursday: Boolean!
-    friday: Boolean!
-    saturday: Boolean!
-    sunday: Boolean!
+    exceptionCount: Int!
+    runningToday: Boolean!
+    runningTomorrow: Boolean!
+    runningOn(day: Day!): Boolean!
+    running(days: [Day!]!): [Boolean!]!
 }
 
 type ServiceException {
     id: ID!
     date: Date!
     removed: Boolean!
-}
-
-type GPS {
-    lat: Float
-    lon: Float
-    speed: Float
-    distance: Distance
-}
-
-type Bus {
-    headsign: String!
-    number: String!
-    gps: GPS
-    age: Int!               # Time since lat updated in minutes
-    arrival: Time!          # When the bus will arrive
-    onTime: Boolean!        # Whether or not the arrival time has been adjusted
 }
 
 type LiveBusData {
@@ -181,48 +196,28 @@ type LiveBusData {
     busCountGPS: Int!
 }
 
-type Query {
-    # Stop Queries
-    Stop_get(id: ID!): Stop
-    Stop_getMany(ids: [ID!]!): [Stop]!
-    Stop_search(name: String!, limit: Int): [Stop!]!
-
-    # Route Queries
-    Route_get(id: ID!): Route
-    Route_getMany(ids: [ID!]!): [Route]!
-
-    # StopRoute Queries
-    StopRoute_get(id: ID!): StopRoute
-    StopRoute_getMany(ids: [ID!]!): [StopRoute]!
-
-    # Trip Queries
-    Trip_get(id: ID!): Trip
-    Trip_getMany(ids: [ID!]!): [Trip]!
-
-    # StopTime Queries
-    StopTime_get(id: ID!): StopTime
-    StopTime_getMany(ids: [ID!]!): [StopTime]!
-
-    # Service Queries
-    Service_get(id: ID!): Service
-    Service_getMany(ids: ID!): [Service]!
-
-    # User Queries
-    User_get: User
-    User_login(email: String!, password: String!): String
+type Bus {
+    headsign: String!
+    number: String!
+    gps: BusGPS
+    age: Int!               # Time since lat updated in minutes
+    arrival: Time!          # When the bus will arrive
+    onTime: Boolean!        # Whether or not the arrival time has been adjusted
 }
 
-type Mutation {
-    User_create(email: String!, password: String!): User
-    User_FavouriteStop_add(stop: ID!): FavouriteStop
-    User_FavouriteStop_remove(favouriteStop: ID!): FavouriteStop
-    User_FavouriteStop_StopRoutes_add(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
-    User_FavouriteStop_StopRoutes_remove(favouriteStop: ID!, stopRoutes: [ID!]!): FavouriteStop
+type BusGPS {
+    lat: Float!
+    lon: Float!
+    distance: Distance!
+    speed: Float
 }
 
-# Scalar Types
+# Scalars
 scalar Distance                         # Distance string "5km", "3.1km", "800m"
 scalar StaticStopRouteMap               # static google maps URL for a StopRoute
+
+# Enums
+enum Day { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY }
 
 # Date and Time
 type Time {
