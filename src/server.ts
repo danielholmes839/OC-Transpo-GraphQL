@@ -7,7 +7,7 @@ import { ApolloServer } from 'apollo-server';
 // GraphQL schema, resolvers and middleware
 import schema from 'api/schema';
 import resolvers from 'api/resolvers';
-import { contextMiddleware } from './middleware';
+import contextMiddleware from './middleware';
 
 
 const db = async () => {

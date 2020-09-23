@@ -9,5 +9,6 @@ import { Trip } from './Trip/types';
 import { StopTimeService } from './StopTimeService/types';
 import { Service } from './Service/types';
 import { ServiceException } from './ServiceException/types';
+import { Day } from './Day';
 
-export { Date, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, StopTimeService, Service, ServiceException }
+export { Date, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, StopTimeService, Service, ServiceException, Day }

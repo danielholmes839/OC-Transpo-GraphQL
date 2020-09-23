@@ -1,5 +1,5 @@
 import { Context } from 'middleware';
-import { StopTimeService } from './types';
+import { StopTimeService, Day } from 'api/types';
 
 const serviceFunctions = {
     monday: (parent: StopTimeService) => parent.serviceIsNextDay ? parent.service.sunday : parent.service.monday,
@@ -13,8 +13,9 @@ const serviceFunctions = {
 
 export default {
     service: (parent: StopTimeService) => parent.service,
-    serviceToday: (parent: StopTimeService, _: void, { datetime }: Context) => serviceFunctions[datetime.today](parent),
-    serviceTomorrow: (parent: StopTimeService, _: void, { datetime }: Context) => serviceFunctions[datetime.tomorrow](parent),
     serviceIsNextDay: (parent: StopTimeService) => parent.serviceIsNextDay,
-    ...serviceFunctions
+    runningToday: (parent: StopTimeService, _: void, { datetime }: Context): boolean => serviceFunctions[datetime.today](parent),
+    runningTomorrow: (parent: StopTimeService, _: void, { datetime }: Context): boolean => serviceFunctions[datetime.tomorrow](parent),
+    runningOn: (parent: StopTimeService, input: { day: Day }): boolean => serviceFunctions[input.day](parent),
+    running: (parent: StopTimeService, input: { days: Day[] }): boolean[] => input.days.map(day => serviceFunctions[day](parent))
 }

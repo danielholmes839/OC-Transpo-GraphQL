@@ -17,6 +17,7 @@ import Distance from './Distance/resolvers';
 import Schedule from './Schedule/resolvers';
 import Time from './Time/resolvers';
 import Date from './Date/resolvers';
+import Day from './Day';
 
 const resolvers: IResolvers = {
     Query,
@@ -36,7 +37,8 @@ const resolvers: IResolvers = {
     Distance,
     Schedule,
     Time,
-    Date
+    Date,
+    Day
 }
 
 export default resolvers;

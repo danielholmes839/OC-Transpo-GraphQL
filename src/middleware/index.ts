@@ -1,15 +1,16 @@
 import jwt from 'jsonwebtoken';
 import { createLoaders, Loaders } from 'api/loaders';
 import { getYesterday, getToday, getTomorrow, getCurrentTime } from 'helpers';
+import { Day } from 'api/types';
 
 type Token = {
     user: string;
 }
 
 type TimeData = {
-    yesterday: string;
-    today: string;
-    tomorrow: string;
+    yesterday: Day;
+    today: Day;
+    tomorrow: Day;
     currentTime: number;
     currentDate: Date;
 }
@@ -58,6 +59,7 @@ const authMiddleware = (req): AuthData => {
 }
 
 const contextMiddleware = ({ req }): Context => {
+    /* Middleware that sets the context of each request */
     let auth = authMiddleware(req);
     return {
         ...auth,
@@ -66,4 +68,5 @@ const contextMiddleware = ({ req }): Context => {
     }
 }
 
-export { Token, Context, contextMiddleware }
+export default contextMiddleware;
+export { Token, Context }
