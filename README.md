@@ -41,7 +41,7 @@ There is also a user system. This allows users to add / remove favourite stops, 
 
 ## Next Steps
 
-- I would like to add authentication using Firebase. I already have my own JWT setup. But doing email verification and password resets are still not implemented. I would need to do this before adding user functionality to the website
+- I would like to add email verification and password resets. I currently have email and password login which returns a JWT to authenticate future requests
 
 - Travel planner. I worked on this for a while and got decent results with Astar search but it could be improved.
 
