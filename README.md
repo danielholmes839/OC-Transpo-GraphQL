@@ -8,9 +8,9 @@ Built with:
 [MongoDB](https://www.mongodb.com/) and
 [Google Maps](https://cloud.google.com/maps-platform/maps)
 
-## Web Application
+## Website
 
-[stop-checker.com](https://www.stop-checker.com/) is the front-end client / website I created using this API. It's really cool!
+[stop-checker.com](https://www.stop-checker.com/) is a website I created using this API
 
 ## GraphQL Endpoint / Deployment
 
