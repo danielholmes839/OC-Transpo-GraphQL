@@ -1,11 +1,10 @@
 /* Service Exception MongoDB Model */
 import { Schema, Model, model } from 'mongoose';
-import { DateModel } from 'api/models';
 import { ServiceException } from './types';
 
 const schema: Schema = new Schema({
     _id: { type: String, required: true },
-    date: DateModel,
+    date: { type: Number, required: true },
     removed: { type: Boolean, required: true }
 });
 

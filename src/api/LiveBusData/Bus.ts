@@ -65,7 +65,7 @@ class Bus {
     }
 
     private getOnTime(trip: OCTranspoTrip) {
-        return parseInt(trip.AdjustmentAge) < 0;
+        return parseInt(trip.AdjustmentAge) === -1;
     }
 
     private getAge(trip: OCTranspoTrip) {

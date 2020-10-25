@@ -8,6 +8,7 @@ const schema: Schema = new Schema({
     route: { type: String, ref: 'Route' },
     number: { type: String, required: true },
     headsign: { type: String, required: true },
+    direction: { type: Number, required: true },
     stopTimes: [{ type: String, ref: 'StopTime' }]
 });
 

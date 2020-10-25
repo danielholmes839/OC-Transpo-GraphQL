@@ -19,16 +19,16 @@ export default {
     liveBusData: async (parent: StopRoute, _: void, context: Context): Promise<Bus[]> => {
         const { stopLoader } = context.loaders;
         const stop: Stop = await stopLoader.load(parent.stop);
-        return BusAPI.get(stop, parent.number);
+        return BusAPI.get(stop, parent);
     },
     schedule: (parent: StopRoute, _: void): string[] => {
-        return parent.stopTimes
+        return parent.stopTimes;
     },
 
     map: async (parent: StopRoute, { width = 640, height = 320 }: Size, context: Context): Promise<StaticStopRouteMap> => {
         const { stopLoader } = context.loaders;
         const stop: Stop = await stopLoader.load(parent.stop);
-        const buses: Bus[] = await BusAPI.get(stop, parent.number);
+        const buses: Bus[] = await BusAPI.get(stop, parent);
 
         for (let bus of buses) {
             // There needs to be atleast one bus with GPS to make a map

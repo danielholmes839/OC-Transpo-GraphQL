@@ -1,8 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
 import { Bus } from './Bus';
 import { BusCache } from './BusCache';
-import { OCTranspoResponse, StopCodeKV } from './types';
+import { OCTranspoResponse, OCTranspoRoute, OCTranspoTrip, StopDataKV } from './types';
 import { Stop } from 'api/types';
+import { StopRoute } from 'api/StopRoute/types';
 
 
 class BusAPI {
@@ -35,63 +36,69 @@ class BusAPI {
 
     private async request(stopCode: string): Promise<OCTranspoResponse> {
         // requests the new live bus data and return the value to be cached
-        console.log(`OC Transpo API ${stopCode}`);
         let config = this.createConfig(stopCode);
         let response: AxiosResponse = await this.api.get(config.url, config)
         let data: OCTranspoResponse = response.data.GetRouteSummaryForStopResult;
         return data;
     }
 
-    private async createKV(stop: Stop): Promise<StopCodeKV> {
-        // creates the value to be cached
-        let data: OCTranspoResponse = await this.request(stop.code);
-        let routes: StopCodeKV = {} // This object will be cached
-
-        if (data == undefined) {
-            // Could not access OC Transpo so return an empty object
-            console.log('Could not access OC Transpo');
-            return routes;
-        }
-
+    private getRoutes(data: OCTranspoResponse): OCTranspoRoute[] {
         if (!Array.isArray(data.Routes.Route)) {
             // Routes is not a list
-            data.Routes.Route = [data.Routes.Route];
+            return [data.Routes.Route];
+        } else {
+            return data.Routes.Route;
+        }
+    }
+    private getTrips(route: OCTranspoRoute): OCTranspoTrip[] {
+        if (Array.isArray(route.Trips)) {
+            return route.Trips;
+        } else if (typeof route.Trips === 'object' && route.Trips.hasOwnProperty('Trip')) {
+            return (<{ Trip: OCTranspoTrip[] }>route.Trips).Trip;
+        } else {
+            return [<OCTranspoTrip>route.Trips];
+        }
+    }
+    private async getLiveStopData(stop: Stop): Promise<StopDataKV> {
+        // creates the value to be cached
+        let data: OCTranspoResponse = await this.request(stop.code);
+        let liveStopData: StopDataKV = {} // This object will be cached
+
+        if (data == null) {
+            // Could not access OC Transpo so return an empty object
+            console.log('Could not access OC Transpo');
+            return liveStopData;
         }
 
-        for (let route of data.Routes.Route) {
-            // Process each route
-            if (route == null) {
-                continue;
-            }
-
-            if (!routes.hasOwnProperty(route.RouteNo)) {
+        const routes: OCTranspoRoute[] = this.getRoutes(data);
+        for (let route of routes) {
+            const routeNumber = route.RouteNo;
+            const trips: OCTranspoTrip[] = this.getTrips(route);
+            if (!liveStopData.hasOwnProperty(routeNumber)) {
                 // Make an array to store buses for this route
-                routes[route.RouteNo] = [];
+                liveStopData[routeNumber] = [];
             }
 
-            if (!Array.isArray(route.Trips.Trip)) {
-                // Trips is not a list
-                route.Trips.Trip = [route.Trips.Trip];
-            }
-
-            for (let trip of route.Trips.Trip) {
+            for (let trip of trips) {
                 // Bus is created for every trip
-                if (trip != undefined) routes[route.RouteNo].push(new Bus(trip, route, stop));
+                liveStopData[routeNumber].push(new Bus(trip, route, stop));
             }
         }
-        return routes;
+        return liveStopData;
     }
 
-    public async get(stop: Stop, routeNumber: string): Promise<Bus[]> {
+    public async get(stop: Stop, stopRoute: StopRoute): Promise<Bus[]> {
         // Get the data for the next 3 buses of a route heading toward that stop
         if (!this.cache.has(stop.code)) {
-            this.cache.store(stop.code, this.createKV(stop));                                // update the cache
+            console.log(`OC Transpo API called ${stop.code}`);
+            this.cache.store(stop.code, this.getLiveStopData(stop));                                           // update the cache
         } else {
-            console.log(`OC Transpo Cache STOP:${stop.code} ROUTE:${routeNumber}`);
+            console.log(`OC Transpo Cache STOP:${stop.code} ROUTE:${stopRoute.number}`);
         }
-        let buses: Bus[] = (await this.cache.get(stop.code))[routeNumber];                  // await then get the buses for the route
-        if (!buses) buses = [];                                                             // empty array if there's no buses
-        return buses;
+
+        let buses: Bus[] = (await this.cache.get(stop.code))[stopRoute.number];                         // await then get the buses for the route
+        if (buses == null) buses = [];                                                                  // empty array if there's no buses
+        return buses.filter((bus) => bus.direction === stopRoute.direction);
     }
 }
 

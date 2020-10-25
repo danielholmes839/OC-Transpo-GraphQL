@@ -1,12 +1,11 @@
 /* Service MongoDB Model */
 import { Schema, Model, model } from 'mongoose';
-import { DateModel } from 'api/models';
 import { Service } from './types';
 
 const schema: Schema = new Schema({
     _id: { type: String, required: true },
-    start: DateModel,
-    end: DateModel,
+    start: { type: Number, required: true },
+    end: { type: Number, required: true },
     exceptions: [{ type: String, ref: 'ServiceException' }],
     monday: { type: Boolean, required: true },
     tuesday: { type: Boolean, required: true },

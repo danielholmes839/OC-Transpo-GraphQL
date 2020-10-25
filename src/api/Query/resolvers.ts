@@ -21,7 +21,7 @@ export default {
 		return stopLoader.loadMany(ids);
 	},
 
-	Stop_search: async (_: void, { name, limit=3 }: StopSearch): Promise<Stop[]> => {
+	Stop_search: async (_: void, { name, skip=0, limit=3 }: StopSearch): Promise<Stop[]> => {
 		// Search by stop code first
 		let stops = await StopModel.find({ code: name });
 		if (stops.length !== 0) {
@@ -33,7 +33,7 @@ export default {
 			{ score: { $meta: 'textScore' } }
 		).sort(
 			{ score: { $meta: 'textScore' } }
-		).limit(limit);
+		).skip(skip).limit(limit);
 	},
 
 	// Route Queries

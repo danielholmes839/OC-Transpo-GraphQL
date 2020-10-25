@@ -5,7 +5,7 @@ const typeDefs = gql`
 		# Stop Queries
 		Stop_get(id: ID!): Stop
 		Stop_getMany(ids: [ID!]!): [Stop]!
-		Stop_search(name: String!, limit: Int): [Stop!]!
+		Stop_search(name: String!, skip: Int, limit: Int): [Stop!]!
 		
 		# Route Queries
 		Route_get(id: ID!): Route
@@ -66,6 +66,7 @@ const typeDefs = gql`
 	type StopRoute {
 		id: ID!
 		headsign: String!
+		direction: Int!
 		number: String!
 		stop: Stop!						
 		route: Route!
@@ -113,23 +114,24 @@ const typeDefs = gql`
 
 	type StopTimeService {
 		service: Service!
-		serviceIsNextDay: Boolean!  # The time of the stop time was originally past 24 hours therefore the days are different than on the service field just above
+		# More accurate days compared to Service type
 		runningToday: Boolean!
 		runningTomorrow: Boolean!
 		runningOn(day: Day!): Boolean!
-		running(days: [Day!]!): [Boolean!]!
+		runningOnMany(days: [Day!]!): [Boolean!]!
 	}
 
 	type Service {
 		id: ID!
 		start: Date!
-		end: Date!                         
+		end: Date!
+		active: Boolean!                        
 		exceptions: [ServiceException!]!
 		exceptionCount: Int!
 		runningToday: Boolean!
 		runningTomorrow: Boolean!
 		runningOn(day: Day!): Boolean!
-		running(days: [Day!]!): [Boolean!]!
+		runningOnMany(days: [Day!]!): [Boolean!]!
 	}
 
 	type ServiceException {
@@ -146,19 +148,19 @@ const typeDefs = gql`
 	}
 
 	type Bus {
-		headsign: String!
 		number: String!
-		gps: BusGPS
+		headsign: String!
+		direction: Int!
+		gps: BusPosition
 		age: Int! 				# Time since lat updated in minutes
 		arrival: Time!			# When the bus will arrive
 		onTime: Boolean!		# Whether or not the arrival time has been adjusted
 	}
 
-	type BusGPS {
+	type BusPosition {
 		lat: Float!
 		lon: Float!
 		distance: Distance!
-		speed: Float
 	}
 
 	# Scalars
@@ -174,13 +176,11 @@ const typeDefs = gql`
 		intRemaining: Int!					# Minutes until this time
 		string: String!						# Time as a string - could add more formatting options later...
 		stringRemaining: String!			# Minutes until this time
-		passed: Boolean!					# Currently past this time
+		passed: Boolean!					# Currently past this time in the day
 	}
 
 	type Date {
-		year: Int!					
-		month: Int!
-		day: Int!
+		unix: Float!						# Unix time milliseconds
 		string: String!			
 	}
 `

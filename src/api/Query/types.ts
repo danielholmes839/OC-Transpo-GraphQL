@@ -5,6 +5,7 @@ type Login = {
 
 type StopSearch = {
     name: string;
+    skip: number;
     limit: number;
 }
 

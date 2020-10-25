@@ -31,4 +31,9 @@ const stopTimeServiceTomorrow = (stopTime: StopTime, service: Service, today: st
     return (!stopTime.serviceIsNextDay && service[tomorrow]) || (stopTime.serviceIsNextDay && service[today]);
 }
 
-export { days, getCurrentTime, getYesterday, getToday, getTomorrow, stopTimeServiceToday, stopTimeServiceTomorrow }
+const serviceRunning = (unixTime: number, service: Service): boolean => {
+    // checks current time is between start and end time of service
+    return (unixTime > service.start) && (unixTime < service.end)
+}
+
+export { days, getCurrentTime, getYesterday, getToday, getTomorrow, stopTimeServiceToday, stopTimeServiceTomorrow, serviceRunning }

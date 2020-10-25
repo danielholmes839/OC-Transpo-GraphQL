@@ -13,9 +13,8 @@ const serviceFunctions = {
 
 export default {
     service: (parent: StopTimeService) => parent.service,
-    serviceIsNextDay: (parent: StopTimeService) => parent.serviceIsNextDay,
     runningToday: (parent: StopTimeService, _: void, { datetime }: Context): boolean => serviceFunctions[datetime.today](parent),
     runningTomorrow: (parent: StopTimeService, _: void, { datetime }: Context): boolean => serviceFunctions[datetime.tomorrow](parent),
     runningOn: (parent: StopTimeService, input: { day: Day }): boolean => serviceFunctions[input.day](parent),
-    running: (parent: StopTimeService, input: { days: Day[] }): boolean[] => input.days.map(day => serviceFunctions[day](parent))
+    runningOnMany: (parent: StopTimeService, input: { days: Day[] }): boolean[] => input.days.map(day => serviceFunctions[day](parent))
 }

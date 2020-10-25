@@ -20,18 +20,14 @@ type OCTranspoRoute = {
     RouteHeading: string;
     Direction: string;
     DirectionID: number;
-    Trips: {                                                            // Again another nested object with only one field
-        Trip: OCTranspoTrip | OCTranspoTrip[] | undefined;              // Object or list of objects
-    }
+    Trips: { Trip: OCTranspoTrip[] } | OCTranspoTrip | OCTranspoTrip[] | undefined;                 // Object or list of objects
 }
 
 type OCTranspoTrip = {
-    RouteHeading: string;                               // Matches trip headsign in GTFS
-    RouteNo: string;                                    // Matches route number in GTFS
-    DirectionID: number;
+    TripDestination: string;
+    TripStartTime: string;                              // TripStartTime + AdjustedScheduleTime is when the bus will arrive. This could be done much better
     AdjustedScheduleTime: string;                       // Minutes after trip start the bus will arrive
     AdjustmentAge: string;                              // Time in minutes since the AdjustedScheduleTime was changed. -1 means on schedule
-    TripStartTime: string;                              // TripStartTime + AdjustedScheduleTime is when the bus will arrive. This could be done much better
     LastTripOfSchedule: boolean;
     BusType: string;
     Latitude: string;                                   // sometimes empty string???    maybe the bus is broken
@@ -39,8 +35,8 @@ type OCTranspoTrip = {
     GPSSpeed: string;                                   // sometimes empty string???    maybe there should be feedback 
 }
 
-type StopCodeKV = { [key: string]: Bus[] }
+type StopDataKV = { [key: string]: Bus[] }
 
 export {
-    OCTranspoResponse, OCTranspoRoute, OCTranspoTrip, StopCodeKV
+    OCTranspoResponse, OCTranspoRoute, OCTranspoTrip, StopDataKV
 }

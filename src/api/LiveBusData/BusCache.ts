@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache';
-import { StopCodeKV } from './types';
+import { StopDataKV } from './types';
 
 
 class BusCache {
@@ -20,11 +20,11 @@ class BusCache {
         return this.cache.keys();
     }
 
-    public store(key: string, value: Promise<StopCodeKV>): void {
+    public store(key: string, value: Promise<StopDataKV>): void {
         this.cache.set(key, value);
     }
 
-    public get(stopCode: string): StopCodeKV | Promise<StopCodeKV> {
+    public get(stopCode: string): StopDataKV | Promise<StopDataKV> {
         return this.cache.get(stopCode);
     }
 }

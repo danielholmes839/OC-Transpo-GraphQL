@@ -29,6 +29,6 @@ export default {
 
     int: (parent: number): number => parent,
     intRemaining: intRemaining,
-    passed: (parent: number, _: void, { datetime }: Context): boolean => datetime.currentTime > parent
+    passed: (parent: number, _: void, { datetime }: Context): boolean => datetime.time > parent
 
 }

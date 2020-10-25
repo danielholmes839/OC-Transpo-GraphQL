@@ -11,8 +11,8 @@ type TimeData = {
     yesterday: Day;
     today: Day;
     tomorrow: Day;
-    currentTime: number;
-    currentDate: Date;
+    time: number;
+    unix: number;
 }
 
 type AuthData = {
@@ -34,8 +34,8 @@ const timeMiddleware = (): TimeData => {
         yesterday: getYesterday(date),
         today: getToday(date),
         tomorrow: getTomorrow(date),
-        currentDate: date,
-        currentTime: getCurrentTime()
+        unix: date.getTime(),
+        time: getCurrentTime()
     }
 }
 

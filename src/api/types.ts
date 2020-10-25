@@ -1,4 +1,3 @@
-import { Date } from './Date/types'
 import { FavouriteStop } from './FavouriteStop/types';
 import { User } from './User/types';
 import { Stop } from './Stop/types';
@@ -11,4 +10,4 @@ import { Service } from './Service/types';
 import { ServiceException } from './ServiceException/types';
 import { Day } from './Day';
 
-export { Date, FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, StopTimeService, Service, ServiceException, Day }
+export { FavouriteStop, User, Stop, StopRoute, Route, StopTime, Trip, StopTimeService, Service, ServiceException, Day }

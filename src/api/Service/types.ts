@@ -1,9 +1,8 @@
 import { Document } from 'mongoose';
-import { Date } from 'api/types';
 
 interface Service extends Document {
-    start: Date;
-    end: Date;
+    start: number;
+    end: number;
     exceptions: string[]; // ref
     monday: boolean;
     tuesday: boolean;
