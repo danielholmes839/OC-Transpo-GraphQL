@@ -54,13 +54,13 @@ class BusAPI {
         if (Array.isArray(route.Trips)) {
             return route.Trips;
         } else if (typeof route.Trips === 'object' && route.Trips.hasOwnProperty('Trip')) {
-            route.Trips = <{Trip: any}> route.Trips;
+            route.Trips = <{ Trip: any }>route.Trips;
             if (Array.isArray(route.Trips.Trip)) {
-                return <OCTranspoTrip[]> route.Trips.Trip;
+                return <OCTranspoTrip[]>route.Trips.Trip;
             } else {
-                return <OCTranspoTrip[]> [route.Trips.Trip];
+                return <OCTranspoTrip[]>[route.Trips.Trip];
             }
-            
+
         } else {
             return [<OCTranspoTrip>route.Trips];
         }
