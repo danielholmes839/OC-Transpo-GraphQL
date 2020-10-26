@@ -62,6 +62,7 @@ class BusAPI {
     private async getLiveStopData(stop: Stop): Promise<StopDataKV> {
         // creates the value to be cached
         let data: OCTranspoResponse = await this.request(stop.code);
+        console.log(JSON.stringify(data));
         let liveStopData: StopDataKV = {} // This object will be cached
 
         if (data == null) {
@@ -72,6 +73,9 @@ class BusAPI {
 
         const routes: OCTranspoRoute[] = this.getRoutes(data);
         for (let route of routes) {
+            if (route == null) {
+                continue;
+            }
             const routeNumber = route.RouteNo;
             const trips: OCTranspoTrip[] = this.getTrips(route);
             if (!liveStopData.hasOwnProperty(routeNumber)) {
@@ -81,6 +85,9 @@ class BusAPI {
 
             for (let trip of trips) {
                 // Bus is created for every trip
+                if (trip == null) {
+                    continue;
+                }
                 liveStopData[routeNumber].push(new Bus(trip, route, stop));
             }
         }
