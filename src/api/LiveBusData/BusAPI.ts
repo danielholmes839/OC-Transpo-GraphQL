@@ -62,34 +62,39 @@ class BusAPI {
     private async getLiveStopData(stop: Stop): Promise<StopDataKV> {
         // creates the value to be cached
         let data: OCTranspoResponse = await this.request(stop.code);
-        console.log(JSON.stringify(data));
         let liveStopData: StopDataKV = {} // This object will be cached
 
-        if (data == null) {
-            // Could not access OC Transpo so return an empty object
-            console.log('Could not access OC Transpo');
-            return liveStopData;
-        }
-
-        const routes: OCTranspoRoute[] = this.getRoutes(data);
-        for (let route of routes) {
-            if (route == null) {
-                continue;
-            }
-            const routeNumber = route.RouteNo;
-            const trips: OCTranspoTrip[] = this.getTrips(route);
-            if (!liveStopData.hasOwnProperty(routeNumber)) {
-                // Make an array to store buses for this route
-                liveStopData[routeNumber] = [];
+        try {
+            if (data == null) {
+                // Could not access OC Transpo so return an empty object
+                console.log('Could not access OC Transpo');
+                return liveStopData;
             }
 
-            for (let trip of trips) {
-                // Bus is created for every trip
-                if (trip == null) {
+            const routes: OCTranspoRoute[] = this.getRoutes(data);
+            for (let route of routes) {
+                if (route == null) {
                     continue;
                 }
-                liveStopData[routeNumber].push(new Bus(trip, route, stop));
+                const routeNumber = route.RouteNo;
+                const trips: OCTranspoTrip[] = this.getTrips(route);
+                if (!liveStopData.hasOwnProperty(routeNumber)) {
+                    // Make an array to store buses for this route
+                    liveStopData[routeNumber] = [];
+                }
+
+                for (let trip of trips) {
+                    // Bus is created for every trip
+                    if (trip == null) {
+                        continue;
+                    }
+                    liveStopData[routeNumber].push(new Bus(trip, route, stop));
+                }
             }
+        } catch (e) {
+            console.log('----------');
+            console.log(e);
+            console.log(JSON.stringify(data));
         }
         return liveStopData;
     }
