@@ -23,8 +23,12 @@ const calculate_zoom = (pixels: number, distance: number, latitiude: number): nu
 class StaticStopRouteMap extends StaticMap {
     public constructor(stop: Stop, buses: Bus[], size: Size) {
         buses = buses.filter(bus => bus.gps !== null);
-        let zoom = StaticStopRouteMap.zoom(stop, buses, size);
-        super(stop, size, zoom);
+        let center: Position = {
+            lat: (buses.map(bus => bus.gps.lat).reduce((total, n) => total+n) + stop.lat) / (buses.length + 1),
+            lon: (buses.map(bus => bus.gps.lon).reduce((total, n) => total+n) + stop.lon) / (buses.length + 1),
+        }
+        let zoom = StaticStopRouteMap.zoom(center, buses, size);
+        super(center, size, zoom);
         this.addStop(stop);
         this.addBuses(buses);
     }
