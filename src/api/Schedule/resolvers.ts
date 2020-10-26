@@ -46,13 +46,18 @@ export default {
 
         let stopTimes: StopTime[] = <StopTime[]>await stopTimeLoader.loadMany(stopTimeIds);
         let services: Service[] = <Service[]>await serviceLoader.loadMany(stopTimes.map(stopTime => stopTime.service));
+        let times: Set<number> = new Set(); // duplicate times because oc transpo messes up
 
         let index = 0;
+
         let valid: StopTime[] = stopTimes.filter((stopTime: StopTime, i: number) => {
             let service: Service = services[i];
             if (!serviceRunning(unix, service)) {
                 return false;
+            } else if (times.has(stopTime.time)) {
+                return false;
             } else if (stopTime.time >= time && stopTimeServiceToday(stopTime, service, today, yesterday)) {
+                times.add(stopTime.time);
                 return true;
             } else if (stopTime.time < time && stopTimeServiceTomorrow(stopTime, service, today, tomorrow)) {
                 index += 1; // The index where stop times for tommorow start
