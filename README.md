@@ -24,7 +24,7 @@ If I need to scale this API further I will need to:
 
 ## Schema
 
-The full schema can be found [here](./src/api/schema.ts).
+The full schema can be found [here](./src/resolvers/schema.ts).
 I highly recommend taking at look at the schema using [GraphQL Voyager](https://apis.guru/graphql-voyager/) (to use it you need to copy and paste in the schema). Most types will match up with tables in GTFS: Stop, Route, StopTime, Trip, Service, Service Exception. The most important type that was added is "StopRoute". StopRoutes are able to reference data for a route at a given stop including: live bus data, live maps, stop times / schedules, and the direction of the route at that stop.
 
 There is also a user system. This allows users to add / remove favourite stops, and routes within those stops. The authentication is done using JWT. However, this currently not a part of the functionality of the website.
@@ -33,7 +33,7 @@ There is also a user system. This allows users to add / remove favourite stops, 
 
 [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc) could be greatly improved. I wrapped it with GraphQL which fixed a lot it's issue.
 
-1. The biggest problem with OC Transpo's API is that the structure of the data it returns is inconsistent. I think OC Transpo has this issue because their API returns XML by default and is converting it to JSON. Certain fields in the response can be an object, a list of objects, or missing/null. There are also some fields which contain an object with one subfield, which is unusual. I broke down the responses I was getting from their API into Typescript types, which highlight these issues. These types are defined [here](./src/api/LiveBusData/types.ts). It caused me a lot of headache trying to figure out and their documentation only gave one sample response in XML. I was eventually able to parse the responses correctly and incorporate the data into my GraphQL API.
+1. The biggest problem with OC Transpo's API is that the structure of the data it returns is inconsistent. I think OC Transpo has this issue because their API returns XML by default and is converting it to JSON. Certain fields in the response can be an object, a list of objects, or missing/null. There are also some fields which contain an object with one subfield, which is unusual. I broke down the responses I was getting from their API into Typescript types, which highlight these issues. These types are defined [here](./src/octranspo/types.ts). It caused me a lot of headache trying to figure out and their documentation only gave one sample response in XML. I was eventually able to parse the responses correctly and incorporate the data into my GraphQL API.
 
 2. OC Transpo's API could be greatly improved especially for documenting the type of their fields and if they are nullable. It returns latitude and longitude of buses as strings instead of as numbers and when there is no data for these field they are returned as empty strings. I changed latitude and longitude to be floats, which makes more sense in my opinion, and when no data is availabe they are null. GraphQL is really great because even without added documentation, the schema will accurately describe the type and nullability of fields.
 
@@ -42,5 +42,6 @@ There is also a user system. This allows users to add / remove favourite stops, 
 ## Next Steps
 
 - I would like to add email verification and password resets. I currently have email and password login which returns a JWT to authenticate future requests
-- Travel planner. I worked on this for a while and got decent results with Astar search but it could be improved.
+- Providing a travel planner. I implemented A* search but it didn't get great results. I would probably use [OpenTripPlanner](https://github.com/opentripplanner) which provides a travel planner for GTFS datasets.
 - Better error messages for mutations, and queries... I'm currently just throwing errors in my code which isn't ideal
+- Adding better pagination might be a good idea
