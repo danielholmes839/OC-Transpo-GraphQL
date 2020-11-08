@@ -1,17 +1,17 @@
 import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
 
 import Bus from './Bus';
-import BusCache from './BusCache';
+import Cache from './Cache';
 import { Stop, StopRoute } from 'types';
 import { StopData } from './types';
 import processFn from './process';
 
-class BusAPI {
+class API {
     api: AxiosInstance;
-    cache: BusCache
+    cache: Cache
 
     constructor() {
-        this.cache = new BusCache();
+        this.cache = new Cache();
         this.api = axios.create();
     }
 
@@ -40,10 +40,8 @@ class BusAPI {
     public async get(stop: Stop, stopRoute: StopRoute): Promise<Bus[]> {
         // Get the data for the next 3 buses of a route heading toward that stop
         if (!this.cache.has(stop.code)) {
-            console.log(`OC Transpo API called ${stop.code}`);
+            console.log(`OC Transpo API called STOP:${stop.code}`);
             this.cache.store(stop.code, this.request(stop));                                           // update the cache
-        } else {
-            console.log(`OC Transpo Cache STOP:${stop.code} ROUTE:${stopRoute.number}`);
         }
 
         let buses: Bus[] = (await this.cache.get(stop.code))[stopRoute.number];                         // await then get the buses for the route
@@ -52,4 +50,4 @@ class BusAPI {
     }
 }
 
-export default BusAPI;
+export default API;

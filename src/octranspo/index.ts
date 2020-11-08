@@ -1,5 +1,5 @@
 import Bus from './Bus';
-import BusAPI from './BusAPI';
+import BusAPI from './API';
 
 let API = new BusAPI();
 

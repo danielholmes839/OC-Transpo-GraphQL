@@ -2,7 +2,7 @@ import NodeCache from 'node-cache';
 import { StopData } from './types';
 
 
-class BusCache {
+class Cache {
     private cache: NodeCache;
 
     public constructor() {
@@ -29,4 +29,4 @@ class BusCache {
     }
 }
 
-export default BusCache
+export default Cache

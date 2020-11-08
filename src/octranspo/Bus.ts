@@ -5,7 +5,6 @@ import { OCTranspoTrip, OCTranspoRoute } from './types';
 class GPS {
     public lat: number;
     public lon: number;
-    public speed: number;
     public distance: number;
     public valid: boolean;
 
@@ -13,7 +12,6 @@ class GPS {
         // The create method should be used instead
         this.lat = GPS.parseFloat(trip.Latitude);
         this.lon = GPS.parseFloat(trip.Longitude);
-        this.speed = GPS.parseFloat(trip.GPSSpeed);
         this.valid = true;
 
         if (this.lat == null || this.lon == null) {
