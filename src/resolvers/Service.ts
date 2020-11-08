@@ -1,6 +1,6 @@
 import { Context } from 'middleware';
 import { Service, ServiceException, Day } from 'types';
-import { serviceRunning } from 'helpers';
+import { serviceRunning } from 'schedule';
 
 // Service Resolvers
 export default {

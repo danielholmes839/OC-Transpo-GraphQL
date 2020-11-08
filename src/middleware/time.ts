@@ -1,7 +1,8 @@
 import { Day } from 'types';
-import { getYesterday, getToday, getTomorrow, getCurrentTime } from 'helpers';
+import { yesterday, today, tomorrow, time } from 'schedule';
 
 type TimeInfo = {
+    object: Date;
     yesterday: Day;
     today: Day;
     tomorrow: Day;
@@ -12,11 +13,12 @@ type TimeInfo = {
 const timeMiddleware = (): TimeInfo => {
     const date = new Date();
     return {
-        yesterday: getYesterday(date),
-        today: getToday(date),
-        tomorrow: getTomorrow(date),
+        object: date,
+        yesterday: yesterday(date),
+        today: today(date),
+        tomorrow: tomorrow(date),
         unix: date.getTime(),
-        time: getCurrentTime()
+        time: time(date)
     }
 }
 

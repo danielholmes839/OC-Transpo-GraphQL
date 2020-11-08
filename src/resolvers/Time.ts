@@ -1,8 +1,8 @@
-import { getCurrentTime } from 'helpers';
+import { time } from 'schedule';
 import { Context } from 'middleware';
 
-const intRemaining = (parent: number): number => {
-    let currentTime = getCurrentTime();
+const intRemaining = (parent: number, _: void, context: Context): number => {
+    let currentTime = context.datetime.time;
     return (parent > currentTime) ? parent - currentTime : (1440 - currentTime) + parent;
 }
 
@@ -20,8 +20,8 @@ export default {
         return `${hour}:${minute_str}${half}`;
     },
 
-    stringRemaining: (parent: number): string => {
-        let remaining: number = intRemaining(parent);
+    stringRemaining: (parent: number, _: void, context: Context): string => {
+        let remaining: number = intRemaining(parent, _, context);
         let hours = Math.floor(remaining / 60);
         let minutes = Math.floor(remaining % 60);
         return (hours !== 0) ? `${hours}h ${minutes}m` : `${minutes}m`;
