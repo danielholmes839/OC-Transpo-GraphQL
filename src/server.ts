@@ -1,14 +1,13 @@
 import config from './config';
 config(); // Fixes absolute imports and sets environment variables
 
+import fs from 'fs';
 import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server';
 
 // GraphQL schema, resolvers and middleware
-import schema from 'api/schema';
-import resolvers from 'api/resolvers';
-import contextMiddleware from './middleware';
-
+import { resolvers, schema } from 'resolvers';
+import context from './middleware';
 
 const db = async () => {
     /* Connect to mongodb */
@@ -21,11 +20,11 @@ const start = async (): Promise<void> => {
     /* Run the server  */
     const port = process.env.PORT || 3000;
     const server = new ApolloServer({
+        context: context,
         typeDefs: schema,
         resolvers: resolvers,
         introspection: true,
-        playground: true,
-        context: contextMiddleware,
+        playground: true,    
     });
 
     await db();

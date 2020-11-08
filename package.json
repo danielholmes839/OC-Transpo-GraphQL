@@ -7,7 +7,7 @@
     "start": "node ./dist/server.js",
     "start:watch": "nodemon",
     "build": "tsc",
-    "update": "npm run build && node ./dist/update.js"
+    "update": "npm run build && node ./dist/db/update.js"
   },
   "author": "",
   "license": "ISC",

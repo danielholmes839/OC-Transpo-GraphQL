@@ -1,5 +1,4 @@
-import { StopTime, Service, Day } from 'api/types';
-
+import { StopTime, Service, Day } from 'types';
 
 const days = {
     0: Day.SUNDAY,

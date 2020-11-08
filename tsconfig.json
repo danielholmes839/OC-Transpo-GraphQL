@@ -8,11 +8,13 @@
     "esModuleInterop": true,
     "baseUrl": "./src",
     "plugins": [
-      { "transform": "transformer-module" },
+      {
+        "transform": "transformer-module"
+      },
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
   ],
   "exclude": [
     "node_modules",

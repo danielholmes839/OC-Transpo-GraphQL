@@ -1,72 +1,23 @@
-import jwt from 'jsonwebtoken';
-import { createLoaders, Loaders } from 'api/loaders';
-import { getYesterday, getToday, getTomorrow, getCurrentTime } from 'helpers';
-import { Day } from 'api/types';
-
-type Token = {
-    user: string;
-}
-
-type TimeData = {
-    yesterday: Day;
-    today: Day;
-    tomorrow: Day;
-    time: number;
-    unix: number;
-}
-
-type AuthData = {
-    user: string;
-    authenticated: boolean
-}
+import { authMiddleware } from './auth';
+import { timeMiddleware, TimeInfo } from './time';
+import { createDataLoaders, DataLoaders } from 'db';
 
 type Context = {
     user: string;
     authenticated: boolean;
-    loaders: Loaders;
-    datetime: TimeData;
+    loaders: DataLoaders;
+    datetime: TimeInfo;
 }
 
-
-const timeMiddleware = (): TimeData => {
-    const date = new Date();
-    return {
-        yesterday: getYesterday(date),
-        today: getToday(date),
-        tomorrow: getTomorrow(date),
-        unix: date.getTime(),
-        time: getCurrentTime()
-    }
-}
-
-const authMiddleware = (req): AuthData => {
-    /* Authenticate and create data loaders */
-    try {
-        const token: string = req.headers.token;
-        const data: Token = <Token>jwt.verify(token, process.env.JWT_KEY);
-        return {
-            user: data.user,
-            authenticated: true,
-        }
-    }
-
-    catch {
-        return {
-            user: null,
-            authenticated: false,
-        }
-    }
-}
-
-const contextMiddleware = ({ req }): Context => {
+const context = ({ req }): Context => {
     /* Middleware that sets the context of each request */
     let auth = authMiddleware(req);
     return {
         ...auth,
-        loaders: createLoaders(auth.authenticated, auth.user),
+        loaders: createDataLoaders(auth.authenticated, auth.user),
         datetime: timeMiddleware()
     }
 }
 
-export default contextMiddleware;
-export { Token, Context }
+export default context;
+export { Context }
