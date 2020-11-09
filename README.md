@@ -1,30 +1,24 @@
 # OC Transpo GraphQL API
 
-This is a [GraphQL API](https://graphql.org/) for OC Transpo data. It includes access to [GTFS data](https://developers.google.com/transit/gtfs) (general transit feed specification), live bus data, by wrapping [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc), and maps for live buses using google maps API.
+This is a [GraphQL API](https://graphql.org/) for Ottawa's public transit system OC Transpo. It includes access to [GTFS data](https://developers.google.com/transit/gtfs) (general transit feed specification), live bus data, by wrapping [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc), and maps for live buses using google maps API.
 
-Built with: 
+Built with:
 [TypeScript](https://www.typescriptlang.org/),
 [Apollo-Server](https://www.apollographql.com/docs/apollo-server/),
 [MongoDB](https://www.mongodb.com/) and
 [Google Maps](https://cloud.google.com/maps-platform/maps)
 
-## Website
+## Website / Client
 
-[stop-checker.com](https://www.stop-checker.com/) is a website I created using this API
+I built [stop-checker.com](https://www.stop-checker.com/) using this API!
 
 ## GraphQL Endpoint / Deployment
 
-The GraphQL enpoint can be found [here](https://octranspo-graphql.herokuapp.com/graphql). The API is currently deployed to Heroku. I had originally deployed the API on AWS Elastic Beanstalk but due to the cost of AWS (and pain of setting up HTTPS) I'll keep using Heroku. The client is deployed using netlify entirely separate from the API.
-
-If I need to scale this API further I will need to:
-
-- Remove in-memory caching of live bus data
-- Upgrade from MongoDB Atlas free tier and probably switch to AWS, or Azure
-- Use a load balancing solution such as AWS Elastic Beanstalk
+The GraphQL enpoint can be found [here](https://octranspo-graphql.herokuapp.com/graphql). The API is currently deployed to Heroku.  The React client is deployed using Netlify entirely separate from the API.
 
 ## Schema
 
-The full schema can be found [here](./src/resolvers/schema.ts).
+The full schema can be found [here](./src/resolvers/index.ts).
 I highly recommend taking at look at the schema using [GraphQL Voyager](https://apis.guru/graphql-voyager/) (to use it you need to copy and paste in the schema). Most types will match up with tables in GTFS: Stop, Route, StopTime, Trip, Service, Service Exception. The most important type that was added is "StopRoute". StopRoutes are able to reference data for a route at a given stop including: live bus data, live maps, stop times / schedules, and the direction of the route at that stop.
 
 There is also a user system. This allows users to add / remove favourite stops, and routes within those stops. The authentication is done using JWT. However, this currently not a part of the functionality of the website.
