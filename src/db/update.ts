@@ -2,9 +2,10 @@ import env_config from '../config';
 env_config();
 
 import fs from 'fs';
-import { connect, Model, Document } from 'mongoose'
+import { Model, Document } from 'mongoose';
+import connectDB from './connect';
 import { Stop, StopRoute, Route, StopTime, Trip, Service, ServiceException } from 'types';
-import { StopModel, StopRouteModel, RouteModel, StopTimeModel, TripModel, ServiceModel, ServiceExceptionModel } from 'db';
+import { StopModel, StopRouteModel, RouteModel, StopTimeModel, TripModel, ServiceModel, ServiceExceptionModel } from './models';
 
 let config = {
     input: './data',
@@ -12,10 +13,7 @@ let config = {
     file: ['STOPS.json', 'STOP_ROUTES.json', 'ROUTES.json', 'STOP_TIMES.json', 'TRIPS.json', 'SERVICES.json', 'SERVICE_EXCEPTIONS.json']
 }
 
-const connectDB = async () => {
-    const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-5ui2q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
-    await connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
-}
+
 
 const delete_collection = async <T extends Document>(model: Model<T>) => {
     try {
