@@ -174,19 +174,13 @@ const schema = gql`
     }
 
     type Bus {
-        number: String!
-        headsign: String!
-        direction: Int!
-        gps: BusPosition
-        age: Int! 				# Time since lat updated in minutes
-        arrival: Time!			# When the bus will arrive
-        onTime: Boolean!		# Whether or not the arrival time has been adjusted
-    }
-
-    type BusPosition {
-        lat: Float!
-        lon: Float!
-        distance: Distance!
+        latitude: Float
+        longitude: Float
+        distance: Distance
+        hasPosition: Boolean!
+        arrivalTime: Time!			# When the bus will arrive
+        arrivalTimeOnSchedule: Boolean!
+        arrivalTimeLastUpdated: Int         # Null if the 
     }
 
     # Scalars

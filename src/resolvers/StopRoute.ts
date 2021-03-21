@@ -33,11 +33,8 @@ export default {
         const stop: Stop = await stopLoader.load(parent.stop);
         const buses: Bus[] = await API.get(stop, parent);
 
-        for (let bus of buses) {
-            // There needs to be atleast one bus with GPS to make a map
-            if (bus.gps !== null) {
-                return new StaticStopRouteMap(stop, buses, { width, height });
-            }
+        if (buses.filter(bus => bus.hasPosition).length > 0) {
+            return new StaticStopRouteMap(stop, buses, { width, height });
         }
 
         return null;

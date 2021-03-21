@@ -22,10 +22,10 @@ const calculate_zoom = (pixels: number, distance: number, latitiude: number): nu
 
 class StaticStopRouteMap extends StaticMap {
     public constructor(stop: Stop, buses: Bus[], size: Size) {
-        buses = buses.filter(bus => bus.gps !== null);
+        buses = buses.filter(bus => bus.hasPosition);
         let center: Position = {
-            lat: (buses.map(bus => bus.gps.lat).reduce((total, n) => total + n) + stop.lat) / (buses.length + 1),
-            lon: (buses.map(bus => bus.gps.lon).reduce((total, n) => total + n) + stop.lon) / (buses.length + 1),
+            lat: (buses.map(bus => bus.latitude).reduce((total, n) => total + n) + stop.lat) / (buses.length + 1),
+            lon: (buses.map(bus => bus.longitude).reduce((total, n) => total + n) + stop.lon) / (buses.length + 1),
         }
         let zoom = StaticStopRouteMap.zoom(center, buses, size);
         super(center, size, zoom);
@@ -38,8 +38,8 @@ class StaticStopRouteMap extends StaticMap {
         let max_longitude = 0;
 
         for (let bus of buses) {
-            let d_latitude = Math.abs(bus.gps.lat - center.lat);
-            let d_longitude = Math.abs(bus.gps.lon - center.lon);
+            let d_latitude = Math.abs(bus.latitude - center.lat);
+            let d_longitude = Math.abs(bus.longitude - center.lon);
             if (d_latitude > max_latitude) {
                 max_latitude = d_latitude;
             }
@@ -66,7 +66,7 @@ class StaticStopRouteMap extends StaticMap {
     }
 
     public addBus(bus: Bus, count: number): void {
-        this.addMarker('red', 'mid', count, bus.gps.lat, bus.gps.lon);
+        this.addMarker('red', 'mid', count, bus.latitude, bus.longitude);
     }
 
     public addBuses(buses: Bus[]): void {
