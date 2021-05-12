@@ -25,13 +25,8 @@ There is also a user system. This allows users to add / remove favourite stops, 
 
 ## OC Transpo's REST API
 
-[OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc) could be greatly improved. I wrapped it with GraphQL which fixed a lot it's issue.
+I used [OC Transpo's REST API](https://www.octranspo.com/en/plan-your-trip/travel-tools/developers/dev-doc) to generate maps of buses in real time, and see updated arrival times.
 
-1. The biggest problem with OC Transpo's API is that the structure of the data it returns is inconsistent. I think OC Transpo has this issue because their API returns XML by default and is converting it to JSON. Certain fields in the response can be an object, a list of objects, or missing/null. There are also some fields which contain an object with one subfield, which is unusual. I broke down the responses I was getting from their API into Typescript types, which highlight these issues. These types are defined [here](./src/octranspo/types.ts). It caused me a lot of headache trying to figure out and their documentation only gave one sample response in XML. I was eventually able to parse the responses correctly and incorporate the data into my GraphQL API.
-
-2. OC Transpo's API could be greatly improved especially for documenting the type of their fields and if they are nullable. It returns latitude and longitude of buses as strings instead of as numbers and when there is no data for these field they are returned as empty strings. I changed latitude and longitude to be floats, which makes more sense in my opinion, and when no data is availabe they are null. GraphQL is really great because even without added documentation, the schema will accurately describe the type and nullability of fields.
-
-3. OC Transpo could also do a better job when it comes to providing useful fields. For example, when OC Transpo gives you live bus data it doesn't actually have a field for the bus' arrival time. Instead, it has a "TripStartTime" field, representing a time as a string formatted "hh:mm" of when the bus started it's trip, and an "AdjustedScheduleTime" field, representing how many minutes after the "TripStartTime" the bus will arrive. So, to get the arrival time you need to parse the "TripStartTime" field and add the "AdjustedScheduleTime". Aside from the extra parsing, this doesn't seem like a big deal, except you're left with no way to determine the originally scheduled arrival time. The "TripStartTime" is a nice field however, it would be even more useful if the [trip id](https://developers.google.com/transit/gtfs/reference#tripstxt) was given. This would allow the live bus to be linked to the OC Transpo GTFS dataset.
 
 ## Next Steps
 
